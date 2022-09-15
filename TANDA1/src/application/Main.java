@@ -77,7 +77,7 @@ public class Main extends Application {
 			root.add(txtHermanos, 1, 2,1,1);
 			root.add(ledad, 2, 2,1,1);
 			root.add(CBedad, 3, 2, 1, 1);
-				//cuarta fila
+				//cuarta fila//
 			RadioButton RBHombre=new RadioButton("Hombre");
 			RadioButton RBMujer=new RadioButton("Mujer");
 			RadioButton RBOtro=new RadioButton("Otro");
