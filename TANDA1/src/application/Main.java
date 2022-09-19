@@ -108,7 +108,7 @@ public class Main extends Application {
 			
 			//metidendo los apartados al grid
 				//primera fila
-			root.add(ltitulo, 1, 0,GridPane.REMAINING, 1);
+			root.add(ltitulo, 0, 0,GridPane.REMAINING, 1);
 			root.setHalignment(ltitulo, HPos.CENTER);
 				//Segunda fila
 			root.add(lProfesion, 0, 1,1,1);
@@ -156,6 +156,7 @@ public class Main extends Application {
 			root.add(s3, 1, 10,3,1);
 				//ultima fila
 			root.setHalignment(botonAceptar, HPos.CENTER);
+			root.setHalignment(botonCancelar, HPos.CENTER);
 			
 			root.add(botonAceptar, 0, 11,2,1);
 			root.add(botonCancelar, 2, 11,2,1);
@@ -173,12 +174,13 @@ public class Main extends Application {
 			root.getColumnConstraints().add(c4);
 			
 			//PARA QUE SE PUEDA VER
-			
-			
+			root.setStyle("-fx-padding: 14;");
+			root.setHgap(10);
+			root.setVgap(15);
 			Scene scene = new Scene(root);
 			
 			primaryStage.setScene(scene);
-
+			
 			primaryStage.setTitle("ENCUESTA");
 			primaryStage.show();
 			primaryStage.sizeToScene();

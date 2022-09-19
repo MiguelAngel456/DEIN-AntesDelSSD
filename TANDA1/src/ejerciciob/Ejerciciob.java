@@ -78,11 +78,22 @@ public class Ejerciciob extends Application{
 		
 		//NOMBRE
 		if (txtNombre.getText().length()==0) {
-		//	mal+="El campo nom"
-		}else {
-			
+			mal+="El campo nombre es obligatorio";
+			fallos++;
 		}
-		
+		//APELLIDO
+		if (txtApellido.getText().length()==0) {
+			mal+="\n El campo apellido es obligatorio";
+			fallos++;
+		}
+		try {
+			int num=Integer.parseInt(txtEdad.getText());
+		} catch (NumberFormatException e) {
+			mal+="\n El campo edad tiene que ser numeros";
+			if (txtEdad.getText().length()>0) {
+				mal+="\n El campo edad es obligatorio rellenado";
+			}
+		}
 	}
 	public static void main(String[] args) {
 		launch(args);
