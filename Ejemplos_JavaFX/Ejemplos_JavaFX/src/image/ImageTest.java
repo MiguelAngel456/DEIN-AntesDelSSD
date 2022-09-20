@@ -15,7 +15,7 @@ public class ImageTest extends Application {
 
 	@Override
 	public void start(Stage stage) {
-		String imagePath = getClass().getResource("/picture/randomness.jpg").toString();
+		String imagePath = getClass().getResource("zture/randomness.jpg").toString();
 		// Scale the iamge to 200 X 100
 		double requestedWidth = 200;
 		double requestedHeight = 100;

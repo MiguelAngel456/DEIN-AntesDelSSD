@@ -1,8 +1,10 @@
-package ejerciciob;
+package ejercicioC;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.HPos;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -22,9 +24,9 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import model.Persona;
 
-public class Ejerciciob extends Application{
+public class EjercicioC extends Application{
 	private TextField txtNombre,txtApellido,txtEdad;
-	private Button btnAgregar;
+	private Button btnAgregar,btnModificar,btnEliminar;
 	private ObservableList<Persona> listPersonas;
 	private TableView<Persona> tablaPersona;
 	private int fallos,suma;
@@ -38,6 +40,8 @@ public class Ejerciciob extends Application{
 			txtEdad=new TextField();
 				//botones
 			btnAgregar=new Button("Agregar Persona");
+			btnModificar=new Button("Modificar");
+			btnEliminar=new Button("Eliminar");
 				//lista en la que se basa la tabla
 			listPersonas=FXCollections.observableArrayList();
 				//la tabla de personas
@@ -66,10 +70,16 @@ public class Ejerciciob extends Application{
 			 colNombre.setMinWidth(200);
 			 colApellido.setMinWidth(200);
 			 colEdad.setMinWidth(100);
-			 
+			 //******************
+			 FlowPane fp=new FlowPane(40,40);
+			 fp.getChildren().add(btnModificar);
+			 fp.getChildren().add(btnEliminar);
+			 root.add(fp, 0, 1,GridPane.REMAINING,1);
+			 fp.setAlignment(btnModificar,HPos.CENTER);
+			 //**********************************
 			 datos.setStyle("-fx-padding: 10;");
 			 root.setStyle("-fx-padding: 10;");
-			 root.add(tablaPersona,1,0);
+			 root.add(tablaPersona,1,0,GridPane.REMAINING,1);
 			 
 			 
 			 //PARA QUE SE VEA
