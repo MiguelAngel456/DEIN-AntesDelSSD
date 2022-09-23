@@ -15,8 +15,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -63,14 +65,17 @@ public class Ejerciciob extends Application{
 			 TableColumn<Persona, String> colEdad=new TableColumn<>("EDAD");
 			 colEdad.setCellValueFactory(new PropertyValueFactory<>("edad"));
 			 tablaPersona.getColumns().addAll(colNombre,colApellido,colEdad);
-			 colNombre.setMinWidth(200);
-			 colApellido.setMinWidth(200);
-			 colEdad.setMinWidth(100);
+
 			 
 			 datos.setStyle("-fx-padding: 10;");
 			 root.setStyle("-fx-padding: 10;");
+			 ColumnConstraints c1=new ColumnConstraints();
+			 ColumnConstraints c2=new ColumnConstraints();
+			 c2.setHgrow(Priority.ALWAYS);
+			 root.getColumnConstraints().add(c1);
+			 root.getColumnConstraints().add(c2);
 			 root.add(tablaPersona,1,0);
-			 
+			 root.setVgrow(tablaPersona, Priority.ALWAYS);
 			 
 			 //PARA QUE SE VEA
 			 Scene scene = new Scene(root);

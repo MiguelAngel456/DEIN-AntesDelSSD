@@ -79,9 +79,7 @@ public class EjercicioC extends Application{
 			 colEdad.setStyle("-fx-alignment: CENTER;");
 			 
 			 tablaPersona.getColumns().addAll(colNombre,colApellido,colEdad);
-			 colNombre.setMinWidth(200);
-			 colApellido.setMinWidth(200);
-			 colEdad.setMinWidth(100);
+	
 			 //******************
 			 FlowPane fp=new FlowPane(40,40);
 			 fp.getChildren().add(btnModificar);
@@ -106,7 +104,8 @@ public class EjercicioC extends Application{
 			 c2.setHgrow(Priority.ALWAYS);
 			 root.getColumnConstraints().add(c1);
 			 root.getColumnConstraints().add(c2);
-			 
+			 root.setVgrow(tablaPersona, Priority.ALWAYS);
+			 root.setVgrow(fp, Priority.ALWAYS);
 			 String imagePath = getClass().getResource("/picture/agenda.png").toString();
 			 primaryStage.getIcons().add(new Image(imagePath));
 			 Scene scene = new Scene(root);

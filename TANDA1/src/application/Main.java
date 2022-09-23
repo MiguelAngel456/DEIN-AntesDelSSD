@@ -172,7 +172,7 @@ public class Main extends Application {
 			root.getColumnConstraints().add(c2);
 			root.getColumnConstraints().add(c3);
 			root.getColumnConstraints().add(c4);
-			
+
 			//PARA QUE SE PUEDA VER
 			root.setStyle("-fx-padding: 14;");
 			root.setHgap(10);
