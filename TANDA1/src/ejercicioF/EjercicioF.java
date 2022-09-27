@@ -1,5 +1,13 @@
 package ejercicioF;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Iterator;
 
 import javafx.application.Application;
@@ -28,6 +36,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -100,7 +110,8 @@ public class EjercicioF extends Application{
 			 btnAgregar.setOnAction(e->nuevo(primaryStage));
 			 btnModificar.setOnAction(e-> ModificarPers(primaryStage,primaryStage));
 			 btnEliminar.setOnAction(e->EliminarAlert(primaryStage));
-	         btnExportar.setOnAction(e->Exportar());
+	         btnExportar.setOnAction(e->Exportar(primaryStage));
+	         btnImportar.setOnAction(e->Importar(primaryStage));
 			 //PARA QUE SE VEA
 			 ColumnConstraints c1=new ColumnConstraints();
 			 c1.setHgrow(Priority.ALWAYS);
@@ -121,8 +132,57 @@ public class EjercicioF extends Application{
 		}
 		
 	}
-	public void Exportar() {
-		
+	public void Exportar(Stage st) {
+		FileChooser FC=new FileChooser();
+		File archivo=FC.showSaveDialog(st);
+		try {
+			PrintWriter bw=new PrintWriter(archivo);
+			String stri="Nombre,Apellido,Edad \n";
+			for (int i = 0; i < tablaPersona.getItems().size(); i++) {
+				System.out.println(tablaPersona.getItems().get(i).getNombre());
+				stri+=tablaPersona.getItems().get(i).getNombre()+","+tablaPersona.getItems().get(i).getApellido()+","+tablaPersona.getItems().get(i).getEdad()+"\n";
+				
+			}
+			bw.write(stri);
+			bw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void Importar(Stage st) {
+		//PARA QUE ME SALGA EL NAVEGADOR DE ARCHIVOS
+		FileChooser FC=new FileChooser();
+		FC.setTitle("Elige el CSV");
+		FC.setInitialDirectory(new File("/home/dm2/Escritorio"));
+		FC.getExtensionFilters().add(new ExtensionFilter("Archivo CSV", "*.csv", "*.csv"));
+		FC.setSelectedExtensionFilter(FC.getExtensionFilters().get(0));
+		File archivo=FC.showOpenDialog(st);
+		//IMPORTAR LA GENTE
+		try {
+			BufferedReader BR=new BufferedReader(new FileReader(archivo));
+			int fila=0;
+			String linea=BR.readLine();
+			while(linea!=null) {
+				if(fila!=0) {
+					String[] partes=linea.split(",");
+					Persona p=new Persona(partes[0],partes[1],partes[2]);
+					tablaPersona.getItems().add(p);
+				}
+				fila++;
+				linea=BR.readLine();
+			}
+			BR.close();
+			System.out.println(tablaPersona.getItems().size());
+			tablaPersona.refresh();
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public void filtrar(KeyEvent e) {
 		String nom="";
