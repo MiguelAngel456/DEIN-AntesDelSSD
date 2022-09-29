@@ -1,3 +1,4 @@
+/.DS_Store
 /binding/
 /collections/
 /container/
@@ -5,10 +6,3 @@
 /event/
 /image/
 /intro/
-/model/
-/module-info.class
-/node/
-/scene/
-/shape/
-/stage/
-/style/
