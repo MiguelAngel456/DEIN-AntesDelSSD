@@ -173,7 +173,6 @@ public class EjercicioF extends Application{
 				linea=BR.readLine();
 			}
 			BR.close();
-			System.out.println(tablaPersona.getItems().size());
 			tablaPersona.refresh();
 			
 		} catch (FileNotFoundException e) {
