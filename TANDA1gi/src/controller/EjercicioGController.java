@@ -270,8 +270,11 @@ public class EjercicioGController implements Initializable{
 //		listaPersona.add(p);
 		tablaPersona.setItems(listaPersona);
 		colNombre1.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+		colNombre1.prefWidthProperty().bind(tablaPersona.widthProperty().multiply(0.40));
 		colApellido1.setCellValueFactory(new PropertyValueFactory<>("apellido"));
+		colApellido1.prefWidthProperty().bind(tablaPersona.widthProperty().multiply(0.40));
 		colEdad1.setCellValueFactory(new PropertyValueFactory<>("edad"));
+		colEdad1.prefWidthProperty().bind(tablaPersona.widthProperty().multiply(0.20));
 		//tablaPersona.getColumns().addAll(colNombre1,colApellido1,colEdad1);
 		
 		

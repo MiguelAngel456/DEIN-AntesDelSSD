@@ -30,7 +30,7 @@ public class NuevoUsuarioFXMLController {
 
 	// Event Listener on Button[#btnGuardar].onAction
 	@FXML
-	public void anadirPersona(ActionEvent event) {
+	public void guardarPersona(ActionEvent event) {
 		p= new Persona(txtNombre.getText(), txtApellido.getText(), txtEdad.getText());
 		Stage stage = (Stage) btnGuardar.getScene().getWindow();
 		if(this.comprobar().length()==0) {
