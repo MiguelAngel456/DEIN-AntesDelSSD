@@ -37,12 +37,12 @@
                   <Insets right="20.0" />
                </FlowPane.margin>
             </Button>
-            <Button fx:id="btnModificar" mnemonicParsing="false" onAction="#anadirPersona" text="Modificar Persona">
+            <Button fx:id="btnModificar" mnemonicParsing="false" onAction="#modificarPersona" text="Modificar Persona">
                <FlowPane.margin>
                   <Insets left="20.0" right="20.0" />
                </FlowPane.margin>
             </Button>
-            <Button fx:id="btnEliminar" mnemonicParsing="false"  text="Eliminar Persona">
+            <Button fx:id="btnEliminar" mnemonicParsing="false" onAction="#eliminar" text="Eliminar Persona">
                <FlowPane.margin>
                   <Insets left="20.0" />
                </FlowPane.margin>
@@ -54,13 +54,13 @@
       </FlowPane>
       <FlowPane alignment="CENTER_LEFT" prefHeight="75.0" prefWidth="479.0" GridPane.columnIndex="1" GridPane.halignment="CENTER">
          <children>
-            <TextField fx:id="txtBuscar" />
-            <Button fx:id="btnExportar" mnemonicParsing="false" text="Exportar">
+            <TextField fx:id="txtBuscar" onKeyTyped="#filtrar" />
+            <Button fx:id="btnExportar" mnemonicParsing="false" onAction="#exportar" text="Exportar">
                <FlowPane.margin>
                   <Insets left="20.0" right="20.0" />
                </FlowPane.margin>
             </Button>
-            <Button fx:id="btnImportar" mnemonicParsing="false"  text="Importar" />
+            <Button fx:id="btnImportar" mnemonicParsing="false" onAction="#importar" text="Importar" />
          </children>
          <GridPane.margin>
             <Insets />

@@ -49,7 +49,7 @@
                   <Insets right="50.0" />
                </FlowPane.margin>
             </Button>
-            <Button fx:id="btnCancelar" mnemonicParsing="false" text="Cancelar" />
+            <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#cerrar" text="Cancelar" />
          </children>
       </FlowPane>
    </children>

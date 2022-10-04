@@ -40,14 +40,19 @@ public class NuevoUsuarioFXMLController {
 		}else {
 			this.AniadirAlert(stage);
 		}
-
 	}
-	private void AniadirAlert(Window win) {
+	
+	
+	public void cerrar(ActionEvent event) {
+		Stage stage = (Stage) btnGuardar.getScene().getWindow();
+		stage.close();
+	}
+	public void AniadirAlert(Window win) {
 		Alert alert;
 		String texto=comprobar();
 		if(texto.length()==0) {
 			alert = new Alert(Alert.AlertType.INFORMATION);
-			alert.setContentText("Modificado correctamente");
+			alert.setContentText("Accion hecha correctamente");
 		}else {
 			
 			alert = new Alert(Alert.AlertType.ERROR);
@@ -102,6 +107,15 @@ public class NuevoUsuarioFXMLController {
 
 	public TextField getTxtEdad() {
 		return txtEdad;
+	}
+	public void setTxtNombre(TextField txtNombre) {
+		this.txtNombre = txtNombre;
+	}
+	public void setTxtApellido(TextField txtApellido) {
+		this.txtApellido = txtApellido;
+	}
+	public void setTxtEdad(TextField txtEdad) {
+		this.txtEdad = txtEdad;
 	}
 
 	public Persona getP() {
