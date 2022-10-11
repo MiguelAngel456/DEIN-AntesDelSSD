@@ -34,8 +34,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
+import conexionBD.Propiedades;
 import dao.PersonaDao;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -66,6 +68,7 @@ public class EjercicioIController implements Initializable{
 	private Connection con;
 	
 	private int ultimoId;
+	private ResourceBundle bundle;
 
 	// Event Listener on Button[#btnAñadir].onAction
 	@FXML
@@ -83,7 +86,7 @@ public class EjercicioIController implements Initializable{
 	public void abrirVentana(int tipo) {
 		//CREAR LA VENTANA AÑADIR PERSONA
 		 try{
-	         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/NuevoUsuarioFXML.fxml"));
+	         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/NuevoUsuarioFXML.fxml"),bundle);
 	         Parent root = loader.load();
 	         Scene newScene = new Scene(root);
 	         Stage newStage = new Stage();
@@ -225,6 +228,12 @@ public class EjercicioIController implements Initializable{
 			colEdad1.setCellValueFactory(new PropertyValueFactory<>("edad"));
 			colEdad1.setStyle("-fx-alignment: CENTER-RIGHT;");
 			colEdad1.prefWidthProperty().bind(tablaPersona.widthProperty().multiply(0.20));
+			//IDIOMAS
+			String idioma = Propiedades.getValor("idioma");
+			String region = Propiedades.getValor("region");
+			Locale.setDefault(new Locale(idioma, region));
+			bundle = ResourceBundle.getBundle("idiomas/messages");
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

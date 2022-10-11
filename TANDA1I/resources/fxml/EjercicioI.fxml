@@ -28,12 +28,12 @@
     <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="NEVER" />
   </rowConstraints>
    <children>
-      <Label alignment="CENTER_RIGHT" text="\%Filtrar por nombre:" GridPane.halignment="RIGHT" />
+      <Label alignment="CENTER_RIGHT" text="Filtrar por nombre:" GridPane.halignment="RIGHT" />
       <TableView fx:id="tablaPersona" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
         <columns>
-          <TableColumn fx:id="colNombre1" maxWidth="1.7976931348623157E308" prefWidth="232.0" text="\%Nombre" />
-          <TableColumn fx:id="colApellido1" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="232.0" text="\%Apellido" />
-            <TableColumn fx:id="colEdad1" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="138.0" text="\%Edad" />
+          <TableColumn fx:id="colNombre1" maxWidth="1.7976931348623157E308" prefWidth="232.0" text="%Nombre" />
+          <TableColumn fx:id="colApellido1" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="232.0" text="%Apellido" />
+            <TableColumn fx:id="colEdad1" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="138.0" text="%Edad" />
         </columns>
          <contextMenu>
             <ContextMenu>
