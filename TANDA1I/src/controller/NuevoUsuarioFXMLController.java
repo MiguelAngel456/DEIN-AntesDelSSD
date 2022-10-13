@@ -86,10 +86,13 @@ public class NuevoUsuarioFXMLController{
 		Alert alert;
 		String texto=comprobar();
 		if(texto.length()==0) {
+			System.out.println("aaaaaa");
 			alert = new Alert(Alert.AlertType.INFORMATION);
-			alert.setContentText("Accion hecha correctamente");
-		}else {
 			
+			alert.setContentText("Accion hecha correctamente");
+			
+		}else {
+			System.out.println("bbbbb");
 			alert = new Alert(Alert.AlertType.ERROR);
 			alert.setContentText(texto);
 		}
@@ -98,7 +101,19 @@ public class NuevoUsuarioFXMLController{
 		alert.setTitle("TUS DATOS");
 		alert.showAndWait();
 	}
-	
+	public void error (Window win) {
+		Alert alert;
+		String texto=comprobar();
+
+			System.out.println("bbbbb");
+			alert = new Alert(Alert.AlertType.ERROR);
+			alert.setContentText("FALLO EN LA CONEXION A LA BASE DE DATOS ");
+			
+		alert.setHeaderText(null);
+		alert.initOwner(win);
+		alert.setTitle("TUS DATOS");
+		alert.showAndWait();
+	}
 	public void cargarDatos(ObservableList<Persona> lista ) {
 		
 		

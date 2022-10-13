@@ -214,12 +214,7 @@ public class EjercicioIController implements Initializable{
 		try {
 			PersonaDao pd=new PersonaDao();
 			listaPersona=pd.cargarPersonas();
-//			System.out.println(listaPersona.size());
-//			if(pd.cargarPersonas()==null) {
-//				listaPersona= FXCollections.observableArrayList();
-//			}else {
-//				listaPersona = pd.cargarPersonas();
-//			}
+
 			tablaPersona.setItems(listaPersona);
 			colNombre1.setCellValueFactory(new PropertyValueFactory<>("nombre"));
 			colNombre1.prefWidthProperty().bind(tablaPersona.widthProperty().multiply(0.40));

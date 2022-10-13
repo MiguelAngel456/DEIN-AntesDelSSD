@@ -1,10 +1,2 @@
-/application/
-/conexionBD/
-/controller/
-/css/
-/dao/
 /fxml/
-/idiomas/
-/images/
-/model/
-/module-info.class
+/controller/
