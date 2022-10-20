@@ -1,5 +1,17 @@
 package model;
 
-public class AeropuertoPublico {
+public class AeropuertoPublico extends Aeropuerto{
+	private double finan;
+	private int trabajadores;
+	public AeropuertoPublico(int id, String nombre, String pais, String ciudad, String calle, int numero, int año,int capacidad,double finan,int trabajadores) {
+		super(id, nombre, pais, ciudad, calle, numero, año, capacidad);
+		// TODO Auto-generated constructor stub
+		this.finan=finan;
+		this.trabajadores=trabajadores;
+	}
+	
+	
+	
+
 
 }

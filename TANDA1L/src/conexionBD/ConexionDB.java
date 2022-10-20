@@ -24,7 +24,7 @@ public class ConexionDB {
 	private Connection conexion;
 
 	public static Connection getConexion() throws SQLException {
-	        String url = Propiedades.getValor("url") + "?serverTimezone=" + TimeZone.getDefault().getID();
+	        String url = Propiedades.getValor("url");
 	        String user = Propiedades.getValor("user");
 	        String password = Propiedades.getValor("password");
 	        return DriverManager.getConnection(url, user, password);

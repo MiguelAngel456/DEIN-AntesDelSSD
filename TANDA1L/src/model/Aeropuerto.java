@@ -1,20 +1,19 @@
 package model;
 
 public class Aeropuerto {
-	private String nombre,pais,ciudad,calle,año;
-	private int id,num,capacidad;
+	private String nombre,pais,ciudad,calle;
+	private int id,num,capacidad,año;
 	
-	public Aeropuerto(int id,String nombre,String Pais,String Ciudad,String Calle,int Numero, String Año,int capacidad,int num) {
+	public Aeropuerto(int id,String nombre,String pais,String ciudad,String calle,int num, int año,int capacidad) {
 		// TODO Auto-generated constructor stub
 		this.id=id;
 		this.nombre=nombre;
-		this.pais=Pais;
-		this.ciudad=Ciudad;
-		this.calle=Calle;
-		this.num=Numero;
-		this.año=Año;
-		this.capacidad=capacidad;
+		this.pais=pais;
+		this.ciudad=ciudad;
+		this.calle=calle;
 		this.num=num;
+		this.año=año;
+		this.capacidad=capacidad;
 		
 	}
 }
