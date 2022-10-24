@@ -6,6 +6,12 @@ public class AeropuertoPrivado extends Aeropuerto{
 		super(id, nombre, pais, ciudad, calle, numero, año, capacidad);
 		this.Nsocios=Nsocios;
 	}
+	public int getNsocios() {
+		return Nsocios;
+	}
+	public void setNsocios(int nsocios) {
+		Nsocios = nsocios;
+	}
 
 	
 

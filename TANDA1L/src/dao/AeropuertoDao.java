@@ -1,4 +1,4 @@
-package dao;
+ package dao;
 
 import java.sql.Connection;
 
@@ -17,58 +17,64 @@ public class AeropuertoDao {
 	 private ConexionDB conexion;
 	
 	public ObservableList<Aeropuerto> cargarAeroPuerto(	String p) throws SQLException  {
-		Aeropuerto a;
-		
-        ObservableList<Aeropuerto> listP= FXCollections.observableArrayList();
-        conexion = new ConexionDB();
-        Connection con = conexion.getConexion();
-        String sql = "select * from aeropuertos";
-        PreparedStatement ps = con.prepareStatement(sql);
-        //ps.setInt(1, 200);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            int id = rs.getInt("id");
-            //TABLA AEROPUERTOS
-    		String nombre=rs.getString("nombre");
-    		String pais=rs.getString("pais");
-    		int año=rs.getInt("anio_inauguracion");
-    		int capacidad=rs.getInt("capacidad");
-    		
-    		//TABLA CALLES
-    		String idcalle=rs.getString("id_direccion");
-    		String sqlCalle = "select * from aeropuertos_privados where id='"+idcalle+"'";
-	        PreparedStatement psCalle = con.prepareStatement(sqlCalle);
-	        ResultSet rsCalle= psCalle.executeQuery();
-    		String ciudad=rsCalle.getString("ciudad");
-    		String calle=rsCalle.getString("calle");
-    		int num=rsCalle.getInt("numero");
-    		
-    		//TABLA AEROPUERTOS PRIVADOS
-    		if(p.equals("privado")) {
-    			 String sqLPriv = "select * from aeropuertos_privados where id_aeropuerto='"+id+"'";
-    		        PreparedStatement psPriv = con.prepareStatement(sqLPriv);
-    		        ResultSet rsPriv = psPriv.executeQuery();
-    			int Nsocios=rsPriv.getInt("numero_socios");
-    			a=new AeropuertoPrivado(id, nombre, pais, ciudad, calle, num, año, capacidad, Nsocios);
-    			listP.add(a);
-    		}
-    		//TABLA AEROPUERTOS PUBLICOS
-    		if(p.equals("publico")) {
-   			 	String sqlPub = "select * from aeropuertos_publicos where id_aeropuerto='"+id+"'";
-   		        PreparedStatement psPub = con.prepareStatement(sqlPub);
-   		        ResultSet rsPub = psPub.executeQuery();
-   		        double finan=rsPub.getDouble("financiacion");
-   				int trabajadores=rsPub.getInt("num_trabajadores");
-   				a=new AeropuertoPublico(id, nombre, pais, ciudad, calle, num, año, capacidad, finan, trabajadores);
-   				listP.add(a);
-    		}
+        ObservableList<Aeropuerto> vuelos = FXCollections.observableArrayList();
+        String sql;
+        
+        try {
+            conexion = new ConexionDB();
+            Connection con = conexion.getConexion();
             
-          
-//
+            
+            //AEROPUERTOS PRIVADOS
+            if (p.equals("privado")) {
+                sql = "SELECT * FROM aeropuertos a, direcciones d, aeropuertos_privados p WHERE id_direccion = d.id AND p.id_aeropuerto = a.id;";
+            }
+            //AEROPUERTOS PUBLICOS
+            else {
+                sql = "SELECT * FROM aeropuertos a, direcciones d, aeropuertos_publicos p WHERE id_direccion = d.id AND p.id_aeropuerto = a.id;";
+            }
+            
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                if (p.equals("privado")) {
+                	int id=rs.getInt("a.id");
+                	String nom= rs.getString("nombre");
+                	String pais=rs.getString("pais");
+                	String  ciudad=rs.getString("ciudad");
+                	String calle=rs.getString("calle");
+                	int num= rs.getInt("numero");
+                	int anio=rs.getInt("anio_inauguracion");
+                	int capacidad=rs.getInt("capacidad");
+                	System.out.println("aaaaaa");
+                	int numSocios= rs.getInt("numero_socios");
+                	
+                    AeropuertoPrivado v = new AeropuertoPrivado(id,nom, pais, ciudad, calle, num, anio, capacidad, numSocios);
+                    vuelos.add(v);
+                }else {
+                	int id=rs.getInt("a.id");
+                	String nom= rs.getString("nombre");
+                	String pais=rs.getString("pais");
+                	String  ciudad=rs.getString("ciudad");
+                	String calle=rs.getString("calle");
+                	int num= rs.getInt("numero");
+                	int anio=rs.getInt("anio_inauguracion");
+                	int capacidad=rs.getInt("capacidad");
+                	System.out.println("Vvvvvvv");
+                	double finan=rs.getDouble("financiacion");
+                	int traba=rs.getInt("num_trabajadores");
+                    AeropuertoPublico v = new AeropuertoPublico(id,nom, pais, ciudad, calle, num, anio, capacidad,finan,traba);
+                    vuelos.add(v);
+                }
+            }
+            rs.close();
+            ps.close();
+            
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        rs.close();
-        ps.close();
-        con.close();
-        return listP;		
+        return vuelos;
     }
+
 }

@@ -72,5 +72,10 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/home/dm2/Escritorio/Eclipse-workspace/librerias/Librerias componentes y acceso a mysql/bbdd/mysql-connector-java-8.0.19.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

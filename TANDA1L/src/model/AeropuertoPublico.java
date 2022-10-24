@@ -9,6 +9,18 @@ public class AeropuertoPublico extends Aeropuerto{
 		this.finan=finan;
 		this.trabajadores=trabajadores;
 	}
+	public double getFinan() {
+		return finan;
+	}
+	public void setFinan(double finan) {
+		this.finan = finan;
+	}
+	public int getTrabajadores() {
+		return trabajadores;
+	}
+	public void setTrabajadores(int trabajadores) {
+		this.trabajadores = trabajadores;
+	}
 	
 	
 	

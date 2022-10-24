@@ -16,4 +16,37 @@ public class Aeropuerto {
 		this.capacidad=capacidad;
 		
 	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public String getPais() {
+		return pais;
+	}
+
+	public String getCiudad() {
+		return ciudad;
+	}
+
+	public String getCalle() {
+		return calle;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public int getNum() {
+		return num;
+	}
+
+	public int getCapacidad() {
+		return capacidad;
+	}
+
+	public int getAño() {
+		return año;
+	}
+	
 }

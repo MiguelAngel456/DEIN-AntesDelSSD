@@ -23,25 +23,18 @@ public class ConexionDB {
 
 	private Connection conexion;
 
-	public static Connection getConexion() throws SQLException {
-	        String url = Propiedades.getValor("url");
-	        String user = Propiedades.getValor("user");
-	        String password = Propiedades.getValor("password");
-	        return DriverManager.getConnection(url, user, password);
-	}
-	public ConexionDB() throws SQLException {
+    public ConexionDB() throws SQLException {    
+        String url = Propiedades.getValor("url") + "?serverTimezone=" + TimeZone.getDefault().getID();
+        String user = Propiedades.getValor("user");
+        String password = Propiedades.getValor("password");
+        conexion=DriverManager.getConnection(url, user, password);
+        conexion.setAutoCommit(true);
+    }
 
-//		String user = "admin";
-//
-//	        String password = "password";
-//
-//	        String url = "jdbc:mysql://localhost/personas?serverTimezone=Europe/Madrid";
+    public Connection getConexion() throws SQLException {
+        return conexion;
+    }
 
-		conexion = this.getConexion();
-
-		conexion.setAutoCommit(true);
-
-	}
 
 
     

@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -8,13 +9,18 @@ import dao.AeropuertoDao;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import model.Aeropuerto;
 
 public class EjercicioL_AeropuertosController implements Initializable{
@@ -61,7 +67,7 @@ public class EjercicioL_AeropuertosController implements Initializable{
 	    private RadioButton rbPublicos;
 
 	    @FXML
-	    private TableView<?> tablaAeropuertos;
+	    private TableView<Aeropuerto> tablaAeropuertos;
 
 	    @FXML
 	    private TextField txtNombre;
@@ -72,7 +78,24 @@ public class EjercicioL_AeropuertosController implements Initializable{
 	    
 	    @FXML
 	    void AniadirAeropurto(ActionEvent event) {
-
+	    	try{
+	            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/EjercicioL_Añadir_Aeropuertos.fxml"));
+	            Parent root = loader.load();
+	            Scene newScene = new Scene(root);
+	            Stage newStage = new Stage();
+	            newStage.setScene(newScene);
+	            newStage.setTitle("AVIONES-AEROPUERTOS-AÑADIR AEROPUERTO");
+	            newStage.show();
+	            Stage myStage = (Stage) this.tablaAeropuertos.getScene().getWindow();
+	            myStage.close();
+	        } catch (IOException e) {
+	            Alert alert = new Alert(Alert.AlertType.ERROR);
+	            alert.setHeaderText(null);
+	            alert.setTitle("Error");
+	            alert.setContentText(e.getMessage());
+	            e.printStackTrace();
+	            alert.showAndWait();
+	        }
 	    }
     @FXML
     void cambiarApublico(ActionEvent event) {	
@@ -80,14 +103,33 @@ public class EjercicioL_AeropuertosController implements Initializable{
     		Nsocios.setVisible(false);
     		colFinanciacion.setVisible(true);
     		numTrabajadores.setVisible(true);
+    		try {
+    			ad=new AeropuertoDao();
+    			listaAeropuerto=ad.cargarAeroPuerto("publico");
+    			
+    			
+    		} catch (SQLException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+    		
     	}
     	
     	else{
     		Nsocios.setVisible(true);
     		colFinanciacion.setVisible(false);
     		numTrabajadores.setVisible(false);
+    		try {
+    			ad=new AeropuertoDao();
+    			listaAeropuerto=ad.cargarAeroPuerto("privado");
+    			
+    			
+    		} catch (SQLException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
     	}
-    	
+    	tablaAeropuertos.setItems(listaAeropuerto);
     	
     }
 
@@ -98,32 +140,38 @@ public class EjercicioL_AeropuertosController implements Initializable{
 		
 		try {
 			ad=new AeropuertoDao();
-			this.listaAeropuerto=ad.cargarAeroPuerto("privado");
+			listaAeropuerto=ad.cargarAeroPuerto("privado");
+			
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		tablaAeropuertos.setItems(listaAeropuerto);
 		
 		
 		rbPrivados.setSelected(true);
 		colFinanciacion.setVisible(false);
 		numTrabajadores.setVisible(false);
-		//ASIGNAR LAS COLUMNAS A LOS CAMPOS DE OBJETO CORRESPONDIENTE(privado)
+		//ASIGNAR LAS COLUMNAS A LOS CAMPOS DE OBJETO CORRESPONDIENTE
 		idAeropuerto.setCellValueFactory(new PropertyValueFactory<>("id"));
 		nomAeropuerto.setCellValueFactory(new PropertyValueFactory<>("nombre"));
 		paisAeropuerto.setCellValueFactory(new PropertyValueFactory<>("pais"));
 		ciudadAeropuerto.setCellValueFactory(new PropertyValueFactory<>("ciudad"));
 		calleAeropuerto.setCellValueFactory(new PropertyValueFactory<>("calle"));
-		numeroDIreccion.setCellValueFactory(new PropertyValueFactory<>("numero"));
+		numeroDIreccion.setCellValueFactory(new PropertyValueFactory<>("num"));
 		colAnio.setCellValueFactory(new PropertyValueFactory<>("año"));
 		capaciodad.setCellValueFactory(new PropertyValueFactory<>("capacidad"));
 		//Privado
-		Nsocios.setCellValueFactory(new PropertyValueFactory<>("Nsocios"));
-		//Publico
-		colFinanciacion.setCellValueFactory(new PropertyValueFactory<>("financiacion"));
-		numTrabajadores.setCellValueFactory(new PropertyValueFactory<>("trabajadores"));
+		if(rbPrivados.isSelected()) {
+			Nsocios.setCellValueFactory(new PropertyValueFactory<>("Nsocios"));
+		}else {
+			//Publico
+			colFinanciacion.setCellValueFactory(new PropertyValueFactory<>("financiacion"));
+			numTrabajadores.setCellValueFactory(new PropertyValueFactory<>("trabajadores"));
+		}
+		
+		
 		
 		
 		
