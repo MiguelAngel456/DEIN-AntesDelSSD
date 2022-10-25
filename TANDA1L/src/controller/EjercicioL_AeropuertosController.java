@@ -79,9 +79,9 @@ public class EjercicioL_AeropuertosController implements Initializable{
 	    @FXML
 	    void AniadirAeropurto(ActionEvent event) {
 	    	try{
-	            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/EjercicioL_Añadir_Aeropuertos.fxml"));
-	            Parent root = loader.load();
-	            Scene newScene = new Scene(root);
+	            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/EjercicioL_Anadir_Aeropuertos.fxml"));
+	            Parent rootA = loader.load();
+	            Scene newScene = new Scene(rootA);
 	            Stage newStage = new Stage();
 	            newStage.setScene(newScene);
 	            newStage.setTitle("AVIONES-AEROPUERTOS-AÑADIR AEROPUERTO");

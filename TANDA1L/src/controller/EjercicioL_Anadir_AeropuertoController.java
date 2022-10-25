@@ -15,7 +15,7 @@ import javafx.scene.control.Label;
 
 import javafx.scene.control.RadioButton;
 
-public class EjercicioL_Añadir_AeropuertoController implements Initializable{
+public class EjercicioL_Anadir_AeropuertoController implements Initializable{
 	@FXML
 	private Label lblNTrabajadores;
 	@FXML
