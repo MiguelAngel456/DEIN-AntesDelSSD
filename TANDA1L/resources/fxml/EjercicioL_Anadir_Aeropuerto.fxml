@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
@@ -52,8 +53,11 @@
          <GridPane.margin>
             <Insets right="20.0" />
          </GridPane.margin>
+         <toggleGroup>
+            <ToggleGroup fx:id="tipo" />
+         </toggleGroup>
       </RadioButton>
-      <RadioButton id="rbPrivado" fx:id="rbPrivado" mnemonicParsing="false" onAction="#cambiar" text="Privado" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+      <RadioButton id="rbPrivado" fx:id="rbPrivado" mnemonicParsing="false" onAction="#cambiar" text="Privado" toggleGroup="$tipo" GridPane.columnIndex="1" GridPane.rowIndex="8" />
       <FlowPane alignment="CENTER" prefHeight="81.0" prefWidth="600.0" GridPane.columnSpan="2" GridPane.rowIndex="11">
          <children>
             <Button id="btnGuardar" fx:id="btnGuardar" alignment="CENTER" mnemonicParsing="false" onAction="#aniadirAeropuerto" text="Guardar">
@@ -73,6 +77,5 @@
       <TextField id="txtCapacidad" fx:id="txtCapacidad" maxWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
       <TextField id="txtFinanciacion" fx:id="txtFinanOsocios" maxWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
       <TextField id="txtNumero" fx:id="txtNTrabajadores" maxWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="10" />
-      <Label fx:id="lblSocios" alignment="CENTER_RIGHT" prefWidth="84.0" text="NºSocios" GridPane.rowIndex="9" />
    </children>
 </GridPane>

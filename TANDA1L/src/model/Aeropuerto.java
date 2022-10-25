@@ -48,5 +48,8 @@ public class Aeropuerto {
 	public int getAño() {
 		return año;
 	}
+	public int Socios(AeropuertoPrivado ap) {
+		return ap.getNsocios();
+	}
 	
 }

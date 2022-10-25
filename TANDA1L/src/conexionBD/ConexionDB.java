@@ -35,6 +35,15 @@ public class ConexionDB {
         return conexion;
     }
 
+	public void cerrarConexion() {
+		try {
+			conexion.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 
 
     

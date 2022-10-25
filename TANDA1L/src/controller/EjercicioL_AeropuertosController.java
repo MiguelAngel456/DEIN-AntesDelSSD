@@ -79,7 +79,7 @@ public class EjercicioL_AeropuertosController implements Initializable{
 	    @FXML
 	    void AniadirAeropurto(ActionEvent event) {
 	    	try{
-	            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/EjercicioL_Anadir_Aeropuertos.fxml"));
+	            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/EjercicioL_Anadir_Aeropuerto.fxml"));
 	            Parent rootA = loader.load();
 	            Scene newScene = new Scene(rootA);
 	            Stage newStage = new Stage();
@@ -87,7 +87,8 @@ public class EjercicioL_AeropuertosController implements Initializable{
 	            newStage.setTitle("AVIONES-AEROPUERTOS-AÑADIR AEROPUERTO");
 	            newStage.show();
 	            Stage myStage = (Stage) this.tablaAeropuertos.getScene().getWindow();
-	            myStage.close();
+	            //myStage.close();
+	            
 	        } catch (IOException e) {
 	            Alert alert = new Alert(Alert.AlertType.ERROR);
 	            alert.setHeaderText(null);
