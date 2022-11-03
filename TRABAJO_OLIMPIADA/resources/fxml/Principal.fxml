@@ -96,13 +96,13 @@
             <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
                <children>
                   <Label text="Filtro:" />
-                  <TextField fx:id="txtFIltro" onAction="filtrarNombre" prefHeight="24.0" prefWidth="149.0" />
+                  <TextField fx:id="txtFIltro" onAction="#filtrarNombre" prefHeight="24.0" prefWidth="149.0" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="5.0" top="10.0" />
                </padding>
             </FlowPane>
-            <TableView fx:id="tablaParticipacion" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="3" GridPane.rowIndex="1">
+            <TableView fx:id="tablaParticipacion" prefHeight="200.0" prefWidth="200.0" visible="false" GridPane.columnSpan="3" GridPane.rowIndex="1">
               <columns>
                 <TableColumn fx:id="colNomDeportista" prefWidth="150.0" text="Nombre_Deportista" />
                 <TableColumn fx:id="colSexo" minWidth="0.0" prefWidth="47.0" text="Sexo" />
@@ -114,7 +114,7 @@
                   <TableColumn fx:id="colEvento" prefWidth="93.0" text="Evento" />
               </columns>
             </TableView>
-            <TableView fx:id="tablaEvento" prefHeight="234.0" prefWidth="605.0" visible="false" GridPane.columnSpan="3" GridPane.rowIndex="1">
+            <TableView fx:id="tablaEvento" prefHeight="234.0" prefWidth="605.0" GridPane.columnSpan="3" GridPane.rowIndex="1">
               <columns>
                 <TableColumn fx:id="col1Posicion" prefWidth="96.0" text="Nom_Evento" />
                 <TableColumn fx:id="col2Posicion" prefWidth="142.0" text="Nombre Olimpiada" />
