@@ -13,7 +13,7 @@ import model.Evento;
 public class EventoDao {
 	private ConexionDB conexion;
 	//PARA RELLENAR LA TABLA CON LA BASE DE DATOS
-	public ObservableList<Evento> cargarEvento(String t) throws SQLException  {
+	public ObservableList<Evento> cargarEvento()   {
 		ObservableList<Evento> arrEvento=FXCollections.observableArrayList();
         String sql;
 		
@@ -21,7 +21,7 @@ public class EventoDao {
             conexion = new ConexionDB();
             Connection con = conexion.getConexion();
             
-            if(t.equals("evento")) {
+
             	 //para buscar en la base de datos todos los eventos
                 sql = "SELECT * FROM Evento a, Olimpiada o, Deporte d WHERE a.id_olimpiada = o.id_olimpiada AND a.id_deporte = d.id_deporte;";
                             
@@ -47,7 +47,7 @@ public class EventoDao {
                 }
                 rs.close();
                 ps.close();
-            }
+            
            
             
             con.close();

@@ -96,7 +96,7 @@
             <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
                <children>
                   <Label text="Filtro:" />
-                  <TextField fx:id="txtFIltro" prefHeight="24.0" prefWidth="149.0" />
+                  <TextField fx:id="txtFIltro" onAction="filtrarNombre" prefHeight="24.0" prefWidth="149.0" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="5.0" top="10.0" />

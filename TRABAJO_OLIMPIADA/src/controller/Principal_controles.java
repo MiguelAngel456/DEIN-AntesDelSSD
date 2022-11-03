@@ -1,9 +1,11 @@
 package controller;
 import java.net.URL;
+
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import dao.EventoDao;
+import dao.ParticipacionDao;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -33,7 +35,7 @@ public class Principal_controles implements Initializable{
 	    private Button btnModificar;
 
 	    @FXML
-	    private ComboBox<?> cbTabla;
+	    private ComboBox<String> cbTabla;
 
 	    @FXML
 	    private CheckBox checkBoxInvierno;
@@ -92,9 +94,10 @@ public class Principal_controles implements Initializable{
 	    @FXML
 	    private TextField txtFIltro;
     private ObservableList<Evento> listEventos;
-    private ObservableList<Evento> listOlimpiadas;
+    private ObservableList<Participacion> listParticipacion;
     
     private EventoDao ed;
+    private ParticipacionDao pd;
     
     @FXML
     void anadir(ActionEvent event) {
@@ -113,49 +116,92 @@ public class Principal_controles implements Initializable{
 
     @FXML
     void seleccionar(ActionEvent event) {
-
-    }
-    @FXML
-    void filtrarTemporada(ActionEvent event) {
-    	try {
-			listEventos=ed.cargarEvento("evento");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    	if(cbTabla.getSelectionModel().getSelectedItem().toString()=="Evento") {
-    		ObservableList<Evento> listTemporada= FXCollections.observableArrayList();
-    			for (int i = 0; i < listEventos.size(); i++) {
-					if(checkBoxInvierno.isSelected()) {
-						if(listEventos.get(i).getTemporada_Olimpiada().equals("Winter")) {
-							listTemporada.add(listEventos.get(i));
-						}
-					}
-					if(checkBoxVerano.isSelected()) {
-						if(listEventos.get(i).getTemporada_Olimpiada().equals("Summer")) {
-							listTemporada.add(listEventos.get(i));
-						}
-					}
-				}
-    		
+    	if(cbTabla.getSelectionModel().getSelectedItem().toString().equals("Participacion")) {
+    		ParticipacionDao pd=new ParticipacionDao();
+    		listParticipacion=pd.cargarParticipacion();
+    		tablaParticipacion.setItems(listParticipacion);
+    		tablaParticipacion.setVisible(true);
+    		tablaEvento.setVisible(false);
+    	}else {
+    		ed=new EventoDao();
+    		listEventos=ed.cargarEvento();
+    		tablaEvento.setItems(listEventos);
+    		tablaParticipacion.setVisible(false);
+    		tablaEvento.setVisible(true);
     	}
     }
-
+    //METODOS DE FILTRAR
+    @FXML
+    void filtrarTemporada(ActionEvent event) {
+    	listEventos=ed.cargarEvento();
+    	
+    	if(cbTabla.getSelectionModel().getSelectedItem().toString().equals("Participacion")) {
+    		
+    		listParticipacion=pd.FiltrarParticipacion(checkBoxInvierno.isSelected(), checkBoxVerano.isSelected());
+    		tablaParticipacion.setItems(listParticipacion);
+    		
+    	}else {
+    		ObservableList<Evento> listTemporada= FXCollections.observableArrayList();
+			for (int i = 0; i < listEventos.size(); i++) {
+				if(checkBoxInvierno.isSelected()) {
+					if(listEventos.get(i).getTemporada_Olimpiada().equals("Winter")) {
+						listTemporada.add(listEventos.get(i));
+					}
+				}
+				if(checkBoxVerano.isSelected()) {
+					if(listEventos.get(i).getTemporada_Olimpiada().equals("Summer")) {
+						listTemporada.add(listEventos.get(i));
+					}
+				}
+			}
+			listEventos=listTemporada;
+			tablaEvento.setItems(listEventos);
+    	}
+    		
+    	
+    }
+    void filtrarNombre(ActionEvent event) {
+		String nom="";
+		if(cbTabla.getSelectionModel().getSelectedItem().toString().equals("Participacion")) {
+			ObservableList<Participacion> listaFiltrada= FXCollections.observableArrayList();
+			nom=txtFIltro.getText();
+			for (int i = 0; i < listParticipacion.size(); i++) {
+				if(listParticipacion.get(i).getNomDeportista().contains(nom)) {
+					listaFiltrada.add(listParticipacion.get(i));
+					
+				}
+			}
+			tablaParticipacion.refresh();
+			tablaParticipacion.setItems(listaFiltrada);
+		}else {
+			ObservableList<Evento> listaFiltrada= FXCollections.observableArrayList();
+			nom=txtFIltro.getText();
+			for (int i = 0; i < listEventos.size(); i++) {
+				if(listEventos.get(i).getNom_Evento().contains(nom)) {
+					listaFiltrada.add(listEventos.get(i));
+				}
+			}
+			tablaEvento.refresh();
+			tablaEvento.setItems(listaFiltrada);
+		}
+		
+		if(nom.isEmpty()){
+			tablaParticipacion.setItems(listParticipacion);
+		}
+    }
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		ObservableList<String> arrTablas= FXCollections.observableArrayList();
 		arrTablas.add("Evento");
 		arrTablas.add("Participacion");
-		cbTabla=new ComboBox<>(arrTablas);
+		cbTabla.setItems(arrTablas);
 		
-		
-		tablaEvento.setVisible(true);
+		tablaEvento.setVisible(false);
 		tablaParticipacion.setVisible(false);
 		
 
 		
-		//ASIGNAR CAMPOS A LAS TABLAS y  los tamaños
+		//ASIGNAR CAMPOS A LA TABLA EVENTO y  los tamaños
 		col1Posicion.setCellValueFactory(new PropertyValueFactory<>("nom_Evento"));
 		col1Posicion.prefWidthProperty().bind(tablaEvento.widthProperty().multiply(0.30));
 		
@@ -174,14 +220,27 @@ public class Principal_controles implements Initializable{
 		col6Posicion.setCellValueFactory(new PropertyValueFactory<>("nom_Deporte"));
 		col6Posicion.prefWidthProperty().bind(tablaEvento.widthProperty().multiply(0.17));
 		
+		//ASIGNAR CAMPOS A LA TABLA Participacion y  los tamaños
+		colNomDeportista.setCellValueFactory(new PropertyValueFactory<>("nomDeportista"));
+		
+		colSexo.setCellValueFactory(new PropertyValueFactory<>("sexo"));
+		
+		colPeso.setCellValueFactory(new PropertyValueFactory<>("peso"));
+		
+		colAltura.setCellValueFactory(new PropertyValueFactory<>("altura"));
+		
+		colEdad.setCellValueFactory(new PropertyValueFactory<>("edad"));
+		
+		colEquipo.setCellValueFactory(new PropertyValueFactory<>("equipo"));
+		
+		colMedalla.setCellValueFactory(new PropertyValueFactory<>("medalla"));
+		
+		colEvento.setCellValueFactory(new PropertyValueFactory<>("nomEvento"));
+		
+		pd=new ParticipacionDao();
 		//ASIGNAR A LA TABLA UNA LISTA
 		ed=new EventoDao();
-		try {
-			listEventos=ed.cargarEvento("evento");
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		listEventos=ed.cargarEvento();
 		tablaEvento.setItems(listEventos);
 		
 		
