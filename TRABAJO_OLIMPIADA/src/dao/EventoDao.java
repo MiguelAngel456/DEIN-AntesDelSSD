@@ -57,4 +57,7 @@ public class EventoDao {
 		
 		return arrEvento;
 	}
+	public boolean anadirEvento() {
+		
+	}
 }
