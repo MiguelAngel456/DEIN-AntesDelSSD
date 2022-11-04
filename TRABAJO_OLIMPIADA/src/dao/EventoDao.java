@@ -8,10 +8,12 @@ import java.sql.SQLException;
 import conexionBD.ConexionDB;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.Deporte;
 import model.Evento;
 
 public class EventoDao {
 	private ConexionDB conexion;
+	private DeporteDao dp;
 	//PARA RELLENAR LA TABLA CON LA BASE DE DATOS
 	public ObservableList<Evento> cargarEvento()   {
 		ObservableList<Evento> arrEvento=FXCollections.observableArrayList();
@@ -57,7 +59,28 @@ public class EventoDao {
 		
 		return arrEvento;
 	}
-	public boolean anadirEvento() {
+	public boolean anadirEvento(Evento ev,int id_olimpiada,int id_Deporte) {
+		
+		try {
+			conexion = new ConexionDB();
+	        Connection con = conexion.getConexion();
+            
+			PreparedStatement pst = con.prepareStatement("insert into Evento (nombre, id_olimpiada ,id_deporte) values(?,?,?)");
+			
+			pst.setString(1, ev.getNom_Evento());
+			pst.setInt(2, id_olimpiada);
+			pst.setInt(3, id_Deporte);
+
+			pst.execute();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		return false;
 		
 	}
 }

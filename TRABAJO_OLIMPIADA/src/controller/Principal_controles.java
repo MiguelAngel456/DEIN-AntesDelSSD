@@ -219,7 +219,7 @@ public class Principal_controles implements Initializable{
 		arrTablas.add("Evento");
 		arrTablas.add("Participacion");
 		cbTabla.setItems(arrTablas);
-		
+		cbTabla.getSelectionModel().select(0);
 		tablaEvento.setVisible(true);
 		//tablaParticipacion.setVisible(false);
 		

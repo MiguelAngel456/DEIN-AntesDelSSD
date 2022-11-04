@@ -3,11 +3,11 @@ package model;
 import java.util.Objects;
 
 public class Olimpiada {
-	String nombre,anio,temporada,ciudad;
-
+	String nombre,temporada,ciudad;
+	int anio;
 	
 	
-	public Olimpiada(String nombre, String anio, String temporada, String ciudad) {
+	public Olimpiada(String nombre, int anio, String temporada, String ciudad) {
 		this.nombre = nombre;
 		this.anio = anio;
 		this.temporada = temporada;
@@ -18,7 +18,7 @@ public class Olimpiada {
 		return nombre;
 	}
 
-	public String getAnio() {
+	public int getAnio() {
 		return anio;
 	}
 
