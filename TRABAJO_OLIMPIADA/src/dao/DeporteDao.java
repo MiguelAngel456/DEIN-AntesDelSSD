@@ -16,12 +16,14 @@ public class DeporteDao {
 		try {
 			conexion = new ConexionDB();
 	        Connection con = conexion.getConexion();
-            
+            System.out.println(d.getDeporte());
 			PreparedStatement pst = con.prepareStatement("insert into Evento (nombre) values(?)");
 			
 			pst.setString(1, d.getDeporte());
 
 			pst.execute();
+			con.close();
+			pst.close();
 			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -69,15 +71,17 @@ public class DeporteDao {
 			conexion = new ConexionDB();
 			Connection con = conexion.getConexion();
 			//System.out.println(d.getDeporte());
-			String sql = "SELECT * FROM Deporte WHERE nombre = '"+d.getDeporte()+"';";
+			String sql = "SELECT * FROM Deporte WHERE nombre='"+d.getDeporte()+"';";
 			 
 			PreparedStatement ps = con.prepareStatement(sql);
 	        ResultSet rs = ps.executeQuery();
+	        System.out.println(rs.next());
 	        int id=rs.getInt("id_deporte");
 	        //CERRAR IMPORTANTE
 	        rs.close();
 	        ps.close();
 	        con.close();
+	        System.out.println(id);
 	        return id;
 	       
 	        

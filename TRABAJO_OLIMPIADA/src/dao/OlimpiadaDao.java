@@ -25,8 +25,10 @@ public class OlimpiadaDao {
 				pst.setString(3, ol.getTemporada());
 				pst.setString(4, ol.getCiudad());
 				
-
+				
 				pst.execute();
+				con.close();
+				pst.close();
 				return true;
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -71,15 +73,16 @@ public class OlimpiadaDao {
 			try {
 				conexion = new ConexionDB();
 				Connection con = conexion.getConexion();
-				//System.out.println(d.getDeporte());
-				String sql = "SELECT * FROM Olimpiada WHERE nombre = '"+d.getNombre()+"';";
+				String sql = "SELECT * FROM Olimpiada WHERE nombre='"+d.getNombre()+"';";
 				 
 				PreparedStatement ps = con.prepareStatement(sql);
 		        ResultSet rs = ps.executeQuery();
+		        System.out.println(rs.next());
 		        int id =rs.getInt("id_olimpiada");
 		        rs.close();
 		        ps.close();
 		        con.close();
+		        System.out.println(id);
 		        return id;
 		        
 			} catch (SQLException e) {
