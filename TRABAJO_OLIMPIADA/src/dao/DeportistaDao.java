@@ -73,4 +73,27 @@ private ConexionDB conexion;
 		}
         return arr;
 	}
+	public int bucarId(Deportista d) {
+		try {
+			conexion = new ConexionDB();
+			Connection con = conexion.getConexion();
+			//System.out.println(d.getDeporte());
+			String sql = "SELECT * FROM Deportista WHERE nombre='"+d.getNombre()+"';";
+			 
+			PreparedStatement ps = con.prepareStatement(sql);
+	        ResultSet rs = ps.executeQuery();
+	        int id=rs.getInt("id_deportista");
+	        //CERRAR IMPORTANTE
+	        rs.close();
+	        ps.close();
+	        con.close();
+	        return id;
+	       
+	        
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
 }

@@ -13,6 +13,10 @@ public class Deportista {
 		this.altura = altura;
 	}
 
+	public String toString() {
+		return nombre;
+	}
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -45,6 +49,7 @@ public class Deportista {
 		Deportista other = (Deportista) obj;
 		return Objects.equals(nombre, other.nombre);
 	}
+
 	
 	
 }

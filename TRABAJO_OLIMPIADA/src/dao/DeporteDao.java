@@ -37,36 +37,7 @@ public class DeporteDao {
 		return false;
 	}
 	
-	
-	//COMPRUEBA SI YA ESTA EL DEPORTE
-	public boolean comprobarDeporte(Deporte d) {
-		try {
-			conexion = new ConexionDB();
-			Connection con = conexion.getConexion();
-			//System.out.println(d.getDeporte());
-			String sql = "SELECT * FROM Deporte WHERE nombre = '"+d.getDeporte()+"';";
-			 
-			PreparedStatement ps = con.prepareStatement(sql);
-	        ResultSet rs = ps.executeQuery();
-	        boolean existe=rs.next();
-	        //CERRAR IMPORTANTE 
-	        rs.close();
-	        ps.close();
-	        con.close();
-	        if(existe) {
-	        	return true;
-	        }else {
-	        	return false;
-	        }
-	        
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return false;
 
-	}
 	//SACAR EL ID DEL DEPORTE BUSCADO
 	public int sacarId(Deporte d) {
 		try {

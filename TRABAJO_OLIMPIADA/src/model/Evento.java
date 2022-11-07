@@ -22,8 +22,10 @@ public class Evento{
 		this.nom_Deporte=nom_Deporte;
 	}
 	public Evento(String nom_Evento) {
-		super();
 		this.nom_Evento=nom_Evento;
+	}
+	public String toString() {
+		return nom_Evento;
 	}
 	public String getNom_Evento() {
 		return nom_Evento;

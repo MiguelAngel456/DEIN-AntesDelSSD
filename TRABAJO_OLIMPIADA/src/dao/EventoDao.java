@@ -83,12 +83,12 @@ public class EventoDao {
 		return false;
 		
 	}
-	public int sacarId(String nom, int id_Olimpiada) {
+	public int sacarId(Evento ev) {
 		try {
 			conexion = new ConexionDB();
 			Connection con = conexion.getConexion();
 			//System.out.println(d.getDeporte());
-			String sql = "SELECT * FROM Evento WHERE nombre='"+nom+"' AND ;";
+			String sql = "SELECT * FROM Evento WHERE nombre='"+ev.getNom_Evento()+"';";
 			 
 			PreparedStatement ps = con.prepareStatement(sql);
 	        ResultSet rs = ps.executeQuery();

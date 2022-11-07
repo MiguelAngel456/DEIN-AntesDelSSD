@@ -9,7 +9,9 @@ public class Equipos {
 		this.nombre = nombre;
 		this.iniciales = iniciales;
 	}
-
+	public String toString() {
+		return nombre;
+	}
 	public String getNombre() {
 		return nombre;
 	}

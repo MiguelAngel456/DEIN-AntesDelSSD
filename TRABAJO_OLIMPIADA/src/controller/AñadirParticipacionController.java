@@ -6,6 +6,8 @@ import javafx.scene.control.Button;
 
 import javafx.scene.control.ToggleGroup;
 import model.Deportista;
+import model.Equipos;
+import model.Evento;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
@@ -60,7 +62,7 @@ public class AñadirParticipacionController implements Initializable{
 	@FXML
 	public void aceptar(ActionEvent event) {
 		String med;
-		
+		//Saber que medalla a conseguido
 		if(rbOro.isSelected()) {
 			med=rbOro.getText();
 		}else {
@@ -74,8 +76,22 @@ public class AñadirParticipacionController implements Initializable{
 				}
 			}
 		}
-		//evd.sacarId(med);
+		//Buscar el id deportista
+		Deportista dep=(Deportista) comboDeportista.getSelectionModel().getSelectedItem();
+		int id_deportista=dd.bucarId(dep);
+		System.out.println(id_deportista);
+		//Buscar el id Equipo
+		Equipos equip=(Equipos) comboEquipo.getSelectionModel().getSelectedItem();
+		int id_equipo=eqd.bucarId(equip);
+		System.out.println("bbbbbbbbbbb");
+		//Buscar el id Evento
+		Evento ev=(Evento) comboEvento.getSelectionModel().getSelectedItem();
+		int id_evento=evd.sacarId(ev);
+		System.out.println("cccccccccccc");
+		//sacar los otros datos
+		int edad=Integer.parseInt(txtEdad.getText());
 		
+		pd.anadirParticipacion(edad, med, id_deportista, id_evento, id_equipo);
 		
 		
 	}
@@ -91,5 +107,7 @@ public class AñadirParticipacionController implements Initializable{
 		eqd=new EquipoDao();
 		dd=new DeportistaDao();
 		comboDeportista.setItems(dd.sacarDeportistas());
+		comboEvento.setItems(evd.cargarEvento());
+		comboEquipo.setItems(eqd.sacarEquipos());
 	}
 }

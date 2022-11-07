@@ -157,7 +157,11 @@ public class Principal_controles implements Initializable{
     			e.printStackTrace();
     		}
     	}
-    	
+		listEventos=ed.cargarEvento();
+		tablaEvento.setItems(listEventos);
+		
+		listEventos=ed.cargarEvento();
+		tablaEvento.setItems(listEventos);
     }
     @FXML
     void anadirDeporte(ActionEvent event) {
@@ -383,6 +387,7 @@ public class Principal_controles implements Initializable{
 		
 		
 	}
+	
 
 }
 
