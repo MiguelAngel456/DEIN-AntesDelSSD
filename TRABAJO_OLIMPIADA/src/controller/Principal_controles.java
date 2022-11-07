@@ -119,23 +119,45 @@ public class Principal_controles implements Initializable{
     
     @FXML
     void anadir(ActionEvent event) {
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirEvento.fxml"));
-        Parent root;
-		try {
-			root = loader.load();
-			 Scene newScene = new Scene(root);
-		        Stage newStage = new Stage();
-		        AñadirController control= loader.getController();
-		        
-		        newStage.initModality(Modality.APPLICATION_MODAL);
-		
-		        newStage.setScene(newScene);
-	        	newStage.setTitle("Añadir Evento");
-		        newStage.showAndWait ();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    	if(cbTabla.getSelectionModel().getSelectedItem().toString().equals("Participacion")) {
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirParticipacion.fxml"));
+            Parent root; 
+    		try {System.out.println("aaaaaaaaa");
+    			root = loader.load();
+    			Scene newScene = new Scene(root);
+    		    
+    		    Stage newStage = new Stage();
+    		    AñadirParticipacionController control= loader.getController();
+    		    
+    		    newStage.initModality(Modality.APPLICATION_MODAL);
+    		     
+    		    newStage.setScene(newScene);
+    	        newStage.setTitle("Participacion");
+    		    newStage.showAndWait ();
+    		} catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+    	}else {
+    		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirEvento.fxml"));
+            Parent root;
+    		try {
+    			root = loader.load();
+    			 Scene newScene = new Scene(root);
+    		        Stage newStage = new Stage();
+    		        AñadirController control= loader.getController();
+    		        
+    		        newStage.initModality(Modality.APPLICATION_MODAL);
+    		
+    		        newStage.setScene(newScene);
+    	        	newStage.setTitle("Evento");
+    		        newStage.showAndWait ();
+    		} catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+    	}
+    	
     }
     @FXML
     void anadirDeporte(ActionEvent event) {
@@ -180,8 +202,24 @@ public class Principal_controles implements Initializable{
 
     @FXML
     void anadirEquipo(ActionEvent event) {
-
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirEquipo.fxml"));
+        Parent root;
+		try {
+			root = loader.load();
+			Scene newScene = new Scene(root);
+		    Stage newStage = new Stage();
+		    AñadirEquipoController control= loader.getController();
+		    
+		    newStage.initModality(Modality.APPLICATION_MODAL);
+			newStage.setScene(newScene);
+	        newStage.setTitle("Añadir Equipo");
+		    newStage.showAndWait ();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
+
 
     @FXML
     void anadirOlimpiada(ActionEvent event) {

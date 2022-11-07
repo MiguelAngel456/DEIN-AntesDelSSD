@@ -9,6 +9,7 @@ import conexionBD.ConexionDB;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Evento;
+import model.Olimpiada;
 import model.Participacion;
 
 public class ParticipacionDao {
@@ -42,7 +43,7 @@ public class ParticipacionDao {
 	         	String nom_evento=rs.getString("e.nombre");
 	         	
 	         	//sacar datos de la participacion para la tabla
-	         	String edad_Participacion=rs.getString("a.edad");
+	         	int edad_Participacion=rs.getInt("a.edad");
 	         	String medalla_Participacion=rs.getString("a.medalla");
 	         	
 	         	//crear el Participacion
@@ -95,7 +96,7 @@ public class ParticipacionDao {
 	         	String nom_evento=rs.getString("e.nombre");
 	         	
 	         	//sacar datos de la participacion para la tabla
-	         	String edad_Participacion=rs.getString("a.edad");
+	         	int edad_Participacion=rs.getInt("a.edad");
 	         	String medalla_Participacion=rs.getString("a.medalla");
 
 	         	//crear el Participacion
@@ -132,7 +133,33 @@ public class ParticipacionDao {
 		return arrParticipacion;
 		
 	}
-	
+	public boolean anadirParticipacion(int edad,String medalla,int id_deportita,int id_evento, int id_equipo) {
+		try {
+			conexion = new ConexionDB();
+	        Connection con = conexion.getConexion();
+            
+			PreparedStatement pst = con.prepareStatement("insert into Participacion (id_deportista, id_evento, id_equipo, edad, medalla) values(?,?,?,?,?)");
+			
+			pst.setInt(1, id_deportita);
+			pst.setInt(2, id_evento);
+			pst.setInt(3, id_equipo);
+			pst.setInt(4, edad);
+			pst.setString(5, medalla);
+			
+			
+			pst.execute();
+			con.close();
+			pst.close();
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		return false;
+	}
 	
 	
 }

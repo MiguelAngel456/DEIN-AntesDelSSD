@@ -5,7 +5,8 @@ import java.util.Objects;
 public class Participacion {
 	private String nomDeportista,sexo,peso,altura;
 	
-	private String edad, medalla;
+	private String medalla;
+	private int edad;
 	
 	private String nomEvento;
 	
@@ -13,7 +14,7 @@ public class Participacion {
 	
 
 
-	public Participacion(String nomDeportista, String sexo, String peso, String altura, String edad, String medalla, String equipo, String nomEvento) {
+	public Participacion(String nomDeportista, String sexo, String peso, String altura, int edad, String medalla, String equipo, String nomEvento) {
 		
 		this.nomDeportista = nomDeportista;
 		this.sexo = sexo;
@@ -41,7 +42,7 @@ public class Participacion {
 		return altura;
 	}
 
-	public String getEdad() {
+	public int getEdad() {
 		return edad;
 	}
 

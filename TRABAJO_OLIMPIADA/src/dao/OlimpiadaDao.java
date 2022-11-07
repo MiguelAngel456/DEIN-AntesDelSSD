@@ -111,7 +111,7 @@ public class OlimpiadaDao {
 	            	int anio=rs.getInt("anio");
 	            	String temp=rs.getString("temporada");
 	            	String ciudad=rs.getString("ciudad");
-	            	//crear el evento
+	            	//crear
 	            	Olimpiada ol=new Olimpiada(nom, anio, temp, ciudad);
 	            	arr.add(ol);
 	            	

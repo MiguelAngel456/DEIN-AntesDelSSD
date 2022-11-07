@@ -83,4 +83,27 @@ public class EventoDao {
 		return false;
 		
 	}
+	public int sacarId(String nom, int id_Olimpiada) {
+		try {
+			conexion = new ConexionDB();
+			Connection con = conexion.getConexion();
+			//System.out.println(d.getDeporte());
+			String sql = "SELECT * FROM Evento WHERE nombre='"+nom+"' AND ;";
+			 
+			PreparedStatement ps = con.prepareStatement(sql);
+	        ResultSet rs = ps.executeQuery();
+	        int id=rs.getInt("id_evento");
+	        //CERRAR IMPORTANTE
+	        rs.close();
+	        ps.close();
+	        con.close();
+	        return id;
+	       
+	        
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
 }
