@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import conexionBD.ConexionDB;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.Deporte;
 import model.Olimpiada;
 
@@ -90,5 +92,35 @@ public class OlimpiadaDao {
 				e.printStackTrace();
 			}
 			return 0;
+		}
+		public 	ObservableList<Olimpiada> sacarOlimpiada() {
+			ObservableList<Olimpiada> arr=FXCollections.observableArrayList();
+	        String sql;
+			
+	        try {
+	            conexion = new ConexionDB();
+	            Connection con = conexion.getConexion();
+	            sql="SELECT * FROM Olimpiada;";
+	            PreparedStatement ps = con.prepareStatement(sql);
+	            ResultSet rs = ps.executeQuery();
+	            while (rs.next()) {
+	            	//sacar datos 
+	            	
+	            	
+	            	String nom=rs.getString("nombre");
+	            	int anio=rs.getInt("anio");
+	            	String temp=rs.getString("temporada");
+	            	String ciudad=rs.getString("ciudad");
+	            	//crear el evento
+	            	Olimpiada ol=new Olimpiada(nom, anio, temp, ciudad);
+	            	arr.add(ol);
+	            	
+	            }
+	            return arr;
+	            
+	        }catch (SQLException e) {
+				// TODO: handle exception
+			}
+	        return arr;
 		}
 }

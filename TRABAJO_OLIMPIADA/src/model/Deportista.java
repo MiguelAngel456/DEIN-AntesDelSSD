@@ -3,9 +3,10 @@ package model;
 import java.util.Objects;
 
 public class Deportista {
-	String nombre,sexo,peso,altura;
+	String nombre,sexo;
+	int peso,altura;
 
-	public Deportista(String nombre, String sexo, String peso, String altura) {
+	public Deportista(String nombre, String sexo, int peso, int altura) {
 		this.nombre = nombre;
 		this.sexo = sexo;
 		this.peso = peso;
@@ -20,11 +21,11 @@ public class Deportista {
 		return sexo;
 	}
 
-	public String getPeso() {
+	public int getPeso() {
 		return peso;
 	}
 
-	public String getAltura() {
+	public int getAltura() {
 		return altura;
 	}
 

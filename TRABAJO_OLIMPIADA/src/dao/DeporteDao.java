@@ -6,7 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import conexionBD.ConexionDB;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.Deporte;
+import model.Evento;
 
 public class DeporteDao {
 	private ConexionDB conexion;
@@ -16,8 +19,7 @@ public class DeporteDao {
 		try {
 			conexion = new ConexionDB();
 	        Connection con = conexion.getConexion();
-            System.out.println(d.getDeporte());
-			PreparedStatement pst = con.prepareStatement("insert into Evento (nombre) values(?)");
+			PreparedStatement pst = con.prepareStatement("insert into Deporte (nombre) values(?)");
 			
 			pst.setString(1, d.getDeporte());
 
@@ -90,5 +92,31 @@ public class DeporteDao {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+	public 	ObservableList<Deporte> sacarDeportes() {
+		ObservableList<Deporte> arr=FXCollections.observableArrayList();
+        String sql;
+		
+        try {
+            conexion = new ConexionDB();
+            Connection con = conexion.getConexion();
+            sql="SELECT * FROM Deporte;";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+            	//sacar datos del evento para la tabla
+            	String nom=rs.getString("nombre");
+            	
+            	//crear el evento
+            	Deporte dep=new Deporte(nom);
+            	arr.add(dep);
+            	
+            }
+            return arr;
+            
+        }catch (SQLException e) {
+			// TODO: handle exception
+		}
+        return arr;
 	}
 }

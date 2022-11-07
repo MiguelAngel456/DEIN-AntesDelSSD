@@ -19,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -99,6 +100,17 @@ public class Principal_controles implements Initializable{
 
 	    @FXML
 	    private TextField txtFIltro;
+	    @FXML
+	    private MenuItem crearDeporte;
+
+	    @FXML
+	    private MenuItem crearDeportista;
+
+	    @FXML
+	    private MenuItem crearEquipo;
+
+	    @FXML
+	    private MenuItem crearOlimpiada;
     private ObservableList<Evento> listEventos;
     private ObservableList<Participacion> listParticipacion;
     
@@ -107,7 +119,7 @@ public class Principal_controles implements Initializable{
     
     @FXML
     void anadir(ActionEvent event) {
-    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Añadir.fxml"));
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirEvento.fxml"));
         Parent root;
 		try {
 			root = loader.load();
@@ -118,13 +130,77 @@ public class Principal_controles implements Initializable{
 		        newStage.initModality(Modality.APPLICATION_MODAL);
 		
 		        newStage.setScene(newScene);
-	        	 newStage.setTitle("Añadir Evento");
-		         newStage.showAndWait ();
+	        	newStage.setTitle("Añadir Evento");
+		        newStage.showAndWait ();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-       
+    }
+    @FXML
+    void anadirDeporte(ActionEvent event) {
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirDeporte.fxml"));
+        Parent root;
+		try {
+			root = loader.load();
+			Scene newScene = new Scene(root);
+		    Stage newStage = new Stage();
+		    AñadirDeporteController control= loader.getController();
+		    
+		    newStage.initModality(Modality.APPLICATION_MODAL);
+			newStage.setScene(newScene);
+	        newStage.setTitle("Añadir Deporte");
+		    newStage.showAndWait ();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+
+    @FXML
+    void anadirDeportista(ActionEvent event) {
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirDeportista.fxml"));
+        Parent root;
+		try {
+			root = loader.load();
+			Scene newScene = new Scene(root);
+		    Stage newStage = new Stage();
+		    AñadirDeportistaController control= loader.getController();
+		    
+		    newStage.initModality(Modality.APPLICATION_MODAL);
+			newStage.setScene(newScene);
+	        newStage.setTitle("Añadir Deportista");
+		    newStage.showAndWait ();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+
+
+    @FXML
+    void anadirEquipo(ActionEvent event) {
+
+    }
+
+    @FXML
+    void anadirOlimpiada(ActionEvent event) {
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirOlimpiada.fxml"));
+        Parent root;
+		try {
+			root = loader.load();
+			Scene newScene = new Scene(root);
+		    Stage newStage = new Stage();
+		    AñadirOlimpiadaController control= loader.getController();
+		    
+		    newStage.initModality(Modality.APPLICATION_MODAL);
+			newStage.setScene(newScene);
+	        newStage.setTitle("Añadir Olimpiada");
+		    newStage.showAndWait ();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     @FXML

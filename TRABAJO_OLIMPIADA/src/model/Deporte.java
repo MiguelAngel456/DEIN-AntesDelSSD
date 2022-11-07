@@ -3,6 +3,11 @@ package model;
 import java.util.Objects;
 
 public class Deporte {
+	@Override
+	public String toString() {
+		return deporte;
+	}
+
 	String deporte;
 	
 	public Deporte(String deporte) {

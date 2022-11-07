@@ -32,28 +32,28 @@
         <menus>
           <Menu mnemonicParsing="false" text="Deportista">
             <items>
-                  <MenuItem mnemonicParsing="false" text="Crear" />
+                  <MenuItem fx:id="crearDeportista" mnemonicParsing="false" onAction="#anadirDeportista" text="Crear" />
                   <MenuItem mnemonicParsing="false" text="Modificar" />
               <MenuItem mnemonicParsing="false" text="Eliminar" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Equipo">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Crear" />
+                  <MenuItem fx:id="crearEquipo" mnemonicParsing="false" onAction="#anadirEquipo" text="Crear" />
                   <MenuItem mnemonicParsing="false" text="Modificar" />
                   <MenuItem mnemonicParsing="false" text="Eliminar" />
                </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Deporte">
             <items>
-              <MenuItem mnemonicParsing="false" text="Crear" />
+              <MenuItem fx:id="crearDeporte" mnemonicParsing="false" onAction="#anadirDeporte" text="Crear" />
                   <MenuItem mnemonicParsing="false" text="Modificar" />
                   <MenuItem mnemonicParsing="false" text="Eliminar" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Olimpiada">
               <items>
-                <MenuItem mnemonicParsing="false" text="Crear" />
+                <MenuItem fx:id="crearOlimpiada" mnemonicParsing="false" onAction="#anadirOlimpiada" text="Crear" />
                   <MenuItem mnemonicParsing="false" text="Modificar" />
                   <MenuItem mnemonicParsing="false" text="Eliminar" />
               </items>

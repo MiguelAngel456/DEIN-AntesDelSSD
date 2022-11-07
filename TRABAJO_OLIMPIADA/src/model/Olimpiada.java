@@ -3,6 +3,11 @@ package model;
 import java.util.Objects;
 
 public class Olimpiada {
+	@Override
+	public String toString() {
+		return nombre;
+	}
+
 	String nombre,temporada,ciudad;
 	int anio;
 	
