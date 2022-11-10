@@ -71,20 +71,18 @@ public class OlimpiadaDao {
 	}
 	
 	//SACAR EL ID DE LA OLIMPIADA BUSCADO
-		public int sacarId(Olimpiada d) {
+		public int sacarId(Olimpiada nom) {
 			try {
 				conexion = new ConexionDB();
 				Connection con = conexion.getConexion();
-				String sql = "SELECT * FROM Olimpiada WHERE nombre='"+d.getNombre()+"';";
-				 
+				System.out.println(nom.getNombre());
+				String sql = "SELECT * FROM Olimpiada WHERE nombre='"+nom.getNombre()+"';";
 				PreparedStatement ps = con.prepareStatement(sql);
 		        ResultSet rs = ps.executeQuery();
-		        System.out.println(rs.next());
 		        int id =rs.getInt("id_olimpiada");
 		        rs.close();
 		        ps.close();
 		        con.close();
-		        System.out.println(id);
 		        return id;
 		        
 			} catch (SQLException e) {

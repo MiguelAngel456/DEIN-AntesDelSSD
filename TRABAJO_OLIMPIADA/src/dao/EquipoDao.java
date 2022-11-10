@@ -37,6 +37,8 @@ private ConexionDB conexion;
 		
 		return false;
 	}
+
+	
 	public 	ObservableList<Equipos> sacarEquipos() {
 		ObservableList<Equipos> arr=FXCollections.observableArrayList();
         String sql;
@@ -74,7 +76,12 @@ private ConexionDB conexion;
 			 
 			PreparedStatement ps = con.prepareStatement(sql);
 	        ResultSet rs = ps.executeQuery();
-	        int id=rs.getInt("id_equipo");
+	        int id=0;
+	        while(rs.next()) {
+	        	id=rs.getInt("id_equipo");;
+	        }
+	        
+	        
 	        //CERRAR IMPORTANTE
 	        rs.close();
 	        ps.close();

@@ -61,38 +61,64 @@ public class EventoDao {
 	}
 	public boolean anadirEvento(Evento ev,int id_olimpiada,int id_Deporte) {
 		
-		try {
-			conexion = new ConexionDB();
-	        Connection con = conexion.getConexion();
-            
-			PreparedStatement pst = con.prepareStatement("insert into Evento (nombre, id_olimpiada ,id_deporte) values(?,?,?)");
-			
-			pst.setString(1, ev.getNom_Evento());
-			pst.setInt(2, id_olimpiada);
-			pst.setInt(3, id_Deporte);
+			try {
+				conexion = new ConexionDB();
+		        Connection con = conexion.getConexion();
+	            System.out.println(id_olimpiada);
+				PreparedStatement pst = con.prepareStatement("insert into Evento (nombre, id_olimpiada ,id_deporte) values(?,?,?)");
+				
+				pst.setString(1, ev.getNom_Evento());
+				pst.setInt(2, id_olimpiada);
+				pst.setInt(3, id_Deporte);
 
-			pst.execute();
-			return true;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		
+				pst.execute();
+				return true;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		return false;
 		
 	}
-	public int sacarId(Evento ev) {
+	public boolean modificarEvento(Evento ev,int id_olimpiada, int id_deporte,int id_antiguo, String nomAntiguo) {
+		
+		try {
+			conexion = new ConexionDB();
+	        Connection con = conexion.getConexion();
+	        System.out.println(nomAntiguo+"--------");
+	        System.out.println(id_antiguo);
+	        System.out.println(ev.getNom_Evento());
+	    	PreparedStatement pst;
+	    	System.out.println(nomAntiguo+"-----------"+id_antiguo);
+	    	
+			pst = con.prepareStatement("update Evento set nombre=?, id_olimpiada=?, id_deporte=? where nombre='"+nomAntiguo+"' AND id_olimpiada='"+id_antiguo+"'");
+	    	pst.setString(1, ev.getNom_Evento());
+	    	pst.setInt(2, id_olimpiada);
+	    	pst.setInt(3, id_deporte);
+	    	pst.execute();
+	    	con.close();
+	    	pst.close();
+	    	return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+	public int sacarId(String nom, String nomol) {
 		try {
 			conexion = new ConexionDB();
 			Connection con = conexion.getConexion();
-			//System.out.println(d.getDeporte());
-			String sql = "SELECT * FROM Evento WHERE nombre='"+ev.getNom_Evento()+"';";
+			String sql = "SELECT * FROM Evento e, Olimpiada o WHERE o.id_olimpiada=e.id_olimpiada AND e.nombre='"+nom+"' AND o.nombre='"+nomol+"';";
 			 
 			PreparedStatement ps = con.prepareStatement(sql);
 	        ResultSet rs = ps.executeQuery();
-	        int id=rs.getInt("id_evento");
+	        int id=0;
+	        while(rs.next()) {
+	        	id=rs.getInt("id_evento");
+	        }
+	        
 	        //CERRAR IMPORTANTE
 	        rs.close();
 	        ps.close();
@@ -105,5 +131,30 @@ public class EventoDao {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+	public boolean eliminarEvento(int idEvento) {
+		try {
+			conexion = new ConexionDB();
+			Connection con = conexion.getConexion();
+			System.out.println(idEvento);
+			PreparedStatement pst = con.prepareStatement("DELETE FROM Evento WHERE (id_evento = '"+idEvento+"');");
+			//pst.setInt(1, idEvento);
+	    	pst.execute();
+	    	//******************
+	    	  String sql = "SELECT * FROM Participacion WHERE id_evento='"+idEvento+"' ;";
+              PreparedStatement ps = con.prepareStatement(sql);
+              ResultSet rs = ps.executeQuery();
+	    	while(rs.next()) {
+	    		pst = con.prepareStatement("DELETE FROM Participacion WHERE (id_evento = '"+idEvento+"');");
+				//pst.setInt(1, idEvento);
+		    	pst.execute();
+	    	}
+	    	return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+		return false;
 	}
 }

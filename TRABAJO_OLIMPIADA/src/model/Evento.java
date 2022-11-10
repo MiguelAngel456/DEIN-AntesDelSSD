@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Objects;
+
 public class Evento{
 	private String nom_Evento;
 	
@@ -21,11 +23,12 @@ public class Evento{
 		
 		this.nom_Deporte=nom_Deporte;
 	}
-	public Evento(String nom_Evento) {
+	public Evento(String nom_Evento,String nom_Olimpiada) {
 		this.nom_Evento=nom_Evento;
+		this.nom_Olimpiada=nom_Olimpiada;
 	}
 	public String toString() {
-		return nom_Evento;
+		return nom_Evento+", año: "+anio_Olimpiada;
 	}
 	public String getNom_Evento() {
 		return nom_Evento;
@@ -49,6 +52,21 @@ public class Evento{
 
 	public int getAnio_Olimpiada() {
 		return anio_Olimpiada;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(nom_Evento, nom_Olimpiada);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Evento other = (Evento) obj;
+		return Objects.equals(nom_Evento, other.nom_Evento) && Objects.equals(nom_Olimpiada, other.nom_Olimpiada);
 	}
 	
 }

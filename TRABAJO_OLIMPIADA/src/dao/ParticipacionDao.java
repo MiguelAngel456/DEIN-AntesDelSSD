@@ -18,7 +18,7 @@ public class ParticipacionDao {
 	public ObservableList<Participacion> cargarParticipacion()   {
 		ObservableList<Participacion> arrParticipacion=FXCollections.observableArrayList();
 		String sql;
-		 sql = "SELECT * FROM Participacion a, Evento e, Deportista o, Equipo d  WHERE a.id_evento = e.id_evento AND a.id_deportista = o.id_deportista AND a.id_equipo = d.id_equipo;";
+		 sql = "SELECT * FROM Participacion a, Evento e, Deportista o, Equipo d, Olimpiada ol  WHERE a.id_evento = e.id_evento AND a.id_deportista = o.id_deportista AND a.id_equipo = d.id_equipo AND ol.id_olimpiada = e.id_olimpiada;";
          
 
 		try {
@@ -40,7 +40,7 @@ public class ParticipacionDao {
 
 	         	
 	         	//sacar datos del evento para la tabla
-	         	String nom_evento=rs.getString("e.nombre");
+	         	String nom_evento=rs.getString("e.nombre")+","+rs.getString("ol.nombre");
 	         	
 	         	//sacar datos de la participacion para la tabla
 	         	int edad_Participacion=rs.getInt("a.edad");
@@ -137,9 +137,7 @@ public class ParticipacionDao {
 		try {
 			conexion = new ConexionDB();
 	        Connection con = conexion.getConexion();
-            
 			PreparedStatement pst = con.prepareStatement("insert into Participacion (id_deportista, id_evento, id_equipo, edad, medalla) values(?,?,?,?,?)");
-			
 			pst.setInt(1, id_deportita);
 			pst.setInt(2, id_evento);
 			pst.setInt(3, id_equipo);
@@ -155,11 +153,43 @@ public class ParticipacionDao {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
 		return false;
 	}
-	
-	
+	public boolean modificarParticipacion(int edad,String medalla,int id_deportita,int id_evento, int id_equipo, int idEvento_Antiguo, int idDeportista_Antiguo) {
+		try {
+			conexion = new ConexionDB();
+			Connection con = conexion.getConexion();
+			PreparedStatement pst = con.prepareStatement("update Participacion set id_deportista=?, id_evento=?, id_equipo=?, edad=?, medalla=? where id_evento='"+idEvento_Antiguo+"' "
+														+ "AND id_deportista='"+idDeportista_Antiguo+"';");
+			pst.setInt(1, id_deportita);
+	    	pst.setInt(2, id_evento);
+	    	pst.setInt(3, id_equipo);
+	    	pst.setInt(4, edad);
+	    	pst.setString(5, medalla);
+	    	pst.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+		return false;
+		
+	}
+	public boolean eliminarParticipacion(int idEvento_Antiguo, int idDeportista_Antiguo) {
+		try {
+			conexion = new ConexionDB();
+			Connection con = conexion.getConexion();
+			System.out.println(idEvento_Antiguo+"---------"+idDeportista_Antiguo);
+			PreparedStatement pst = con.prepareStatement("DELETE FROM Participacion WHERE (id_evento = ?) AND (id_deportista = ?);");
+			pst.setInt(1, idEvento_Antiguo);
+			pst.setInt(2, idDeportista_Antiguo);
+	    	pst.execute();
+	    	return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+		return false;
+	}
 }

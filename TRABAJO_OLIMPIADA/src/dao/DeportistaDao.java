@@ -82,7 +82,11 @@ private ConexionDB conexion;
 			 
 			PreparedStatement ps = con.prepareStatement(sql);
 	        ResultSet rs = ps.executeQuery();
-	        int id=rs.getInt("id_deportista");
+		        int id=0;
+		        while(rs.next()) {
+		        	id=rs.getInt("id_deportista");
+		        }
+		        
 	        //CERRAR IMPORTANTE
 	        rs.close();
 	        ps.close();
