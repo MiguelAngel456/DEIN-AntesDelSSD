@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.net.URL;
 
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
+import conexionBD.Propiedades;
 import dao.DeporteDao;
 import dao.DeportistaDao;
 import dao.EquipoDao;
@@ -153,6 +155,8 @@ public class Principal_controles implements Initializable {
 	private EventoDao ed;
 	private ParticipacionDao pd;
 	private DeportistaDao dd;
+	
+	private ResourceBundle bundle;
 
 	@FXML
 	void anadir(ActionEvent event) {
@@ -736,6 +740,12 @@ public class Principal_controles implements Initializable {
 		tablaEvento.setItems(listEventos);
 		
 		dd=new DeportistaDao();
+		
+		//IDIOMAS
+		String idioma = Propiedades.getValor("idioma");
+		String region = Propiedades.getValor("region");
+		Locale.setDefault(new Locale(idioma, region));
+		bundle = ResourceBundle.getBundle("idiomas/messages");
 
 	}
 
