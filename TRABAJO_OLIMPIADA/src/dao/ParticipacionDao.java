@@ -181,6 +181,7 @@ public class ParticipacionDao {
 			Connection con = conexion.getConexion();
 			System.out.println(idEvento_Antiguo+"---------"+idDeportista_Antiguo);
 			PreparedStatement pst = con.prepareStatement("DELETE FROM Participacion WHERE (id_evento = ?) AND (id_deportista = ?);");
+
 			pst.setInt(1, idEvento_Antiguo);
 			pst.setInt(2, idDeportista_Antiguo);
 	    	pst.execute();

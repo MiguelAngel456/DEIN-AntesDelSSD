@@ -6,8 +6,11 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+import dao.DeporteDao;
 import dao.DeportistaDao;
+import dao.EquipoDao;
 import dao.EventoDao;
+import dao.OlimpiadaDao;
 import dao.ParticipacionDao;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,6 +31,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Deporte;
@@ -40,7 +44,8 @@ import model.Participacion;
 public class Principal_controles implements Initializable {
 	@FXML
 	private Button btnAnadir;
-
+    @FXML
+    private GridPane gp;
 	@FXML
 	private Button btnEliminar;
 
@@ -104,8 +109,7 @@ public class Principal_controles implements Initializable {
 	@FXML
 	private TableView<Participacion> tablaParticipacion;
 
-	@FXML
-	private TextField txtFIltro;
+
 	// MENUITEMS
 	@FXML
 	private MenuItem crearDeporte;
@@ -160,6 +164,7 @@ public class Principal_controles implements Initializable {
 				Scene newScene = new Scene(root);
 
 				Stage newStage = new Stage();
+				newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 				AñadirParticipacionController control = loader.getController();
 
 				control.getLblTitulo().setText("Añadir Participacion");
@@ -181,6 +186,7 @@ public class Principal_controles implements Initializable {
 				root = loader.load();
 				Scene newScene = new Scene(root);
 				Stage newStage = new Stage();
+				newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 				AñadirController control = loader.getController();
 
 				control.setLblTitulo("Añadir Evento Olimpico");
@@ -207,6 +213,7 @@ public class Principal_controles implements Initializable {
 			root = loader.load();
 			Scene newScene = new Scene(root);
 			Stage newStage = new Stage();
+			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			AñadirDeporteController control = loader.getController();
 
 			newStage.initModality(Modality.APPLICATION_MODAL);
@@ -227,6 +234,7 @@ public class Principal_controles implements Initializable {
 			root = loader.load();
 			Scene newScene = new Scene(root);
 			Stage newStage = new Stage();
+			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			AñadirDeportistaController control = loader.getController();
 
 			newStage.initModality(Modality.APPLICATION_MODAL);
@@ -247,6 +255,7 @@ public class Principal_controles implements Initializable {
 			root = loader.load();
 			Scene newScene = new Scene(root);
 			Stage newStage = new Stage();
+			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			AñadirEquipoController control = loader.getController();
 
 			newStage.initModality(Modality.APPLICATION_MODAL);
@@ -267,6 +276,7 @@ public class Principal_controles implements Initializable {
 			root = loader.load();
 			Scene newScene = new Scene(root);
 			Stage newStage = new Stage();
+			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			AñadirOlimpiadaController control = loader.getController();
 
 			newStage.initModality(Modality.APPLICATION_MODAL);
@@ -303,133 +313,326 @@ public class Principal_controles implements Initializable {
 
 	@FXML
 	void eliminarDeporte(ActionEvent event) {
-
-	}
-
-	@FXML
-	void eliminarDeportista(ActionEvent event) {
-
-	}
-
-	@FXML
-	void eliminarEquipo(ActionEvent event) {
-
-	}
-
-	@FXML
-	void eliminarOlimpiada(ActionEvent event) {
-
-	}
-
-	@FXML
-	void modificar(ActionEvent event) {
-		if (cbTabla.getSelectionModel().getSelectedItem().toString().equals("Participacion")) {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirParticipacion.fxml"));
-			Parent root;
-			try {
-				root = loader.load();
-				Scene newScene = new Scene(root);
-
-				Stage newStage = new Stage();
-				AñadirParticipacionController control = loader.getController();
-				Deportista dep=new Deportista(tablaParticipacion.getSelectionModel().getSelectedItem().getNomDeportista(),tablaParticipacion.getSelectionModel().getSelectedItem().getSexo(),
-						Integer.parseInt(tablaParticipacion.getSelectionModel().getSelectedItem().getPeso()),Integer.parseInt(tablaParticipacion.getSelectionModel().getSelectedItem().getAltura()));
-				//
-				control.getLblTitulo().setText("Modificar Participacion Olimpica");
-				String nom=tablaParticipacion.getSelectionModel().getSelectedItem().getNomEvento().substring(0,tablaParticipacion.getSelectionModel().getSelectedItem().getNomEvento().indexOf(","));
-				String anio=tablaParticipacion.getSelectionModel().getSelectedItem().getNomEvento().substring(tablaParticipacion.getSelectionModel().getSelectedItem().getNomEvento().indexOf(",")+1, tablaParticipacion.getSelectionModel().getSelectedItem().getNomEvento().length());
-				control.getComboDeportista().getSelectionModel().select(dep);
-				control.getTxtEdad().setText(tablaParticipacion.getSelectionModel().getSelectedItem().getEdad()+"");
-				control.getComboEquipo().getSelectionModel().select(new Equipos(tablaParticipacion.getSelectionModel().getSelectedItem().getEquipo()));
-				control.getComboEvento().getSelectionModel().select(new Evento(nom,anio));
-				if(tablaParticipacion.getSelectionModel().getSelectedItem().getMedalla().toLowerCase().equals("oro")) {
-					control.getRbOro().setSelected(true);
-				}else {
-					if(tablaParticipacion.getSelectionModel().getSelectedItem().getMedalla().toLowerCase().equals("plata")) {
-						control.getRbPlata().setSelected(true);
-					}else {
-						if(tablaParticipacion.getSelectionModel().getSelectedItem().getMedalla().toLowerCase().equals("bronze")) {
-							control.getRbBronze().setSelected(true);
-						}else {
-							control.getRbNada().setSelected(true);
-						}
-					}
-				}
-				control.setIdAntiguoDeportista(dep);
-				
-				control.setIdAntiguoEvento(new Evento(nom, anio));
-				//
-				newStage.initModality(Modality.APPLICATION_MODAL);
-
-				newStage.setScene(newScene);
-				newStage.setTitle("Participacion");
-				newStage.showAndWait();
-				listParticipacion = pd.cargarParticipacion();
-				tablaParticipacion.setItems(listParticipacion);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirEvento.fxml"));
-			Parent root;
-			try {
-				root = loader.load();
-				Scene newScene = new Scene(root);
-				Stage newStage = new Stage();
-				AñadirController control = loader.getController();
-				//
-				control.setLblTitulo("Modificar Evento Olimpico");
-				control.getTxtNumero1().setText(tablaEvento.getSelectionModel().getSelectedItem().getNom_Evento());
-				control.getComboDeporte().getSelectionModel().select(new Deporte(tablaEvento.getSelectionModel().getSelectedItem().getNom_Deporte()));
-				control.setId_Olimpiada_Antiguo(new Olimpiada(tablaEvento.getSelectionModel().getSelectedItem().getNom_Olimpiada(),
-																tablaEvento.getSelectionModel().getSelectedItem().getAnio_Olimpiada(),
-																tablaEvento.getSelectionModel().getSelectedItem().getTemporada_Olimpiada(),
-																tablaEvento.getSelectionModel().getSelectedItem().getCiudad_Olimpiada()));
-				control.setNomAntiguo(tablaEvento.getSelectionModel().getSelectedItem().getNom_Evento());
-				
-				control.getComboOlimpiada().getSelectionModel().select(new Olimpiada(tablaEvento.getSelectionModel().getSelectedItem().getNom_Olimpiada(),
-																					tablaEvento.getSelectionModel().getSelectedItem().getAnio_Olimpiada(),
-																					tablaEvento.getSelectionModel().getSelectedItem().getTemporada_Olimpiada(),
-																					tablaEvento.getSelectionModel().getSelectedItem().getCiudad_Olimpiada()));
-				//
-				newStage.initModality(Modality.APPLICATION_MODAL);
-
-				newStage.setScene(newScene);
-				newStage.setTitle("Evento");
-				newStage.showAndWait();
-				listEventos = ed.cargarEvento();
-				tablaEvento.setItems(listEventos);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/lista.fxml"));
+		Parent root;
+		DeporteDao ded=new DeporteDao();
+		try {
+			root = loader.load();
+			Scene newScene = new Scene(root);
+			Stage newStage = new Stage();
+			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
+			listaController control = loader.getController();
+			control.getLblTitulo().setText("Deportes");
+			control.getListObjetos().setItems(ded.sacarDeportes());
+			control.setTipo(2);
+			newStage.initModality(Modality.APPLICATION_MODAL);
+			newStage.setScene(newScene);
+			newStage.setTitle("Deportes");
+			newStage.showAndWait();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		listParticipacion = pd.cargarParticipacion();
 		tablaParticipacion.setItems(listParticipacion);
 		listEventos = ed.cargarEvento();
 		tablaEvento.setItems(listEventos);
+	}
+
+	@FXML
+	void eliminarDeportista(ActionEvent event) {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/lista.fxml"));
+		Parent root;
+		DeportistaDao ded=new DeportistaDao();
+		try {
+			root = loader.load();
+			Scene newScene = new Scene(root);
+			Stage newStage = new Stage();
+			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
+			listaController control = loader.getController();
+			control.getLblTitulo().setText("Deportistas");
+			control.getListObjetos().setItems(ded.sacarDeportistas());
+			control.setTipo(2);
+			newStage.initModality(Modality.APPLICATION_MODAL);
+			newStage.setScene(newScene);
+			newStage.setTitle("Deportistas");
+			newStage.showAndWait();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		listParticipacion = pd.cargarParticipacion();
+		tablaParticipacion.setItems(listParticipacion);
+		listEventos = ed.cargarEvento();
+		tablaEvento.setItems(listEventos);
+	}
+
+	@FXML
+	void eliminarEquipo(ActionEvent event) {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/lista.fxml"));
+		Parent root;
+		EquipoDao eqd=new EquipoDao();
+		try {
+			root = loader.load();
+			Scene newScene = new Scene(root);
+			Stage newStage = new Stage();
+			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
+			listaController control = loader.getController();
+			control.getLblTitulo().setText("Equipos");
+			control.getListObjetos().setItems(eqd.sacarEquipos());
+			control.setTipo(2);
+			newStage.initModality(Modality.APPLICATION_MODAL);
+			newStage.setScene(newScene);
+			newStage.setTitle("Equipos");
+			newStage.showAndWait();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		listParticipacion = pd.cargarParticipacion();
+		tablaParticipacion.setItems(listParticipacion);
+		listEventos = ed.cargarEvento();
+		tablaEvento.setItems(listEventos);
+	}
+
+	@FXML
+	void eliminarOlimpiada(ActionEvent event) {
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/lista.fxml"));
+		Parent root;
+		OlimpiadaDao olD=new OlimpiadaDao();
+		try {
+			root = loader.load();
+			Scene newScene = new Scene(root);
+			Stage newStage = new Stage();
+			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
+			listaController control = loader.getController();
+			control.getLblTitulo().setText("Olimpiadas");
+			control.getListObjetos().setItems(olD.sacarOlimpiada());
+			control.setTipo(2);
+			newStage.initModality(Modality.APPLICATION_MODAL);
+			newStage.setScene(newScene);
+			newStage.setTitle("Olimpiadas");
+			newStage.showAndWait();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		listParticipacion = pd.cargarParticipacion();
+		tablaParticipacion.setItems(listParticipacion);
+		listEventos = ed.cargarEvento();
+		tablaEvento.setItems(listEventos);
+	}
+	
+
+	@FXML
+	void modificar(ActionEvent event) {
+		if(tablaEvento.getSelectionModel().getSelectedItem()!=null || tablaParticipacion.getSelectionModel().getSelectedItem()!=null) {
+			if (cbTabla.getSelectionModel().getSelectedItem().toString().equals("Participacion")) {
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirParticipacion.fxml"));
+				Parent root;
+			
+				try {
+					root = loader.load();
+					Scene newScene = new Scene(root);
+
+					Stage newStage = new Stage();
+					newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
+					AñadirParticipacionController control = loader.getController();
+					Deportista dep=new Deportista(tablaParticipacion.getSelectionModel().getSelectedItem().getNomDeportista(),tablaParticipacion.getSelectionModel().getSelectedItem().getSexo(),
+							Integer.parseInt(tablaParticipacion.getSelectionModel().getSelectedItem().getPeso()),Integer.parseInt(tablaParticipacion.getSelectionModel().getSelectedItem().getAltura()));
+					//
+					control.getLblTitulo().setText("Modificar Participacion Olimpica");
+					String nom=tablaParticipacion.getSelectionModel().getSelectedItem().getNomEvento().substring(0,tablaParticipacion.getSelectionModel().getSelectedItem().getNomEvento().indexOf(","));
+					String anio=tablaParticipacion.getSelectionModel().getSelectedItem().getNomEvento().substring(tablaParticipacion.getSelectionModel().getSelectedItem().getNomEvento().indexOf(",")+1, tablaParticipacion.getSelectionModel().getSelectedItem().getNomEvento().length());
+					control.getComboDeportista().getSelectionModel().select(dep);
+					control.getTxtEdad().setText(tablaParticipacion.getSelectionModel().getSelectedItem().getEdad()+"");
+					control.getComboEquipo().getSelectionModel().select(new Equipos(tablaParticipacion.getSelectionModel().getSelectedItem().getEquipo()));
+					control.getComboEvento().getSelectionModel().select(new Evento(nom,anio));
+					if(tablaParticipacion.getSelectionModel().getSelectedItem().getMedalla().toLowerCase().equals("oro")) {
+						control.getRbOro().setSelected(true);
+					}else {
+						if(tablaParticipacion.getSelectionModel().getSelectedItem().getMedalla().toLowerCase().equals("plata")) {
+							control.getRbPlata().setSelected(true);
+						}else {
+							if(tablaParticipacion.getSelectionModel().getSelectedItem().getMedalla().toLowerCase().equals("bronze")) {
+								control.getRbBronze().setSelected(true);
+							}else {
+								control.getRbNada().setSelected(true);
+							}
+						}
+					}
+					control.getComboDeportista().setDisable(true);
+					control.getComboEvento().setDisable(true);
+					control.setIdAntiguoDeportista(dep);
+					
+					control.setIdAntiguoEvento(new Evento(nom, anio));
+					//
+					newStage.initModality(Modality.APPLICATION_MODAL);
+
+					newStage.setScene(newScene);
+					newStage.setTitle("Participacion");
+					newStage.showAndWait();
+					listParticipacion = pd.cargarParticipacion();
+					tablaParticipacion.setItems(listParticipacion);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirEvento.fxml"));
+				Parent root;
+				try {
+					root = loader.load();
+					Scene newScene = new Scene(root);
+					Stage newStage = new Stage();
+					newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
+					AñadirController control = loader.getController();
+					//
+					control.setLblTitulo("Modificar Evento Olimpico");
+					control.getTxtNumero1().setText(tablaEvento.getSelectionModel().getSelectedItem().getNom_Evento());
+					control.getComboDeporte().getSelectionModel().select(new Deporte(tablaEvento.getSelectionModel().getSelectedItem().getNom_Deporte()));
+					control.setId_Olimpiada_Antiguo(new Olimpiada(tablaEvento.getSelectionModel().getSelectedItem().getNom_Olimpiada(),
+																	tablaEvento.getSelectionModel().getSelectedItem().getAnio_Olimpiada(),
+																	tablaEvento.getSelectionModel().getSelectedItem().getTemporada_Olimpiada(),
+																	tablaEvento.getSelectionModel().getSelectedItem().getCiudad_Olimpiada()));
+					control.setNomAntiguo(tablaEvento.getSelectionModel().getSelectedItem().getNom_Evento());
+					
+					control.getComboOlimpiada().getSelectionModel().select(new Olimpiada(tablaEvento.getSelectionModel().getSelectedItem().getNom_Olimpiada(),
+																						tablaEvento.getSelectionModel().getSelectedItem().getAnio_Olimpiada(),
+																						tablaEvento.getSelectionModel().getSelectedItem().getTemporada_Olimpiada(),
+																						tablaEvento.getSelectionModel().getSelectedItem().getCiudad_Olimpiada()));
+					//
+					newStage.initModality(Modality.APPLICATION_MODAL);
+
+					newStage.setScene(newScene);
+					newStage.setTitle("Evento");
+					newStage.showAndWait();
+					listEventos = ed.cargarEvento();
+					tablaEvento.setItems(listEventos);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			listParticipacion = pd.cargarParticipacion();
+			tablaParticipacion.setItems(listParticipacion);
+			listEventos = ed.cargarEvento();
+			tablaEvento.setItems(listEventos);
+		}
+		
 
 	}
 
 	@FXML
 	void modificarDeporte(ActionEvent event) {
-		
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/lista.fxml"));
+		Parent root;
+		DeporteDao ded=new DeporteDao();
+		try {
+			root = loader.load();
+			Scene newScene = new Scene(root);
+			Stage newStage = new Stage();
+			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
+			listaController control = loader.getController();
+			control.getLblTitulo().setText("Deportes");
+			control.getListObjetos().setItems(ded.sacarDeportes());
+			control.setTipo(1);
+			newStage.initModality(Modality.APPLICATION_MODAL);
+			newStage.setScene(newScene);
+			newStage.setTitle("Deportes");
+			newStage.showAndWait();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		listParticipacion = pd.cargarParticipacion();
+		tablaParticipacion.setItems(listParticipacion);
+		listEventos = ed.cargarEvento();
+		tablaEvento.setItems(listEventos);
 	}
 
 	@FXML
 	void modificarDeportista(ActionEvent event) {
-
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/lista.fxml"));
+		Parent root;
+		DeporteDao ded=new DeporteDao();
+		try {
+			root = loader.load();
+			Scene newScene = new Scene(root);
+			Stage newStage = new Stage();
+			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
+			listaController control = loader.getController();
+			control.getLblTitulo().setText("Deportistas");
+			control.getListObjetos().setItems(dd.sacarDeportistas());
+			control.setTipo(1);
+			newStage.initModality(Modality.APPLICATION_MODAL);
+			newStage.setScene(newScene);
+			newStage.setTitle("Deportistas");
+			newStage.showAndWait();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		listParticipacion = pd.cargarParticipacion();
+		tablaParticipacion.setItems(listParticipacion);
+		listEventos = ed.cargarEvento();
+		tablaEvento.setItems(listEventos);
 	}
 
 	@FXML
 	void modificarEquipo(ActionEvent event) {
-
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/lista.fxml"));
+		Parent root;
+		EquipoDao ded=new EquipoDao();
+		try {
+			root = loader.load();
+			Scene newScene = new Scene(root);
+			Stage newStage = new Stage();
+			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
+			listaController control = loader.getController();
+			control.getLblTitulo().setText("Equipos");
+			control.getListObjetos().setItems(ded.sacarEquipos());
+			control.setTipo(1);
+			newStage.initModality(Modality.APPLICATION_MODAL);
+			newStage.setScene(newScene);
+			newStage.setTitle("Equipos");
+			newStage.showAndWait();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		listParticipacion = pd.cargarParticipacion();
+		tablaParticipacion.setItems(listParticipacion);
+		listEventos = ed.cargarEvento();
+		tablaEvento.setItems(listEventos);
 	}
 
 	@FXML
 	void modificarOlimpiada(ActionEvent event) {
-
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/lista.fxml"));
+		Parent root;
+		OlimpiadaDao od=new OlimpiadaDao();
+		try {
+			root = loader.load();
+			Scene newScene = new Scene(root);
+			Stage newStage = new Stage();
+			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
+			listaController control = loader.getController();
+			control.getLblTitulo().setText("Olimpiadas");
+			control.getListObjetos().setItems(od.sacarOlimpiada());
+			control.setTipo(1);
+			newStage.initModality(Modality.APPLICATION_MODAL);
+			newStage.setScene(newScene);
+			newStage.setTitle("Olimpiadas");
+			newStage.showAndWait();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		listParticipacion = pd.cargarParticipacion();
+		tablaParticipacion.setItems(listParticipacion);
+		listEventos = ed.cargarEvento();
+		tablaEvento.setItems(listEventos);
 	}
 
 	@FXML
@@ -479,36 +682,6 @@ public class Principal_controles implements Initializable {
 
 	}
 
-	@FXML
-	void filtrarNombre(ActionEvent event) {
-		String nom = "";
-		if (cbTabla.getSelectionModel().getSelectedItem().toString().equals("Participacion")) {
-			ObservableList<Participacion> listaFiltrada = FXCollections.observableArrayList();
-			nom = txtFIltro.getText();
-			for (int i = 0; i < listParticipacion.size(); i++) {
-				if (listParticipacion.get(i).getNomDeportista().contains(nom)) {
-					listaFiltrada.add(listParticipacion.get(i));
-
-				}
-			}
-			tablaParticipacion.refresh();
-			tablaParticipacion.setItems(listaFiltrada);
-		} else {
-			ObservableList<Evento> listaFiltrada = FXCollections.observableArrayList();
-			nom = txtFIltro.getText();
-			for (int i = 0; i < listEventos.size(); i++) {
-				if (listEventos.get(i).getNom_Evento().contains(nom)) {
-					listaFiltrada.add(listEventos.get(i));
-				}
-			}
-			tablaEvento.refresh();
-			tablaEvento.setItems(listaFiltrada);
-		}
-
-		if (nom.isEmpty()) {
-			tablaParticipacion.setItems(listParticipacion);
-		}
-	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {

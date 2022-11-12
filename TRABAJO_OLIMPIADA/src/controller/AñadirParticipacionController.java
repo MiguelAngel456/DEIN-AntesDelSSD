@@ -2,13 +2,17 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
+import javafx.stage.Window;
+import model.Deporte;
 import model.Deportista;
 import model.Equipos;
 import model.Evento;
+import model.Participacion;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
@@ -90,18 +94,32 @@ public class AñadirParticipacionController implements Initializable{
 		int id_equipo=eqd.bucarId(equip);
 		//Buscar el id Evento
 		Evento ev=(Evento) comboEvento.getSelectionModel().getSelectedItem();
-		System.out.println(ev.getNom_Evento());
 		String nomEv=ev.getNom_Evento();
 		String anioEv=ev.getNom_Olimpiada();
 		int id_evento=evd.sacarId(nomEv,anioEv);
 		//sacar los otros datos
 		int edad=Integer.parseInt(txtEdad.getText());
 		if (lblTitulo.getText().equals("Añadir Participacion")) {
-			pd.anadirParticipacion(edad, med, id_deportista, id_evento, id_equipo);
+			if(comprobar().length()==0){
+				pd.anadirParticipacion(edad, med, id_deportista, id_evento, id_equipo);
+				info(btnAceptar.getScene().getWindow());
+				Stage stage = (Stage) btnAceptar.getScene().getWindow();
+				stage.close();
+			}else {
+				error(btnAceptar.getScene().getWindow());
+			}
+			
 		}else {
-			System.out.println(idAntiguoEvento);
-			System.out.println(idAntiguoDeportista+"-----"+idAntiguoEvento);
-			pd.modificarParticipacion(edad, med, id_deportista, id_evento, id_equipo, this.idAntiguoEvento, this.idAntiguoDeportista);
+			if(comprobar().length()==0){
+				pd.modificarParticipacion(edad, med, id_deportista, id_evento, id_equipo, this.idAntiguoEvento, this.idAntiguoDeportista);
+				info(btnAceptar.getScene().getWindow());
+				Stage stage = (Stage) btnAceptar.getScene().getWindow();
+				stage.close();
+			}else{
+				error(btnAceptar.getScene().getWindow());
+			}
+				
+			
 		}
 		
 		Stage stage = (Stage) btnAceptar.getScene().getWindow();
@@ -129,7 +147,7 @@ public class AñadirParticipacionController implements Initializable{
 		comboDeportista.getSelectionModel().select(0);
 		comboEvento.getSelectionModel().select(0);
 		comboEquipo.getSelectionModel().select(0);
-		
+		rbNada.setSelected(true);
 
 	}
 	public RadioButton getRbOro() {
@@ -166,7 +184,39 @@ public class AñadirParticipacionController implements Initializable{
 		this.idAntiguoDeportista = dd.bucarId(idAntiguoDeportista);
 	}
 	public void setIdAntiguoEvento(Evento idAntiguoEvento) {
-		System.out.println(idAntiguoEvento.getNom_Evento()+"   "+idAntiguoEvento.getNom_Olimpiada());
 		this.idAntiguoEvento = evd.sacarId(idAntiguoEvento.getNom_Evento(),String.valueOf(idAntiguoEvento.getNom_Olimpiada()));
+	}
+	public String comprobar() {
+		String fallo="";
+		if(txtEdad.getText().length()==0) {
+			fallo+="\n El campo de la edad tiene que tener contenido";
+		}
+		try {
+			int i=Integer.parseInt(txtEdad.getText());
+		} catch (NumberFormatException e) {
+			// TODO: handle exception
+			fallo+="\n El campo de la edad tiene que tener numeros";
+		}
+		
+		return fallo;
+	}
+	public void error (Window win) {
+		Alert alert;
+		String texto=comprobar();
+		alert = new Alert(Alert.AlertType.ERROR);
+		alert.setContentText(texto);
+		alert.setHeaderText(null);
+		alert.initOwner(win);
+		alert.setTitle("ERROR");
+		alert.showAndWait();
+	}
+	public void info(Window win) {
+		Alert alert;
+		alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setContentText("ACCION HECHA CORRECTAMENTE");
+		alert.setHeaderText(null);
+		alert.initOwner(win);
+		alert.setTitle("INFO");
+		alert.showAndWait();
 	}
 }

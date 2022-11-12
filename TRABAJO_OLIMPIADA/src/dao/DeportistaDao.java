@@ -100,4 +100,62 @@ private ConexionDB conexion;
 		}
 		return 0;
 	}
+	public boolean modificarDeportista(Deportista d, String nomAnt) {
+		try {
+			conexion = new ConexionDB();
+	        Connection con = conexion.getConexion();
+	      
+	    	PreparedStatement pst;
+	    	
+			pst = con.prepareStatement("update Deportista set nombre=?, sexo=?, peso=?, altura=? where nombre='"+nomAnt+"'");
+	    	pst.setString(1, d.getNombre());
+	    	pst.setString(2, d.getSexo());
+	    	pst.setInt(3, d.getPeso());
+	    	pst.setInt(4, d.getAltura());
+	    	pst.execute();
+	    	con.close();
+	    	pst.close();
+	    	return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		
+		return false;
+	}
+	public boolean eliminarDeportista(int idDeportista) {
+		try {
+			conexion = new ConexionDB();
+	        Connection con = conexion.getConexion();
+	    	PreparedStatement pst;
+	    	String sql = "SELECT * FROM Participacion WHERE id_deportista='"+idDeportista+"' ;";
+            pst = con.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            while(rs.next()) {
+            	
+            	
+            	pst = con.prepareStatement("DELETE FROM Participacion WHERE (id_deportista = '"+idDeportista+"');");
+    			//pst.setInt(1, idEvento);
+    	    	pst.execute();
+            	
+            	
+
+	    	}
+            //*****************************************************************
+    		pst = con.prepareStatement("DELETE FROM  Deportista WHERE (id_deportista = '"+idDeportista+"');");
+			//pst.setInt(1, idEvento);
+	    	pst.execute();
+	    	//*********************************************
+
+            
+	    	con.close();
+	    	pst.close();
+	    	return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		
+		return false;
+	}
 }

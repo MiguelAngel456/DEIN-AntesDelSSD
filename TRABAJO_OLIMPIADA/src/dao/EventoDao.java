@@ -86,11 +86,9 @@ public class EventoDao {
 		try {
 			conexion = new ConexionDB();
 	        Connection con = conexion.getConexion();
-	        System.out.println(nomAntiguo+"--------");
-	        System.out.println(id_antiguo);
-	        System.out.println(ev.getNom_Evento());
+	        
 	    	PreparedStatement pst;
-	    	System.out.println(nomAntiguo+"-----------"+id_antiguo);
+	    	
 	    	
 			pst = con.prepareStatement("update Evento set nombre=?, id_olimpiada=?, id_deporte=? where nombre='"+nomAntiguo+"' AND id_olimpiada='"+id_antiguo+"'");
 	    	pst.setString(1, ev.getNom_Evento());
@@ -132,14 +130,37 @@ public class EventoDao {
 		}
 		return 0;
 	}
+	public int sacarId(String nom, int idOl) {
+		try {
+			conexion = new ConexionDB();
+			Connection con = conexion.getConexion();
+			String sql = "SELECT * FROM Evento  WHERE nombre='"+nom+"' AND id_olimpiada="+idOl+";";
+			 
+			PreparedStatement ps = con.prepareStatement(sql);
+	        ResultSet rs = ps.executeQuery();
+	        int id=0;
+	        while(rs.next()) {
+	        	id=rs.getInt("id_evento");
+	        }
+	        
+	        //CERRAR IMPORTANTE
+	        rs.close();
+	        ps.close();
+	        con.close();
+	        return id;
+	       
+	        
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
 	public boolean eliminarEvento(int idEvento) {
 		try {
 			conexion = new ConexionDB();
 			Connection con = conexion.getConexion();
-			System.out.println(idEvento);
-			PreparedStatement pst = con.prepareStatement("DELETE FROM Evento WHERE (id_evento = '"+idEvento+"');");
-			//pst.setInt(1, idEvento);
-	    	pst.execute();
+			PreparedStatement pst ;
 	    	//******************
 	    	  String sql = "SELECT * FROM Participacion WHERE id_evento='"+idEvento+"' ;";
               PreparedStatement ps = con.prepareStatement(sql);
@@ -149,6 +170,9 @@ public class EventoDao {
 				//pst.setInt(1, idEvento);
 		    	pst.execute();
 	    	}
+	    	pst= con.prepareStatement("DELETE FROM Evento WHERE (id_evento = "+idEvento+");");
+
+	    	pst.execute();
 	    	return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

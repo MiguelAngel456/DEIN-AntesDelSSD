@@ -22,7 +22,7 @@
       <RowConstraints maxHeight="220.0" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <Label text="Añadir Equipo" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <Label fx:id="lblTitulo" text="Añadir Equipo" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <font>
             <Font size="36.0" />
          </font>

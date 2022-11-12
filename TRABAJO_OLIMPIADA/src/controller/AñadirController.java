@@ -2,10 +2,12 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import model.Deporte;
 import model.Evento;
 import model.Olimpiada;
@@ -52,7 +54,7 @@ public class AñadirController implements Initializable {
 	private Label lblTitulo;
 
 	@FXML
-	private TextField txtNumero1;
+	private TextField txtNumero1; //NOMBRE EVENTO
 
 	private DeporteDao dp;
 	private EventoDao ed;
@@ -76,27 +78,40 @@ public class AñadirController implements Initializable {
 			if (ed.cargarEvento().equals(ev)) {
 
 			} else {
-				// SACAR IDs
-				int id_Deporte = dp.sacarId(dep);
+				if(comprobar().length()==0) {
+					// SACAR IDs
+					int id_Deporte = dp.sacarId(dep);
 
-				int id_Olimpiada = od.sacarId(ol);
-				// AÑADIR EVENTO
-				ed.anadirEvento(ev, id_Olimpiada, id_Deporte);
-				// PARA QUE SE CIERRE AL DARLE ACEPTAR
-				Stage stage = (Stage) btnAceptar.getScene().getWindow();
-				stage.close();
+					int id_Olimpiada = od.sacarId(ol);
+					// AÑADIR EVENTO
+					ed.anadirEvento(ev, id_Olimpiada, id_Deporte);
+					// PARA QUE SE CIERRE AL DARLE ACEPTAR
+					info(btnAceptar.getScene().getWindow());
+					Stage stage = (Stage) btnAceptar.getScene().getWindow();
+					stage.close();
+					
+				}else {
+					error(btnAceptar.getScene().getWindow());
+				}
+
 			}
 		} else {
 			if (ed.cargarEvento().equals(ev)) {
 
 			} else {
-				int id_Deporte = dp.sacarId(dep);
-				int id_Olimpiada = od.sacarId(ol);
-				// MODIFICAR EVENTO
-				ed.modificarEvento(ev, id_Olimpiada, id_Deporte, id_Olimpiada_Antiguo,nomAntiguo);
-				// PARA QUE SE CIERRE AL DARLE ACEPTAR
-				Stage stage = (Stage) btnAceptar.getScene().getWindow();
-				stage.close();
+				if(comprobar().length()==0) {
+					int id_Deporte = dp.sacarId(dep);
+					int id_Olimpiada = od.sacarId(ol);
+					// MODIFICAR EVENTO
+					ed.modificarEvento(ev, id_Olimpiada, id_Deporte, id_Olimpiada_Antiguo,nomAntiguo);
+					// PARA QUE SE CIERRE AL DARLE ACEPTAR
+					info(btnAceptar.getScene().getWindow());
+					Stage stage = (Stage) btnAceptar.getScene().getWindow();
+					stage.close();
+				}else {
+					this.error(btnAceptar.getScene().getWindow());
+				}
+				
 			}
 			
 		}
@@ -110,7 +125,15 @@ public class AñadirController implements Initializable {
 	public ComboBox<Olimpiada> getComboOlimpiada() {
 		return comboOlimpiada;
 	}
-
+	public void info(Window win) {
+		Alert alert;
+		alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setContentText("ACCION HECHA CORRECTAMENTE");
+		alert.setHeaderText(null);
+		alert.initOwner(win);
+		alert.setTitle("INFO");
+		alert.showAndWait();
+	}
 	// Event Listener on Button[#btnCancelar].onAction
 	@FXML
 	public void cerrar(ActionEvent event) {
@@ -156,5 +179,28 @@ public class AñadirController implements Initializable {
 	public void setNomAntiguo(String nomAntiguo) {
 		this.nomAntiguo = nomAntiguo;
 	}
-
+	public String comprobar() {
+		String fallo="";
+		if(txtNumero1.getText().length()==0) {
+			fallo+="\n El campo del nombre Evento tiene que tener contenido";
+		}
+		Evento ev = new Evento(txtNumero1.getText(), comboOlimpiada.getSelectionModel().getSelectedItem().getNombre());
+		
+		if(ed.cargarEvento().contains(ev)) {
+			fallo+="\n Ese Evento ya existe";
+		}
+		
+		
+		return fallo;
+	}
+	public void error (Window win) {
+		Alert alert;
+		String texto=comprobar();
+		alert = new Alert(Alert.AlertType.ERROR);
+		alert.setContentText(texto);
+		alert.setHeaderText(null);
+		alert.initOwner(win);
+		alert.setTitle("ERROR");
+		alert.showAndWait();
+	}
 }

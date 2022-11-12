@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import conexionBD.ConexionDB;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.Deporte;
 import model.Deportista;
 import model.Equipos;
 
@@ -94,5 +95,54 @@ private ConexionDB conexion;
 			e.printStackTrace();
 		}
 		return 0;
+	}
+	public boolean modificarEquipo(Equipos d, String nomAnt) {
+		try {
+			conexion = new ConexionDB();
+	        Connection con = conexion.getConexion();
+	      
+	    	PreparedStatement pst;
+	    	
+			pst = con.prepareStatement("update Equipo set nombre=?, iniciales=? where nombre='"+nomAnt+"'");
+	    	pst.setString(1, d.getNombre());
+	    	pst.setString(2, d.getIniciales());
+	    	pst.execute();
+	    	con.close();
+	    	pst.close();
+	    	return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		
+		return false;
+	}
+	public boolean eliminarEquipo(int idEquipo) {
+		try {
+			conexion = new ConexionDB();
+	        Connection con = conexion.getConexion();
+	    	PreparedStatement pst;
+
+	    	String sql = "SELECT * FROM Participacion WHERE id_equipo='"+idEquipo+"' ;";
+            pst = con.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            while(rs.next()) {
+            	pst = con.prepareStatement("DELETE FROM Participacion WHERE (id_equipo = '"+idEquipo+"');");
+    	    	pst.execute();
+	    	}
+            //*****************************************************************
+	    	sql = "DELETE FROM Equipo WHERE (id_equipo = '"+idEquipo+"');";
+            pst = con.prepareStatement(sql);
+            pst.execute();
+            
+	    	con.close();
+	    	pst.close();
+	    	return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		
+		return false;
 	}
 }

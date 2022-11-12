@@ -19,6 +19,8 @@ public class DeporteDao {
 		try {
 			conexion = new ConexionDB();
 	        Connection con = conexion.getConexion();
+	        System.out.println(d);
+	        System.out.println("aaaaaaaaaa");
 			PreparedStatement pst = con.prepareStatement("insert into Deporte (nombre) values(?)");
 			
 			pst.setString(1, d.getDeporte());
@@ -89,5 +91,70 @@ public class DeporteDao {
 			// TODO: handle exception
 		}
         return arr;
+	}
+	public boolean modificarDeporte(Deporte d, String nomAnt) {
+		try {
+			conexion = new ConexionDB();
+	        Connection con = conexion.getConexion();
+	      
+	    	PreparedStatement pst;
+	    	
+			pst = con.prepareStatement("update Deporte set nombre=? where nombre='"+nomAnt+"'");
+	    	pst.setString(1, d.getDeporte());
+	    	pst.execute();
+	    	con.close();
+	    	pst.close();
+	    	return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		
+		return false;
+	}
+	public boolean eliminarDeporte(int idDeporte) {
+		try {
+			conexion = new ConexionDB();
+	        Connection con = conexion.getConexion();
+	        EventoDao evD=new EventoDao();
+	    	PreparedStatement pst;
+	    	
+	    	
+	    	
+	    	
+	    	
+	    	String sql = "SELECT * FROM Evento WHERE id_deporte='"+idDeporte+"' ;";
+            pst = con.prepareStatement(sql);
+            ResultSet rs = pst.executeQuery();
+            while(rs.next()) {
+            	String nomEv=rs.getString("nombre");
+            	int idOl=rs.getInt("id_Olimpiada");
+            	int idEventoActual=evD.sacarId(nomEv, idOl);
+            	
+            	pst = con.prepareStatement("DELETE FROM Participacion WHERE (id_evento = '"+idEventoActual+"');");
+    			//pst.setInt(1, idEvento);
+    	    	pst.execute();
+            	
+            	
+
+	    	}
+            //*****************************************************************
+    		pst = con.prepareStatement("DELETE FROM Evento WHERE (id_deporte = '"+idDeporte+"');");
+			//pst.setInt(1, idEvento);
+	    	pst.execute();
+	    	//*********************************************
+	    	sql = "DELETE FROM Deporte WHERE (id_deporte = '"+idDeporte+"');";
+            pst = con.prepareStatement(sql);
+            pst.execute();
+            
+	    	con.close();
+	    	pst.close();
+	    	return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		
+		return false;
 	}
 }
