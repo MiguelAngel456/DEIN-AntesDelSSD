@@ -33,7 +33,9 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Deporte;
@@ -168,6 +170,8 @@ public class Principal_controles implements Initializable {
 				Scene newScene = new Scene(root);
 
 				Stage newStage = new Stage();
+		        newStage.setResizable(false);
+		        newStage.setMaximized(false);
 				newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 				AñadirParticipacionController control = loader.getController();
 
@@ -190,6 +194,8 @@ public class Principal_controles implements Initializable {
 				root = loader.load();
 				Scene newScene = new Scene(root);
 				Stage newStage = new Stage();
+				newStage.setResizable(false);
+		        newStage.setMaximized(false);
 				newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 				AñadirController control = loader.getController();
 
@@ -219,7 +225,8 @@ public class Principal_controles implements Initializable {
 			Stage newStage = new Stage();
 			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			AñadirDeporteController control = loader.getController();
-
+			newStage.setResizable(false);
+	        newStage.setMaximized(false);
 			newStage.initModality(Modality.APPLICATION_MODAL);
 			newStage.setScene(newScene);
 			newStage.setTitle("Añadir Deporte");
@@ -240,7 +247,8 @@ public class Principal_controles implements Initializable {
 			Stage newStage = new Stage();
 			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			AñadirDeportistaController control = loader.getController();
-
+			newStage.setResizable(false);
+	        newStage.setMaximized(false);
 			newStage.initModality(Modality.APPLICATION_MODAL);
 			newStage.setScene(newScene);
 			newStage.setTitle("Añadir Deportista");
@@ -261,7 +269,8 @@ public class Principal_controles implements Initializable {
 			Stage newStage = new Stage();
 			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			AñadirEquipoController control = loader.getController();
-
+			newStage.setResizable(false);
+	        newStage.setMaximized(false);
 			newStage.initModality(Modality.APPLICATION_MODAL);
 			newStage.setScene(newScene);
 			newStage.setTitle("Añadir Equipo");
@@ -282,7 +291,8 @@ public class Principal_controles implements Initializable {
 			Stage newStage = new Stage();
 			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			AñadirOlimpiadaController control = loader.getController();
-
+			newStage.setResizable(false);
+	        newStage.setMaximized(false);
 			newStage.initModality(Modality.APPLICATION_MODAL);
 			newStage.setScene(newScene);
 			newStage.setTitle("Añadir Olimpiada");
@@ -324,6 +334,8 @@ public class Principal_controles implements Initializable {
 			root = loader.load();
 			Scene newScene = new Scene(root);
 			Stage newStage = new Stage();
+			newStage.setResizable(false);
+	        newStage.setMaximized(false);
 			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			listaController control = loader.getController();
 			control.getLblTitulo().setText("Deportes");
@@ -352,6 +364,8 @@ public class Principal_controles implements Initializable {
 			root = loader.load();
 			Scene newScene = new Scene(root);
 			Stage newStage = new Stage();
+			newStage.setResizable(false);
+	        newStage.setMaximized(false);
 			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			listaController control = loader.getController();
 			control.getLblTitulo().setText("Deportistas");
@@ -380,6 +394,8 @@ public class Principal_controles implements Initializable {
 			root = loader.load();
 			Scene newScene = new Scene(root);
 			Stage newStage = new Stage();
+			newStage.setResizable(false);
+	        newStage.setMaximized(false);
 			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			listaController control = loader.getController();
 			control.getLblTitulo().setText("Equipos");
@@ -408,6 +424,8 @@ public class Principal_controles implements Initializable {
 			root = loader.load();
 			Scene newScene = new Scene(root);
 			Stage newStage = new Stage();
+			newStage.setResizable(false);
+	        newStage.setMaximized(false);
 			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			listaController control = loader.getController();
 			control.getLblTitulo().setText("Olimpiadas");
@@ -440,6 +458,8 @@ public class Principal_controles implements Initializable {
 					Scene newScene = new Scene(root);
 
 					Stage newStage = new Stage();
+					newStage.setResizable(false);
+			        newStage.setMaximized(false);
 					newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 					AñadirParticipacionController control = loader.getController();
 					Deportista dep=new Deportista(tablaParticipacion.getSelectionModel().getSelectedItem().getNomDeportista(),tablaParticipacion.getSelectionModel().getSelectedItem().getSexo(),
@@ -489,8 +509,11 @@ public class Principal_controles implements Initializable {
 					root = loader.load();
 					Scene newScene = new Scene(root);
 					Stage newStage = new Stage();
+					newStage.setResizable(false);
+			        newStage.setMaximized(false);
 					newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 					AñadirController control = loader.getController();
+					
 					//
 					control.setLblTitulo("Modificar Evento Olimpico");
 					control.getTxtNumero1().setText(tablaEvento.getSelectionModel().getSelectedItem().getNom_Evento());
@@ -536,6 +559,8 @@ public class Principal_controles implements Initializable {
 			root = loader.load();
 			Scene newScene = new Scene(root);
 			Stage newStage = new Stage();
+			newStage.setResizable(false);
+	        newStage.setMaximized(false);
 			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			listaController control = loader.getController();
 			control.getLblTitulo().setText("Deportes");
@@ -564,6 +589,8 @@ public class Principal_controles implements Initializable {
 			root = loader.load();
 			Scene newScene = new Scene(root);
 			Stage newStage = new Stage();
+			newStage.setResizable(false);
+	        newStage.setMaximized(false);
 			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			listaController control = loader.getController();
 			control.getLblTitulo().setText("Deportistas");
@@ -592,6 +619,8 @@ public class Principal_controles implements Initializable {
 			root = loader.load();
 			Scene newScene = new Scene(root);
 			Stage newStage = new Stage();
+			newStage.setResizable(false);
+	        newStage.setMaximized(false);
 			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			listaController control = loader.getController();
 			control.getLblTitulo().setText("Equipos");
@@ -620,6 +649,8 @@ public class Principal_controles implements Initializable {
 			root = loader.load();
 			Scene newScene = new Scene(root);
 			Stage newStage = new Stage();
+			newStage.setResizable(false);
+	        newStage.setMaximized(false);
 			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			listaController control = loader.getController();
 			control.getLblTitulo().setText("Olimpiadas");
@@ -746,7 +777,12 @@ public class Principal_controles implements Initializable {
 		String region = Propiedades.getValor("region");
 		Locale.setDefault(new Locale(idioma, region));
 		bundle = ResourceBundle.getBundle("idiomas/messages");
-
+		
+		gp.setVgrow(tablaEvento, Priority.ALWAYS);
+		gp.setHgrow(tablaEvento, Priority.ALWAYS);
+		// gp.setVgrow(gp, Priority.ALWAYS);
+		 
+		 
 	}
 
 }

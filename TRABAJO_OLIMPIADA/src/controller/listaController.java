@@ -56,6 +56,8 @@ public class listaController implements Initializable{
 						root = loader.load();
 						Scene newScene = new Scene(root);
 						Stage newStage = new Stage();
+						newStage.setResizable(false);
+				        newStage.setMaximized(false);
 						AñadirDeporteController control = loader.getController();
 						control.getLblTitulo().setText("Modificar Deporte");
 						Deporte dep=(Deporte) listObjetos.getSelectionModel().getSelectedItem();
@@ -80,6 +82,8 @@ public class listaController implements Initializable{
 						root = loader.load();
 						Scene newScene = new Scene(root);
 						Stage newStage = new Stage();
+						newStage.setResizable(false);
+				        newStage.setMaximized(false);
 						AñadirDeportistaController control = loader.getController();
 						control.getLblTitulo().setText("Modificar Deportista");
 						Deportista depo=(Deportista) listObjetos.getSelectionModel().getSelectedItem();
@@ -107,6 +111,8 @@ public class listaController implements Initializable{
 						root = loader.load();
 						Scene newScene = new Scene(root);
 						Stage newStage = new Stage();
+						newStage.setResizable(false);
+				        newStage.setMaximized(false);
 						AñadirEquipoController control = loader.getController();
 						control.getLblTitulo().setText("Modificar Equipo");
 						Equipos eq=(Equipos) listObjetos.getSelectionModel().getSelectedItem();
@@ -131,6 +137,8 @@ public class listaController implements Initializable{
 						root = loader.load();
 						Scene newScene = new Scene(root);
 						Stage newStage = new Stage();
+						newStage.setResizable(false);
+				        newStage.setMaximized(false);
 						AñadirOlimpiadaController control = loader.getController();
 						control.getLblTitulo().setText("Modificar Olimpiada");
 						Olimpiada ol=(Olimpiada) listObjetos.getSelectionModel().getSelectedItem();
