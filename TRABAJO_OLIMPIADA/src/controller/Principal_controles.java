@@ -305,7 +305,7 @@ public class Principal_controles implements Initializable {
 
 	@FXML
 	void eliminar(ActionEvent event) {
-		if(cbTabla.getSelectionModel().getSelectedItem().toString().equals("Participacion")) {
+		/*	if(cbTabla.getSelectionModel().getSelectedItem().toString().equals("Participacion")) {
 			Deportista dep=new Deportista(tablaParticipacion.getSelectionModel().getSelectedItem().getNomDeportista(),tablaParticipacion.getSelectionModel().getSelectedItem().getSexo(),
 					Integer.parseInt(tablaParticipacion.getSelectionModel().getSelectedItem().getPeso()),Integer.parseInt(tablaParticipacion.getSelectionModel().getSelectedItem().getAltura()));
 			String nom=tablaParticipacion.getSelectionModel().getSelectedItem().getNomEvento().substring(0,tablaParticipacion.getSelectionModel().getSelectedItem().getNomEvento().indexOf(","));
@@ -321,7 +321,7 @@ public class Principal_controles implements Initializable {
 		listParticipacion = pd.cargarParticipacion();
 		tablaParticipacion.setItems(listParticipacion);
 		listEventos = ed.cargarEvento();
-		tablaEvento.setItems(listEventos);
+		tablaEvento.setItems(listEventos);*/
 
 	}
 
@@ -448,7 +448,7 @@ public class Principal_controles implements Initializable {
 
 	@FXML
 	void modificar(ActionEvent event) {
-		if(tablaEvento.getSelectionModel().getSelectedItem()!=null || tablaParticipacion.getSelectionModel().getSelectedItem()!=null) {
+/*		if(tablaEvento.getSelectionModel().getSelectedItem()!=null || tablaParticipacion.getSelectionModel().getSelectedItem()!=null) {
 			if (cbTabla.getSelectionModel().getSelectedItem().toString().equals("Participacion")) {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirParticipacion.fxml"));
 				Parent root;
@@ -517,17 +517,17 @@ public class Principal_controles implements Initializable {
 					//
 					control.setLblTitulo("Modificar Evento Olimpico");
 					control.getTxtNumero1().setText(tablaEvento.getSelectionModel().getSelectedItem().getNom_Evento());
-					control.getComboDeporte().getSelectionModel().select(new Deporte(tablaEvento.getSelectionModel().getSelectedItem().getNom_Deporte()));
-					control.setId_Olimpiada_Antiguo(new Olimpiada(tablaEvento.getSelectionModel().getSelectedItem().getNom_Olimpiada(),
-																	tablaEvento.getSelectionModel().getSelectedItem().getAnio_Olimpiada(),
-																	tablaEvento.getSelectionModel().getSelectedItem().getTemporada_Olimpiada(),
-																	tablaEvento.getSelectionModel().getSelectedItem().getCiudad_Olimpiada()));
+					control.getComboDeporte().getSelectionModel().select(new Deporte(tablaEvento.getSelectionModel().getSelectedItem().getDepNombre()));
+					control.setId_Olimpiada_Antiguo(new Olimpiada(tablaEvento.getSelectionModel().getSelectedItem().getOlNombre(),
+																	tablaEvento.getSelectionModel().getSelectedItem().getOlAnio(),
+																	tablaEvento.getSelectionModel().getSelectedItem().getOlTemporada(),
+																	tablaEvento.getSelectionModel().getSelectedItem().getOlCiudad()));
 					control.setNomAntiguo(tablaEvento.getSelectionModel().getSelectedItem().getNom_Evento());
 					
-					control.getComboOlimpiada().getSelectionModel().select(new Olimpiada(tablaEvento.getSelectionModel().getSelectedItem().getNom_Olimpiada(),
-																						tablaEvento.getSelectionModel().getSelectedItem().getAnio_Olimpiada(),
-																						tablaEvento.getSelectionModel().getSelectedItem().getTemporada_Olimpiada(),
-																						tablaEvento.getSelectionModel().getSelectedItem().getCiudad_Olimpiada()));
+					control.getComboOlimpiada().getSelectionModel().select(new Olimpiada(tablaEvento.getSelectionModel().getSelectedItem().getOlNombre(),
+																						tablaEvento.getSelectionModel().getSelectedItem().getOlAnio(),
+																						tablaEvento.getSelectionModel().getSelectedItem().getOlTemporada(),
+																						tablaEvento.getSelectionModel().getSelectedItem().getOlCiudad()));
 					//
 					newStage.initModality(Modality.APPLICATION_MODAL);
 
@@ -547,7 +547,7 @@ public class Principal_controles implements Initializable {
 			tablaEvento.setItems(listEventos);
 		}
 		
-
+*/
 	}
 
 	@FXML
@@ -701,12 +701,12 @@ public class Principal_controles implements Initializable {
 			ObservableList<Evento> listTemporada = FXCollections.observableArrayList();
 			for (int i = 0; i < listEventos.size(); i++) {
 				if (checkBoxInvierno.isSelected()) {
-					if (listEventos.get(i).getTemporada_Olimpiada().equals("Winter")) {
+					if (listEventos.get(i).getOlTemporada().equals("Winter")) {
 						listTemporada.add(listEventos.get(i));
 					}
 				}
 				if (checkBoxVerano.isSelected()) {
-					if (listEventos.get(i).getTemporada_Olimpiada().equals("Summer")) {
+					if (listEventos.get(i).getOlTemporada().equals("Summer")) {
 						listTemporada.add(listEventos.get(i));
 					}
 				}
@@ -727,28 +727,29 @@ public class Principal_controles implements Initializable {
 		cbTabla.getSelectionModel().select(0);
 		tablaEvento.setVisible(true);
 		// tablaParticipacion.setVisible(false);
+		
 
 		// ASIGNAR CAMPOS A LA TABLA EVENTO y los tamaños
 		col1Posicion.setCellValueFactory(new PropertyValueFactory<>("nom_Evento"));
 		col1Posicion.prefWidthProperty().bind(tablaEvento.widthProperty().multiply(0.30));
 
-		col2Posicion.setCellValueFactory(new PropertyValueFactory<>("nom_Olimpiada"));
+		col2Posicion.setCellValueFactory(new PropertyValueFactory<>("OlNombre"));
 		col2Posicion.prefWidthProperty().bind(tablaEvento.widthProperty().multiply(0.20));
 
-		col3Posicion.setCellValueFactory(new PropertyValueFactory<>("anio_Olimpiada"));
+		col3Posicion.setCellValueFactory(new PropertyValueFactory<>("OlAnio"));
 		col3Posicion.prefWidthProperty().bind(tablaEvento.widthProperty().multiply(0.08));
 
-		col4Posicion.setCellValueFactory(new PropertyValueFactory<>("temporada_Olimpiada"));
+		col4Posicion.setCellValueFactory(new PropertyValueFactory<>("OlTemporada"));
 		col4Posicion.prefWidthProperty().bind(tablaEvento.widthProperty().multiply(0.14));
 
-		col5Posicion.setCellValueFactory(new PropertyValueFactory<>("ciudad_Olimpiada"));
+		col5Posicion.setCellValueFactory(new PropertyValueFactory<>("OlCiudad"));
 		col5Posicion.prefWidthProperty().bind(tablaEvento.widthProperty().multiply(0.09));
 
-		col6Posicion.setCellValueFactory(new PropertyValueFactory<>("nom_Deporte"));
+		col6Posicion.setCellValueFactory(new PropertyValueFactory<>("DepNombre"));
 		col6Posicion.prefWidthProperty().bind(tablaEvento.widthProperty().multiply(0.17));
 
 		// ASIGNAR CAMPOS A LA TABLA Participacion y los tamaños
-		colNomDeportista.setCellValueFactory(new PropertyValueFactory<>("nomDeportista"));
+		colNomDeportista.setCellValueFactory(new PropertyValueFactory<>("DepNombre"));
 
 		colSexo.setCellValueFactory(new PropertyValueFactory<>("sexo"));
 

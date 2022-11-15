@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Deporte;
 import model.Evento;
+import model.Olimpiada;
 
 public class EventoDao {
 	private ConexionDB conexion;
@@ -43,7 +44,7 @@ public class EventoDao {
                 	String nom_deporte=rs.getString("d.nombre");
                 	
                 	//crear el evento
-                	Evento event=new Evento(nom_Evento, nom_Olimpiada, anio, temporada, ciudad, nom_deporte);
+                	Evento event=new Evento(nom_Evento,new Olimpiada(nom_Olimpiada, anio, temporada, ciudad),new Deporte(nom_deporte));
                 	arrEvento.add(event);
                 	
                 }
