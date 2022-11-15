@@ -3,27 +3,25 @@ package model;
 import java.util.Objects;
 
 public class Participacion {
-	private String nomDeportista,sexo,peso,altura;
-	
+
 	private String medalla;
 	private int edad;
+
 	
-	private String nomEvento;
+	Deportista dep;
 	
-	private String equipo;
+	Equipos eq;
 	
+	Evento ev;
 
 
-	public Participacion(String nomDeportista, String sexo, String peso, String altura, int edad, String medalla, String equipo, String nomEvento) {
+	public Participacion(Deportista dep, int edad, String medalla, Equipos eq, Evento ev) {
 		
-		this.nomDeportista = nomDeportista;
-		this.sexo = sexo;
-		this.peso = peso;
-		this.altura = altura;
+		this.dep=dep;
+		this.ev=ev;
 		this.edad = edad;
 		this.medalla = medalla;
-		this.nomEvento = nomEvento;
-		this.equipo=equipo;
+
 	}
 
 	public String getNomDeportista() {
