@@ -51,18 +51,18 @@ private ConexionDB conexion;
         try {
             conexion = new ConexionDB();
             Connection con = conexion.getConexion();
-            sql="SELECT * FROM Deportista;";
+            sql="SELECT * FROM olimpiadas.Deportista;";
             PreparedStatement ps = con.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
             	//sacar datos 
+            	int id=rs.getInt("id_deportista");
             	String nom=rs.getString("nombre");
             	String sexo=rs.getString("sexo");
             	int peso=rs.getInt("peso");
             	int altura=rs.getInt("altura");
-            	
             	//crear el evento
-            	Deportista dep=new Deportista(nom, sexo, peso, altura);
+            	Deportista dep=new Deportista(id,nom, sexo, peso, altura);
             	arr.add(dep);
             	
             }

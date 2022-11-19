@@ -49,9 +49,10 @@ public class OlimpiadaDao {
 			conexion = new ConexionDB();
 			Connection con = conexion.getConexion();
 			//System.out.println(d.getDeporte());
-			String sql = "SELECT * FROM Olimpiada WHERE nombre = '"+ol.getNombre()+"';";
-			 
+			String sql = "SELECT * FROM Olimpiada WHERE nombre = ?;";
 			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setInt(1, ol.getId());
+			
 	        ResultSet rs = ps.executeQuery();
 	        boolean existe=rs.next();
 	        rs.close();
@@ -69,32 +70,6 @@ public class OlimpiadaDao {
 		}
 		return false;
 	}
-	
-	//SACAR EL ID DE LA OLIMPIADA BUSCADO
-		public int sacarId(Olimpiada nom) {
-			int id=0;
-			try {
-				conexion = new ConexionDB();
-				Connection con = conexion.getConexion();
-				System.out.println(nom.getNombre());
-				String sql = "SELECT * FROM Olimpiada WHERE nombre='"+nom.getNombre()+"';";
-				PreparedStatement ps = con.prepareStatement(sql);
-		        ResultSet rs = ps.executeQuery();
-		        while(rs.next()) {
-		        	 id =rs.getInt("id_olimpiada");
-		        }
-		       
-		        rs.close();
-		        ps.close();
-		        con.close();
-		        return id;
-		        
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return 0;
-		}
 		public 	ObservableList<Olimpiada> sacarOlimpiada() {
 			ObservableList<Olimpiada> arr=FXCollections.observableArrayList();
 	        String sql;
@@ -108,13 +83,13 @@ public class OlimpiadaDao {
 	            while (rs.next()) {
 	            	//sacar datos 
 	            	
-	            	
+	            	int id=rs.getInt("id_olimpiada");
 	            	String nom=rs.getString("nombre");
 	            	int anio=rs.getInt("anio");
 	            	String temp=rs.getString("temporada");
 	            	String ciudad=rs.getString("ciudad");
 	            	//crear
-	            	Olimpiada ol=new Olimpiada(nom, anio, temp, ciudad);
+	            	Olimpiada ol=new Olimpiada(id,nom, anio, temp, ciudad);
 	            	arr.add(ol);
 	            	
 	            }
@@ -127,18 +102,21 @@ public class OlimpiadaDao {
 			}
 	        return arr;
 		}
-		public boolean modificarOlimpiada(Olimpiada o, String nomAnt) {
+		public boolean modificarOlimpiada(Olimpiada o) {
 			try {
 				conexion = new ConexionDB();
 		        Connection con = conexion.getConexion();
 		      
 		    	PreparedStatement pst;
-		    	
-				pst = con.prepareStatement("update Olimpiada set nombre=?, anio=?, temporada=?, ciudad=? where nombre='"+nomAnt+"'");
-		    	pst.setString(1,o.getNombre());
+		    	//UPDATE `olimpiadas`.`Olimpiada` SET `nombre` = '2022 2', `temporada` = 'Summer' WHERE (`id_olimpiada` = '10');
+
+				pst = con.prepareStatement("update Olimpiada SET nombre = ?, anio = ?, temporada = ?, ciudad = ? WHERE (id_olimpiada = ?);");
+				System.out.println(o.getNombre());
+				pst.setString(1,o.getNombre());
 		    	pst.setInt(2,o.getAnio());
 		    	pst.setString(3,o.getTemporada());
 		    	pst.setString(4,o.getCiudad());
+		    	pst.setInt(5,o.getId());
 		    	pst.execute();
 		    	con.close();
 		    	pst.close();
@@ -150,49 +128,63 @@ public class OlimpiadaDao {
 			
 			return false;
 		}
-		public boolean eliminarOlimpiada(int idOlimpiada) {
-			try {
+		public boolean eliminarOlimpiada(Olimpiada ol) throws SQLException {
+			boolean bien=false; 
+			
 				conexion = new ConexionDB();
 		        Connection con = conexion.getConexion();
 		        EventoDao evD=new EventoDao();
 		    	PreparedStatement pst;
-		    	
-		    	
-		    	
-		    	
-		    	
-		    	String sql = "SELECT * FROM Evento WHERE id_olimpiada='"+idOlimpiada+"' ;";
-	            pst = con.prepareStatement(sql);
+
+		    	pst = con.prepareStatement("SELECT * FROM Evento WHERE id_olimpiada= ? ;");
+		    	pst.setInt(1, ol.getId());
 	            ResultSet rs = pst.executeQuery();
 	            while(rs.next()) {
-	            	String nomEv=rs.getString("nombre");
-	            	int idOl=rs.getInt("id_Olimpiada");
-	            	int idEventoActual=evD.sacarId(nomEv, idOl);
 	            	
-	            	pst = con.prepareStatement("DELETE FROM Participacion WHERE (id_evento = '"+idEventoActual+"');");
-	    			//pst.setInt(1, idEvento);
+	            	int id_evento=rs.getInt("id_evento");
+	            	
+	            	pst = con.prepareStatement("DELETE FROM Participacion WHERE (id_evento = ?);");
+	    			pst.setInt(1, id_evento);
 	    	    	pst.execute();
 	            	
 	            	
 
 		    	}
 	            //*****************************************************************
-	    		pst = con.prepareStatement("DELETE FROM Evento WHERE (id_olimpiada = '"+idOlimpiada+"');");
-				//pst.setInt(1, idEvento);
+	    		pst = con.prepareStatement("DELETE FROM Evento WHERE (id_olimpiada = ?);");
+	    		pst.setInt(1, ol.getId());
 		    	pst.execute();
 		    	//*********************************************
-		    	sql = "DELETE FROM Olimpiada WHERE (id_olimpiada = '"+idOlimpiada+"');";
-	            pst = con.prepareStatement(sql);
+		    	pst = con.prepareStatement("DELETE FROM Olimpiada WHERE (id_olimpiada = ?);");
+		    	pst.setInt(1, ol.getId());
 	            pst.execute();
 	            
 		    	con.close();
 		    	pst.close();
-		    	return true;
+		    	bien=true;
+
+			return bien ;
+		}
+		public int ultimoId() {
+			int id=0;
+			try {
+				conexion = new ConexionDB();
+				Connection con = conexion.getConexion();
+				
+				String sql = "SELECT max(id_olimpiada) FROM olimpiadas.Olimpiada;";
+		        PreparedStatement ps = con.prepareStatement(sql);
+		        ResultSet rs = ps.executeQuery();
+		        while(rs.next()) {
+		        	 id=rs.getInt("max(id_olimpiada)");
+		        }
+		       
+		        rs.close();
+		        ps.close();
+		        con.close();
 			} catch (SQLException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-			
-			return false;
+			return id;
 		}
 }

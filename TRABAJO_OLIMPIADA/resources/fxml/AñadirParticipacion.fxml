@@ -30,9 +30,9 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <Label fx:id="lblNumero2" text="Deportista" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-      <Label fx:id="lblNumero6" text="Evento" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-      <Label fx:id="lblTitulo" text="Añadir Participacion" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+      <Label fx:id="lblNumero2" text="Deportista" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+      <Label fx:id="lblNumero6" text="Evento" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+      <Label fx:id="lblTitulo" text="Añadir Participacion" textFill="WHITE" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
          <font>
             <Font size="36.0" />
          </font>
@@ -57,12 +57,12 @@
             <Insets left="20.0" />
          </GridPane.margin>
       </ComboBox>
-      <Label text="Equipo" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-      <Label text="Edad" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-      <Label text="Medalla:" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
+      <Label text="Equipo" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+      <Label text="Edad" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+      <Label text="Medalla:" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
       <FlowPane alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="6">
          <children>
-            <RadioButton fx:id="rbOro" mnemonicParsing="false" text="Oro">
+            <RadioButton fx:id="rbOro" mnemonicParsing="false" text="Oro" textFill="WHITE">
                <toggleGroup>
                   <ToggleGroup fx:id="medalla" />
                </toggleGroup>
@@ -70,13 +70,13 @@
                   <Insets left="20.0" />
                </FlowPane.margin>
             </RadioButton>
-            <RadioButton fx:id="rbPlata" mnemonicParsing="false" text="Plata" toggleGroup="$medalla">
+            <RadioButton fx:id="rbPlata" mnemonicParsing="false" text="Plata" textFill="WHITE" toggleGroup="$medalla">
                <FlowPane.margin>
                   <Insets left="10.0" right="10.0" />
                </FlowPane.margin>
             </RadioButton>
-            <RadioButton fx:id="rbBronze" mnemonicParsing="false" text="Bronze" toggleGroup="$medalla" />
-            <RadioButton fx:id="rbNada" mnemonicParsing="false" text="Nada" toggleGroup="$medalla">
+            <RadioButton fx:id="rbBronze" mnemonicParsing="false" text="Bronze" textFill="WHITE" toggleGroup="$medalla" />
+            <RadioButton fx:id="rbNada" mnemonicParsing="false" text="Nada" textFill="WHITE" toggleGroup="$medalla">
                <FlowPane.margin>
                   <Insets left="10.0" />
                </FlowPane.margin>

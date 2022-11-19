@@ -52,12 +52,13 @@ private ConexionDB conexion;
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
             	//sacar datos 
+            	int id=rs.getInt("id_equipo");
             	String nom=rs.getString("nombre");
             	String ini=rs.getString("iniciales");
 
             	
             	//crear el evento
-            	Equipos equip=new Equipos(nom, ini);
+            	Equipos equip=new Equipos(id,nom, ini);
             	arr.add(equip);
             	
             }

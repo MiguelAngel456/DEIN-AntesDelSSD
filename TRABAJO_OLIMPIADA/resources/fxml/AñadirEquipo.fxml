@@ -22,12 +22,12 @@
       <RowConstraints maxHeight="220.0" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <Label fx:id="lblTitulo" text="Añadir Equipo" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+      <Label fx:id="lblTitulo" text="Añadir Equipo" textFill="WHITE" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <font>
             <Font size="36.0" />
          </font>
       </Label>
-      <Label text="Nombre del Equipo:" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+      <Label text="Nombre del Equipo:" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
       <FlowPane alignment="CENTER" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3">
          <children>
             <Button fx:id="btnAnadir" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#aceptar" text="Aceptar">
@@ -43,7 +43,7 @@
             <Insets left="20.0" right="50.0" />
          </GridPane.margin>
       </TextField>
-      <Label text="Iniciales del Equipo" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+      <Label text="Iniciales del Equipo" textFill="WHITE" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
       <TextField fx:id="txtIniciales" maxHeight="-Infinity" maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <FlowPane.margin>
             <Insets left="20.0" />

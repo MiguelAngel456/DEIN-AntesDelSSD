@@ -32,19 +32,25 @@ public class EventoDao {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                 	//sacar datos del evento para la tabla
+                	int id_evento=rs.getInt("a.id_evento");
                 	String nom_Evento=rs.getString("a.nombre");
                 	
                 	//sacar datos de la Olimpiada para la tabla
+                	int id_Olimpiada=rs.getInt("o.id_olimpiada");
                 	String nom_Olimpiada=rs.getString("o.nombre");
                 	int anio=rs.getInt("o.anio");
                 	String temporada=rs.getString("o.temporada");
                 	String ciudad=rs.getString("o.ciudad");
                 	
                 	//sacar datos de deporte para la tabla
+                	int id_deporte=rs.getInt("d.id_deporte");
                 	String nom_deporte=rs.getString("d.nombre");
                 	
                 	//crear el evento
-                	Evento event=new Evento(nom_Evento,new Olimpiada(nom_Olimpiada, anio, temporada, ciudad),new Deporte(nom_deporte));
+                	Olimpiada ol=new Olimpiada(id_Olimpiada,nom_Olimpiada, anio, temporada, ciudad);
+                	Deporte dep=new Deporte(id_deporte,nom_deporte);
+                	
+                	Evento event=new Evento(id_evento, nom_Evento, ol, dep);
                 	arrEvento.add(event);
                 	
                 }
@@ -60,17 +66,16 @@ public class EventoDao {
 		
 		return arrEvento;
 	}
-	public boolean anadirEvento(Evento ev,int id_olimpiada,int id_Deporte) {
+	public boolean anadirEvento(Evento ev) {
 		
 			try {
 				conexion = new ConexionDB();
 		        Connection con = conexion.getConexion();
-	            System.out.println(id_olimpiada);
 				PreparedStatement pst = con.prepareStatement("insert into Evento (nombre, id_olimpiada ,id_deporte) values(?,?,?)");
 				
 				pst.setString(1, ev.getNom_Evento());
-				pst.setInt(2, id_olimpiada);
-				pst.setInt(3, id_Deporte);
+				pst.setInt(2, ev.getOl().getId());
+				pst.setInt(3, ev.getDep().getId());
 
 				pst.execute();
 				return true;
@@ -82,7 +87,7 @@ public class EventoDao {
 		return false;
 		
 	}
-	public boolean modificarEvento(Evento ev,int id_olimpiada, int id_deporte,int id_antiguo, String nomAntiguo) {
+	public boolean modificarEvento(Evento ev) {
 		
 		try {
 			conexion = new ConexionDB();
@@ -91,10 +96,11 @@ public class EventoDao {
 	    	PreparedStatement pst;
 	    	
 	    	
-			pst = con.prepareStatement("update Evento set nombre=?, id_olimpiada=?, id_deporte=? where nombre='"+nomAntiguo+"' AND id_olimpiada='"+id_antiguo+"'");
+			pst = con.prepareStatement("update Evento set nombre=?, id_olimpiada=?, id_deporte=? where id_evento = ?");
 	    	pst.setString(1, ev.getNom_Evento());
-	    	pst.setInt(2, id_olimpiada);
-	    	pst.setInt(3, id_deporte);
+	    	pst.setInt(2, ev.getOl().getId());
+	    	pst.setInt(3, ev.getDep().getId());
+	    	pst.setInt(4, ev.getId_evento());
 	    	pst.execute();
 	    	con.close();
 	    	pst.close();
@@ -105,74 +111,25 @@ public class EventoDao {
 
 		return false;
 	}
-	public int sacarId(String nom, String nomol) {
-		try {
-			conexion = new ConexionDB();
-			Connection con = conexion.getConexion();
-			String sql = "SELECT * FROM Evento e, Olimpiada o WHERE o.id_olimpiada=e.id_olimpiada AND e.nombre='"+nom+"' AND o.nombre='"+nomol+"';";
-			 
-			PreparedStatement ps = con.prepareStatement(sql);
-	        ResultSet rs = ps.executeQuery();
-	        int id=0;
-	        while(rs.next()) {
-	        	id=rs.getInt("id_evento");
-	        }
-	        
-	        //CERRAR IMPORTANTE
-	        rs.close();
-	        ps.close();
-	        con.close();
-	        return id;
-	       
-	        
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 0;
-	}
-	public int sacarId(String nom, int idOl) {
-		try {
-			conexion = new ConexionDB();
-			Connection con = conexion.getConexion();
-			String sql = "SELECT * FROM Evento  WHERE nombre='"+nom+"' AND id_olimpiada="+idOl+";";
-			 
-			PreparedStatement ps = con.prepareStatement(sql);
-	        ResultSet rs = ps.executeQuery();
-	        int id=0;
-	        while(rs.next()) {
-	        	id=rs.getInt("id_evento");
-	        }
-	        
-	        //CERRAR IMPORTANTE
-	        rs.close();
-	        ps.close();
-	        con.close();
-	        return id;
-	       
-	        
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 0;
-	}
-	public boolean eliminarEvento(int idEvento) {
+	
+	public boolean eliminarEvento(Evento ev) {
 		try {
 			conexion = new ConexionDB();
 			Connection con = conexion.getConexion();
 			PreparedStatement pst ;
 	    	//******************
-	    	  String sql = "SELECT * FROM Participacion WHERE id_evento='"+idEvento+"' ;";
+	    	  String sql = "SELECT * FROM Participacion WHERE id_evento= ? ;";
+	    	  
               PreparedStatement ps = con.prepareStatement(sql);
+              ps.setInt(1, ev.getId_evento());
               ResultSet rs = ps.executeQuery();
 	    	while(rs.next()) {
-	    		pst = con.prepareStatement("DELETE FROM Participacion WHERE (id_evento = '"+idEvento+"');");
-				//pst.setInt(1, idEvento);
+	    		pst = con.prepareStatement("DELETE FROM Participacion WHERE (id_evento = ?);");
+				pst.setInt(1, ev.getId_evento());
 		    	pst.execute();
 	    	}
-	    	pst= con.prepareStatement("DELETE FROM Evento WHERE (id_evento = "+idEvento+");");
-
+	    	pst= con.prepareStatement("DELETE FROM Evento WHERE (id_evento = ? );");
+	    	pst.setInt(1, ev.getId_evento());
 	    	pst.execute();
 	    	return true;
 		} catch (SQLException e) {
@@ -181,5 +138,27 @@ public class EventoDao {
 		}
         
 		return false;
+	}
+	public int ultimoId() {
+		int id=0;
+		try {
+			conexion = new ConexionDB();
+			Connection con = conexion.getConexion();
+			
+			String sql = "SELECT max(id_evento) FROM olimpiadas.Evento ;";
+	        PreparedStatement ps = con.prepareStatement(sql);
+	        ResultSet rs = ps.executeQuery();
+	        while(rs.next()) {
+	        	 id=rs.getInt("max(id_evento)");
+	        }
+	       
+	        rs.close();
+	        ps.close();
+	        con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return id;
 	}
 }

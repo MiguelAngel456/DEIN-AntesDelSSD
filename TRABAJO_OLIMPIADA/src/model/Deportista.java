@@ -1,22 +1,38 @@
 package model;
 
+import java.io.InputStream;
 import java.util.Objects;
 
 public class Deportista {
-	String nombre,sexo;
-	int peso,altura;
+	private String nombre,sexo;
+	private int peso,altura;
+	private InputStream foto;
+	private int id_deportista;
 
-	public Deportista(String nombre, String sexo, int peso, int altura) {
+	public Deportista(int id_deportista,String nombre, String sexo, int peso, int altura) {
+		this.id_deportista=id_deportista;
 		this.nombre = nombre;
 		this.sexo = sexo;
 		this.peso = peso;
 		this.altura = altura;
+	}
+	//CONSTRUCTOR CON FOTO(SERA EL DEFINITIVO
+	public Deportista(int id_deportista, String nombre, String sexo, int peso, int altura, InputStream foto) {
+		this.id_deportista=id_deportista;
+		this.nombre = nombre;
+		this.sexo = sexo;
+		this.peso = peso;
+		this.altura = altura;
+		this.foto=foto;
 	}
 
 	public String toString() {
 		return nombre;
 	}
 
+	public int getId_deportista() {
+		return id_deportista;
+	}
 	public String getNombre() {
 		return nombre;
 	}
@@ -32,12 +48,10 @@ public class Deportista {
 	public int getAltura() {
 		return altura;
 	}
-
 	@Override
 	public int hashCode() {
 		return Objects.hash(nombre);
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -49,6 +63,7 @@ public class Deportista {
 		Deportista other = (Deportista) obj;
 		return Objects.equals(nombre, other.nombre);
 	}
+
 
 	
 	

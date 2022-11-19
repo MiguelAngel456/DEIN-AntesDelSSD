@@ -3,17 +3,24 @@ package model;
 import java.util.Objects;
 
 public class Equipos {
-	String nombre,iniciales;
-
-	public Equipos(String nombre, String iniciales) {
+	private String nombre,iniciales;
+	private int id_equipo;
+	
+	public Equipos(int id_equipo,String nombre, String iniciales) {
 		this.nombre = nombre;
 		this.iniciales = iniciales;
+		this.id_equipo=id_equipo;
 	}
-	public Equipos(String nombre) {
+	public Equipos(int id_equipo,String nombre) {
 		this.nombre = nombre;
+		this.id_equipo=id_equipo;
 	}
 	public String toString() {
 		return nombre;
+	}
+	
+	public int getId_equipo() {
+		return id_equipo;
 	}
 	public String getNombre() {
 		return nombre;

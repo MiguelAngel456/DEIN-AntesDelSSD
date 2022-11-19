@@ -1,35 +1,53 @@
 package controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import model.Deporte;
 import model.Olimpiada;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import dao.OlimpiadaDao;
 import javafx.event.ActionEvent;
 
-public class AñadirOlimpiadaController {
+public class AñadirOlimpiadaController implements Initializable{
 	@FXML
-	private TextField txtNombre;
-	@FXML
-	private TextField txtAnio;
-	@FXML
-	private TextField txtTemporada;
-	@FXML
-	private TextField txtCiudad;
-	@FXML
-	private Button btnAceptar;
-	@FXML
-	private Button btnCancelar;
+    private Button btnAceptar;
+
+    @FXML
+    private Button btnCancelar;
+
     @FXML
     private Label lblTitulo;
+
+    @FXML
+    private RadioButton rbSummer;
+
+    @FXML
+    private RadioButton rbWinter;
+
+    @FXML
+    private TextField txtAnio;
+
+    @FXML
+    private TextField txtCiudad;
+
+    @FXML
+    private TextField txtNombre;
+    @FXML
+    private ToggleGroup gptemp;
     
 	private OlimpiadaDao od;
-	private String nomAnt;
+	private int idAnt;
 	// Event Listener on Button[#btnAceptar].onAction
 	@FXML
 	public void aceptar(ActionEvent event) {
@@ -37,29 +55,42 @@ public class AñadirOlimpiadaController {
 		od=new OlimpiadaDao();
 		String nombre=txtNombre.getText();
 		int anio=Integer.parseInt(txtAnio.getText());
-		String tempo=txtTemporada.getText();
+		String temp;
+		if(rbWinter.isSelected()) {
+			temp="Winter";
+		}else {
+			temp="Summer";
+		}
 		String ciudad=txtCiudad.getText();
-		Olimpiada ol=new Olimpiada(nombre, anio, tempo, ciudad);
+		
 		
 		if(lblTitulo.getText().equals("Modificar Olimpiada")) {
 			if(comprobar().length()==0) {
-				od.modificarOlimpiada(ol, nomAnt);
-				info(btnAceptar.getScene().getWindow());
+				Olimpiada ol=new Olimpiada(idAnt,nombre, anio, temp, ciudad);
+				System.out.println(ol.getId());
+				od.modificarOlimpiada(ol);
+				info();
 				Stage stage = (Stage) btnAceptar.getScene().getWindow();
 				stage.close();
 			}else {
-				error(btnAceptar.getScene().getWindow());
+				error();
 			}
 			
 
 		}else {
 			if(comprobar().length()==0) {
-				od.anadirOlimpiada(ol);
-				info(btnAceptar.getScene().getWindow());
-				Stage stage = (Stage) btnAceptar.getScene().getWindow();
-				stage.close();
+				int id=(od.ultimoId()+1);
+				Olimpiada ol=new Olimpiada(id,nombre, anio, temp, ciudad);
+				System.out.println(ol.getTemporada());
+				if(this.comprobar().length()==0) {
+					od.anadirOlimpiada(ol);
+					info();
+					Stage stage = (Stage) btnAceptar.getScene().getWindow();
+					stage.close();
+				}
+				
 			}else {
-				error(btnAceptar.getScene().getWindow());
+				error();
 			}
 				
 			
@@ -74,24 +105,7 @@ public class AñadirOlimpiadaController {
 		Stage stage = (Stage) btnAceptar.getScene().getWindow();
 		stage.close();
 	}
-	public TextField getTxtNombre() {
-		return txtNombre;
-	}
-	public TextField getTxtAnio() {
-		return txtAnio;
-	}
-	public TextField getTxtTemporada() {
-		return txtTemporada;
-	}
-	public TextField getTxtCiudad() {
-		return txtCiudad;
-	}
-	public Label getLblTitulo() {
-		return lblTitulo;
-	}
-	public void setNomAnt(String nomAnt) {
-		this.nomAnt = nomAnt;
-	}
+
 	public String comprobar() {
 		String fallo="";
 		if(txtNombre.getText().length()==0) {
@@ -109,17 +123,18 @@ public class AñadirOlimpiadaController {
 			// TODO: handle exception
 			fallo+="\n El campo del año de la Olimpiada tiene que ser numeros";
 		}
-		if(txtTemporada.getText().length()==0) {
-			fallo+="\n El campo de la temporada de la Olimpiada tiene que tener contenido";
-		}
-		if(!txtTemporada.getText().equals("Winter") || !txtTemporada.getText().equals("Summer")) {
-			fallo+="\n El campo de la temporada de la Olimpiada tiene que ser Winter o Summer";
-		}
 		String nombre=txtNombre.getText();
 		int anio=Integer.parseInt(txtAnio.getText());
-		String tempo=txtTemporada.getText();
+		String temp;
+		if(rbWinter.isSelected()) {
+			temp=rbWinter.getText();
+		}else {
+			temp=rbSummer.getText();
+		}
 		String ciudad=txtCiudad.getText();
-		Olimpiada ol=new Olimpiada(nombre, anio, tempo, ciudad);
+		int id=od.ultimoId();
+		
+		Olimpiada ol=new Olimpiada(id,nombre, anio, temp, ciudad);
 		if(od.sacarOlimpiada().contains(ol)) {
 			fallo+="\n Esa Olimpiada ya existe";
 		}
@@ -127,23 +142,44 @@ public class AñadirOlimpiadaController {
 		
 		return fallo;
 	}
-	public void error (Window win) {
+	public void error () {
 		Alert alert;
 		String texto=comprobar();
 		alert = new Alert(Alert.AlertType.ERROR);
 		alert.setContentText(texto);
 		alert.setHeaderText(null);
-		alert.initOwner(win);
 		alert.setTitle("ERROR");
 		alert.showAndWait();
 	}
-	public void info(Window win) {
+	public void info() {
 		Alert alert;
 		alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.setContentText("ACCION HECHA CORRECTAMENTE");
 		alert.setHeaderText(null);
-		alert.initOwner(win);
 		alert.setTitle("INFO");
 		alert.showAndWait();
+	}
+	public void rellenar(String titulo, Olimpiada ol) {
+		this.lblTitulo.setText(titulo);
+		//rellenar los campos
+		txtNombre.setText(ol.getNombre());
+		txtAnio.setText(String.valueOf(ol.getAnio()));
+		if(ol.getTemporada().toLowerCase().equals("Winter")) {
+			rbWinter.setSelected(true);
+		}else {
+			if(ol.getTemporada().equals("Summer")) {
+				rbSummer.setSelected(true);
+			}
+		}
+		txtCiudad.setText(ol.getCiudad());
+		//
+		idAnt=ol.getId();
+	}
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		// TODO Auto-generated method stub
+		this.rbWinter.setSelected(true);
+
+		
 	}
 }

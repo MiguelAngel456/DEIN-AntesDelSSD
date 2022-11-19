@@ -78,10 +78,10 @@ public class DeporteDao {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
             	//sacar datos del evento para la tabla
+            	int id=rs.getInt("id_deporte");
             	String nom=rs.getString("nombre");
-            	
             	//crear el evento
-            	Deporte dep=new Deporte(nom);
+            	Deporte dep=new Deporte(id,nom);
             	arr.add(dep);
             	
             }
@@ -123,28 +123,23 @@ public class DeporteDao {
 	    	
 	    	
 	    	
-	    	String sql = "SELECT * FROM Evento WHERE id_deporte='"+idDeporte+"' ;";
-            pst = con.prepareStatement(sql);
+	    	pst = con.prepareStatement( "SELECT * FROM Evento WHERE id_deporte= ? ;");
+	    	pst.setInt(1, idDeporte);
             ResultSet rs = pst.executeQuery();
             while(rs.next()) {
-            	String nomEv=rs.getString("nombre");
-            	int idOl=rs.getInt("id_Olimpiada");
-            	int idEventoActual=evD.sacarId(nomEv, idOl);
-            	
-            	pst = con.prepareStatement("DELETE FROM Participacion WHERE (id_evento = '"+idEventoActual+"');");
-    			//pst.setInt(1, idEvento);
+            	int id_Evento=rs.getInt("id_evento");
+            	            	
+            	pst = con.prepareStatement("DELETE FROM Participacion WHERE (id_evento = ?);");
+    			pst.setInt(1, id_Evento);
     	    	pst.execute();
-            	
-            	
-
 	    	}
             //*****************************************************************
-    		pst = con.prepareStatement("DELETE FROM Evento WHERE (id_deporte = '"+idDeporte+"');");
-			//pst.setInt(1, idEvento);
+    		pst = con.prepareStatement("DELETE FROM Evento WHERE (id_deporte = ?);");
+    		pst.setInt(1, idDeporte);
 	    	pst.execute();
 	    	//*********************************************
-	    	sql = "DELETE FROM Deporte WHERE (id_deporte = '"+idDeporte+"');";
-            pst = con.prepareStatement(sql);
+	    	pst = con.prepareStatement("DELETE FROM Deporte WHERE (id_deporte = ?);");
+	    	pst.setInt(1, idDeporte);
             pst.execute();
             
 	    	con.close();

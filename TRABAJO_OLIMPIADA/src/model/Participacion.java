@@ -8,58 +8,75 @@ public class Participacion {
 	private int edad;
 
 	
-	Deportista dep;
+	private Deportista dep;
 	
-	Equipos eq;
+	private Equipos eq;
 	
-	Evento ev;
+	private Evento ev;
 
 
 	public Participacion(Deportista dep, int edad, String medalla, Equipos eq, Evento ev) {
 		
 		this.dep=dep;
 		this.ev=ev;
+		this.eq=eq;
 		this.edad = edad;
 		this.medalla = medalla;
 
 	}
+	//--------------------DEPORTISTAS------------------------
+	public Deportista getDep() {
+		return dep;
+	}
 
+	
 	public String getNomDeportista() {
-		return nomDeportista;
+		return dep.getNombre();
+	}
+	public String getSexoDeportista() {
+		return dep.getSexo();
+	}
+	public int getPesoDeportista() {
+		return dep.getPeso();
+	}
+	public int getAlturaDeportista() {
+		return dep.getAltura();
 	}
 
-	public String getSexo() {
-		return sexo;
+	//--------------------EVENTO----------------------------
+	
+	public Evento getEv() {
+			return ev;
+	}
+	public String getNomEvento() {
+		return ev.getNom_Evento();
+	}
+	public String getOlEvento() {
+		return ev.getOlNombre();
+	}
+	
+	//--------------------EQUIPO---------------------------
+	public Equipos getEq() {
+		return eq;
 	}
 
-	public String getPeso() {
-		return peso;
+	public String getNombreEquipo() {
+		return eq.getNombre();
 	}
-
-	public String getAltura() {
-		return altura;
-	}
-
+		
+	//--------------------PARTICIPACION---------------------
+	
 	public int getEdad() {
 		return edad;
 	}
-
 	public String getMedalla() {
 		return medalla;
 	}
-
-	public String getNomEvento() {
-		return nomEvento;
-	}
-	public String getEquipo() {
-		return equipo;
-	}
-
+	//--------------------EQUALS---------------------------
 	@Override
 	public int hashCode() {
-		return Objects.hash(altura, edad, equipo, medalla, nomDeportista, nomEvento, peso, sexo);
+		return Objects.hash(dep, ev);
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -69,11 +86,9 @@ public class Participacion {
 		if (getClass() != obj.getClass())
 			return false;
 		Participacion other = (Participacion) obj;
-		return Objects.equals(altura, other.altura) && Objects.equals(edad, other.edad)
-				&& Objects.equals(equipo, other.equipo) && Objects.equals(medalla, other.medalla)
-				&& Objects.equals(nomDeportista, other.nomDeportista) && Objects.equals(nomEvento, other.nomEvento)
-				&& Objects.equals(peso, other.peso) && Objects.equals(sexo, other.sexo);
+		return Objects.equals(dep, other.dep) && Objects.equals(ev, other.ev);
 	}
+	
 
 
 	

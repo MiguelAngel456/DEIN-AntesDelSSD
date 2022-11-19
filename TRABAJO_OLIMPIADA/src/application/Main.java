@@ -22,11 +22,10 @@ public class Main extends Application {
 			ResourceBundle bundle = ResourceBundle.getBundle("idiomas/messages");
 			GridPane root = (GridPane)FXMLLoader.load(getClass().getResource("/fxml/Principal.fxml"),bundle);
 			Scene scene = new Scene(root);
-	        primaryStage.setResizable(false);
-	        primaryStage.setMaximized(false);
 			scene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			String imagePath = getClass().getResource("/images/logo.png").toString();
 			primaryStage.getIcons().add(new Image(imagePath));
+			primaryStage.setTitle("Gestion Olimpiadas");
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch(Exception e) {

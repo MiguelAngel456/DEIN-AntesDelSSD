@@ -5,6 +5,7 @@ import java.net.URL;
 
 import java.sql.SQLException;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import conexionBD.Propiedades;
@@ -23,9 +24,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
@@ -33,11 +38,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import model.Deporte;
 import model.Deportista;
 import model.Equipos;
@@ -64,6 +72,8 @@ public class Principal_controles implements Initializable {
 
 	@FXML
 	private CheckBox checkBoxVerano;
+    @FXML
+    private ImageView img;
 
 	@FXML
 	private TableColumn<?, ?> col1Posicion;
@@ -115,41 +125,22 @@ public class Principal_controles implements Initializable {
 
 
 	// MENUITEMS
-	@FXML
-	private MenuItem crearDeporte;
+	 @FXML
+    private MenuItem GestionarDeporte;
 
-	@FXML
-	private MenuItem crearDeportista;
+    @FXML
+    private MenuItem GestionarDeportista;
 
-	@FXML
-	private MenuItem crearEquipo;
+    @FXML
+    private MenuItem GestionarEquipo;
 
+    @FXML
+    private MenuItem GestionarOlimpiada;
 	@FXML
-	private MenuItem crearOlimpiada;
+    private Menu menuDeportista;
 
-	@FXML
-	private MenuItem eliDeporte;
-
-	@FXML
-	private MenuItem eliDeportista;
-
-	@FXML
-	private MenuItem eliEquipo;
-
-	@FXML
-	private MenuItem eliOlimpiada;
-
-	@FXML
-	private MenuItem modDeporte;
-
-	@FXML
-	private MenuItem modDeportista;
-
-	@FXML
-	private MenuItem modEquippo;
-
-	@FXML
-	private MenuItem modOlimpiada;
+    @FXML
+    private MenuBar menu;
 
 	private ObservableList<Evento> listEventos;
 	private ObservableList<Participacion> listParticipacion;
@@ -162,6 +153,7 @@ public class Principal_controles implements Initializable {
 
 	@FXML
 	void anadir(ActionEvent event) {
+
 		if (cbTabla.getSelectionModel().getSelectedItem().toString().equals("Participacion")) {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirParticipacion.fxml"));
 			Parent root;
@@ -175,7 +167,6 @@ public class Principal_controles implements Initializable {
 				newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 				AñadirParticipacionController control = loader.getController();
 
-				control.getLblTitulo().setText("Añadir Participacion");
 				newStage.initModality(Modality.APPLICATION_MODAL);
 
 				newStage.setScene(newScene);
@@ -199,7 +190,6 @@ public class Principal_controles implements Initializable {
 				newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 				AñadirController control = loader.getController();
 
-				control.setLblTitulo("Añadir Evento Olimpico");
 				newStage.initModality(Modality.APPLICATION_MODAL);
 
 				newStage.setScene(newScene);
@@ -215,240 +205,40 @@ public class Principal_controles implements Initializable {
 
 	}
 
-	@FXML
-	void anadirDeporte(ActionEvent event) {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirDeporte.fxml"));
-		Parent root;
-		try {
-			root = loader.load();
-			Scene newScene = new Scene(root);
-			Stage newStage = new Stage();
-			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
-			AñadirDeporteController control = loader.getController();
-			newStage.setResizable(false);
-	        newStage.setMaximized(false);
-			newStage.initModality(Modality.APPLICATION_MODAL);
-			newStage.setScene(newScene);
-			newStage.setTitle("Añadir Deporte");
-			newStage.showAndWait();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
-	@FXML
-	void anadirDeportista(ActionEvent event) {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirDeportista.fxml"));
-		Parent root;
-		try {
-			root = loader.load();
-			Scene newScene = new Scene(root);
-			Stage newStage = new Stage();
-			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
-			AñadirDeportistaController control = loader.getController();
-			newStage.setResizable(false);
-	        newStage.setMaximized(false);
-			newStage.initModality(Modality.APPLICATION_MODAL);
-			newStage.setScene(newScene);
-			newStage.setTitle("Añadir Deportista");
-			newStage.showAndWait();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	@FXML
-	void anadirEquipo(ActionEvent event) {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirEquipo.fxml"));
-		Parent root;
-		try {
-			root = loader.load();
-			Scene newScene = new Scene(root);
-			Stage newStage = new Stage();
-			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
-			AñadirEquipoController control = loader.getController();
-			newStage.setResizable(false);
-	        newStage.setMaximized(false);
-			newStage.initModality(Modality.APPLICATION_MODAL);
-			newStage.setScene(newScene);
-			newStage.setTitle("Añadir Equipo");
-			newStage.showAndWait();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	@FXML
-	void anadirOlimpiada(ActionEvent event) {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirOlimpiada.fxml"));
-		Parent root;
-		try {
-			root = loader.load();
-			Scene newScene = new Scene(root);
-			Stage newStage = new Stage();
-			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
-			AñadirOlimpiadaController control = loader.getController();
-			newStage.setResizable(false);
-	        newStage.setMaximized(false);
-			newStage.initModality(Modality.APPLICATION_MODAL);
-			newStage.setScene(newScene);
-			newStage.setTitle("Añadir Olimpiada");
-			newStage.showAndWait();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
 	@FXML
 	void eliminar(ActionEvent event) {
-		/*	if(cbTabla.getSelectionModel().getSelectedItem().toString().equals("Participacion")) {
-			Deportista dep=new Deportista(tablaParticipacion.getSelectionModel().getSelectedItem().getNomDeportista(),tablaParticipacion.getSelectionModel().getSelectedItem().getSexo(),
-					Integer.parseInt(tablaParticipacion.getSelectionModel().getSelectedItem().getPeso()),Integer.parseInt(tablaParticipacion.getSelectionModel().getSelectedItem().getAltura()));
-			String nom=tablaParticipacion.getSelectionModel().getSelectedItem().getNomEvento().substring(0,tablaParticipacion.getSelectionModel().getSelectedItem().getNomEvento().indexOf(","));
-			String anio=tablaParticipacion.getSelectionModel().getSelectedItem().getNomEvento().substring(tablaParticipacion.getSelectionModel().getSelectedItem().getNomEvento().indexOf(",")+1, tablaParticipacion.getSelectionModel().getSelectedItem().getNomEvento().length());
-			new Evento(nom, anio);
-			
-			pd.eliminarParticipacion(ed.sacarId(nom, anio),dd.bucarId(dep) );
+		if(cbTabla.getSelectionModel().getSelectedItem().toString().equals("Participacion")) {
+
+			Participacion p=tablaParticipacion.getSelectionModel().getSelectedItem();
+			pd.eliminarParticipacion(p);
+			this.info();
 		}else {
-			Evento ev=new Evento(tablaEvento.getSelectionModel().getSelectedItem().getNom_Evento(), tablaEvento.getSelectionModel().getSelectedItem().getNom_Olimpiada());
-			ed.eliminarEvento(ed.sacarId(ev.getNom_Evento(), ev.getNom_Olimpiada()));
-			
-		}
-		listParticipacion = pd.cargarParticipacion();
-		tablaParticipacion.setItems(listParticipacion);
-		listEventos = ed.cargarEvento();
-		tablaEvento.setItems(listEventos);*/
-
-	}
-
-	@FXML
-	void eliminarDeporte(ActionEvent event) {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/lista.fxml"));
-		Parent root;
-		DeporteDao ded=new DeporteDao();
-		try {
-			root = loader.load();
-			Scene newScene = new Scene(root);
-			Stage newStage = new Stage();
-			newStage.setResizable(false);
-	        newStage.setMaximized(false);
-			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
-			listaController control = loader.getController();
-			control.getLblTitulo().setText("Deportes");
-			control.getListObjetos().setItems(ded.sacarDeportes());
-			control.setTipo(2);
-			newStage.initModality(Modality.APPLICATION_MODAL);
-			newStage.setScene(newScene);
-			newStage.setTitle("Deportes");
-			newStage.showAndWait();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+			alert.setHeaderText(null);;
+			alert.setTitle("Eliminar Evento");
+			alert.setContentText("Si eliminas este Evento se eliminara las participaciones relacionadas\n¿Estas seguro?");
+			Optional<ButtonType> result=alert.showAndWait();
+			if(result.get()==ButtonType.OK) {
+				
+				Evento ev=tablaEvento.getSelectionModel().getSelectedItem();
+				ed.eliminarEvento(ev);
+				this.info();
+			}
 		}
 		listParticipacion = pd.cargarParticipacion();
 		tablaParticipacion.setItems(listParticipacion);
 		listEventos = ed.cargarEvento();
 		tablaEvento.setItems(listEventos);
+
 	}
 
-	@FXML
-	void eliminarDeportista(ActionEvent event) {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/lista.fxml"));
-		Parent root;
-		DeportistaDao ded=new DeportistaDao();
-		try {
-			root = loader.load();
-			Scene newScene = new Scene(root);
-			Stage newStage = new Stage();
-			newStage.setResizable(false);
-	        newStage.setMaximized(false);
-			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
-			listaController control = loader.getController();
-			control.getLblTitulo().setText("Deportistas");
-			control.getListObjetos().setItems(ded.sacarDeportistas());
-			control.setTipo(2);
-			newStage.initModality(Modality.APPLICATION_MODAL);
-			newStage.setScene(newScene);
-			newStage.setTitle("Deportistas");
-			newStage.showAndWait();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		listParticipacion = pd.cargarParticipacion();
-		tablaParticipacion.setItems(listParticipacion);
-		listEventos = ed.cargarEvento();
-		tablaEvento.setItems(listEventos);
-	}
 
-	@FXML
-	void eliminarEquipo(ActionEvent event) {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/lista.fxml"));
-		Parent root;
-		EquipoDao eqd=new EquipoDao();
-		try {
-			root = loader.load();
-			Scene newScene = new Scene(root);
-			Stage newStage = new Stage();
-			newStage.setResizable(false);
-	        newStage.setMaximized(false);
-			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
-			listaController control = loader.getController();
-			control.getLblTitulo().setText("Equipos");
-			control.getListObjetos().setItems(eqd.sacarEquipos());
-			control.setTipo(2);
-			newStage.initModality(Modality.APPLICATION_MODAL);
-			newStage.setScene(newScene);
-			newStage.setTitle("Equipos");
-			newStage.showAndWait();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		listParticipacion = pd.cargarParticipacion();
-		tablaParticipacion.setItems(listParticipacion);
-		listEventos = ed.cargarEvento();
-		tablaEvento.setItems(listEventos);
-	}
-
-	@FXML
-	void eliminarOlimpiada(ActionEvent event) {
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/lista.fxml"));
-		Parent root;
-		OlimpiadaDao olD=new OlimpiadaDao();
-		try {
-			root = loader.load();
-			Scene newScene = new Scene(root);
-			Stage newStage = new Stage();
-			newStage.setResizable(false);
-	        newStage.setMaximized(false);
-			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
-			listaController control = loader.getController();
-			control.getLblTitulo().setText("Olimpiadas");
-			control.getListObjetos().setItems(olD.sacarOlimpiada());
-			control.setTipo(2);
-			newStage.initModality(Modality.APPLICATION_MODAL);
-			newStage.setScene(newScene);
-			newStage.setTitle("Olimpiadas");
-			newStage.showAndWait();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		listParticipacion = pd.cargarParticipacion();
-		tablaParticipacion.setItems(listParticipacion);
-		listEventos = ed.cargarEvento();
-		tablaEvento.setItems(listEventos);
-	}
-	
 
 	@FXML
 	void modificar(ActionEvent event) {
-/*		if(tablaEvento.getSelectionModel().getSelectedItem()!=null || tablaParticipacion.getSelectionModel().getSelectedItem()!=null) {
+		if(tablaEvento.getSelectionModel().getSelectedItem()!=null || tablaParticipacion.getSelectionModel().getSelectedItem()!=null) {
 			if (cbTabla.getSelectionModel().getSelectedItem().toString().equals("Participacion")) {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirParticipacion.fxml"));
 				Parent root;
@@ -462,37 +252,16 @@ public class Principal_controles implements Initializable {
 			        newStage.setMaximized(false);
 					newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 					AñadirParticipacionController control = loader.getController();
-					Deportista dep=new Deportista(tablaParticipacion.getSelectionModel().getSelectedItem().getNomDeportista(),tablaParticipacion.getSelectionModel().getSelectedItem().getSexo(),
-							Integer.parseInt(tablaParticipacion.getSelectionModel().getSelectedItem().getPeso()),Integer.parseInt(tablaParticipacion.getSelectionModel().getSelectedItem().getAltura()));
-					//
-					control.getLblTitulo().setText("Modificar Participacion Olimpica");
-					String nom=tablaParticipacion.getSelectionModel().getSelectedItem().getNomEvento().substring(0,tablaParticipacion.getSelectionModel().getSelectedItem().getNomEvento().indexOf(","));
-					String anio=tablaParticipacion.getSelectionModel().getSelectedItem().getNomEvento().substring(tablaParticipacion.getSelectionModel().getSelectedItem().getNomEvento().indexOf(",")+1, tablaParticipacion.getSelectionModel().getSelectedItem().getNomEvento().length());
-					control.getComboDeportista().getSelectionModel().select(dep);
-					control.getTxtEdad().setText(tablaParticipacion.getSelectionModel().getSelectedItem().getEdad()+"");
-					control.getComboEquipo().getSelectionModel().select(new Equipos(tablaParticipacion.getSelectionModel().getSelectedItem().getEquipo()));
-					control.getComboEvento().getSelectionModel().select(new Evento(nom,anio));
-					if(tablaParticipacion.getSelectionModel().getSelectedItem().getMedalla().toLowerCase().equals("oro")) {
-						control.getRbOro().setSelected(true);
-					}else {
-						if(tablaParticipacion.getSelectionModel().getSelectedItem().getMedalla().toLowerCase().equals("plata")) {
-							control.getRbPlata().setSelected(true);
-						}else {
-							if(tablaParticipacion.getSelectionModel().getSelectedItem().getMedalla().toLowerCase().equals("bronze")) {
-								control.getRbBronze().setSelected(true);
-							}else {
-								control.getRbNada().setSelected(true);
-							}
-						}
-					}
-					control.getComboDeportista().setDisable(true);
-					control.getComboEvento().setDisable(true);
-					control.setIdAntiguoDeportista(dep);
 					
-					control.setIdAntiguoEvento(new Evento(nom, anio));
+					Evento evento=tablaParticipacion.getSelectionModel().getSelectedItem().getEv();
+					Participacion p=tablaParticipacion.getSelectionModel().getSelectedItem();
+					
+					control.rellenar(p);
+					
 					//
 					newStage.initModality(Modality.APPLICATION_MODAL);
-
+					String imagePath = getClass().getResource("/images/logo.png").toString();
+					newStage.getIcons().add(new Image(imagePath));
 					newStage.setScene(newScene);
 					newStage.setTitle("Participacion");
 					newStage.showAndWait();
@@ -515,22 +284,13 @@ public class Principal_controles implements Initializable {
 					AñadirController control = loader.getController();
 					
 					//
-					control.setLblTitulo("Modificar Evento Olimpico");
-					control.getTxtNumero1().setText(tablaEvento.getSelectionModel().getSelectedItem().getNom_Evento());
-					control.getComboDeporte().getSelectionModel().select(new Deporte(tablaEvento.getSelectionModel().getSelectedItem().getDepNombre()));
-					control.setId_Olimpiada_Antiguo(new Olimpiada(tablaEvento.getSelectionModel().getSelectedItem().getOlNombre(),
-																	tablaEvento.getSelectionModel().getSelectedItem().getOlAnio(),
-																	tablaEvento.getSelectionModel().getSelectedItem().getOlTemporada(),
-																	tablaEvento.getSelectionModel().getSelectedItem().getOlCiudad()));
-					control.setNomAntiguo(tablaEvento.getSelectionModel().getSelectedItem().getNom_Evento());
 					
-					control.getComboOlimpiada().getSelectionModel().select(new Olimpiada(tablaEvento.getSelectionModel().getSelectedItem().getOlNombre(),
-																						tablaEvento.getSelectionModel().getSelectedItem().getOlAnio(),
-																						tablaEvento.getSelectionModel().getSelectedItem().getOlTemporada(),
-																						tablaEvento.getSelectionModel().getSelectedItem().getOlCiudad()));
+					Evento ev=tablaEvento.getSelectionModel().getSelectedItem();
+					control.rellenar(ev);
 					//
 					newStage.initModality(Modality.APPLICATION_MODAL);
-
+					String imagePath = getClass().getResource("/images/logo.png").toString();
+					newStage.getIcons().add(new Image(imagePath));
 					newStage.setScene(newScene);
 					newStage.setTitle("Evento");
 					newStage.showAndWait();
@@ -545,13 +305,15 @@ public class Principal_controles implements Initializable {
 			tablaParticipacion.setItems(listParticipacion);
 			listEventos = ed.cargarEvento();
 			tablaEvento.setItems(listEventos);
+		}else {
+			this.error("Clica en una de las filas de la tabla para modificar");
 		}
 		
-*/
+
 	}
 
 	@FXML
-	void modificarDeporte(ActionEvent event) {
+	void gestionDeporte(ActionEvent event) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/lista.fxml"));
 		Parent root;
 		DeporteDao ded=new DeporteDao();
@@ -563,12 +325,9 @@ public class Principal_controles implements Initializable {
 	        newStage.setMaximized(false);
 			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			listaController control = loader.getController();
-			control.getLblTitulo().setText("Deportes");
-			control.getListObjetos().setItems(ded.sacarDeportes());
-			control.setTipo(1);
 			newStage.initModality(Modality.APPLICATION_MODAL);
 			newStage.setScene(newScene);
-			newStage.setTitle("Deportes");
+			newStage.setTitle("Gestionar Deportes");
 			newStage.showAndWait();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -581,7 +340,7 @@ public class Principal_controles implements Initializable {
 	}
 
 	@FXML
-	void modificarDeportista(ActionEvent event) {
+	void gestionDeportista(ActionEvent event) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/lista.fxml"));
 		Parent root;
 		DeporteDao ded=new DeporteDao();
@@ -593,12 +352,10 @@ public class Principal_controles implements Initializable {
 	        newStage.setMaximized(false);
 			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			listaController control = loader.getController();
-			control.getLblTitulo().setText("Deportistas");
-			control.getListObjetos().setItems(dd.sacarDeportistas());
-			control.setTipo(1);
+			
 			newStage.initModality(Modality.APPLICATION_MODAL);
 			newStage.setScene(newScene);
-			newStage.setTitle("Deportistas");
+			newStage.setTitle("Gestionar Deportistas");
 			newStage.showAndWait();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -611,7 +368,7 @@ public class Principal_controles implements Initializable {
 	}
 
 	@FXML
-	void modificarEquipo(ActionEvent event) {
+	void gestionEquipo(ActionEvent event) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/lista.fxml"));
 		Parent root;
 		EquipoDao ded=new EquipoDao();
@@ -623,12 +380,10 @@ public class Principal_controles implements Initializable {
 	        newStage.setMaximized(false);
 			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			listaController control = loader.getController();
-			control.getLblTitulo().setText("Equipos");
-			control.getListObjetos().setItems(ded.sacarEquipos());
-			control.setTipo(1);
+			control.rellenar("Equipo");
 			newStage.initModality(Modality.APPLICATION_MODAL);
 			newStage.setScene(newScene);
-			newStage.setTitle("Equipos");
+			newStage.setTitle("Gestionar Equipos");
 			newStage.showAndWait();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -641,10 +396,9 @@ public class Principal_controles implements Initializable {
 	}
 
 	@FXML
-	void modificarOlimpiada(ActionEvent event) {
+	void gestionOlimpiada(ActionEvent event) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/lista.fxml"));
 		Parent root;
-		OlimpiadaDao od=new OlimpiadaDao();
 		try {
 			root = loader.load();
 			Scene newScene = new Scene(root);
@@ -653,12 +407,10 @@ public class Principal_controles implements Initializable {
 	        newStage.setMaximized(false);
 			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			listaController control = loader.getController();
-			control.getLblTitulo().setText("Olimpiadas");
-			control.getListObjetos().setItems(od.sacarOlimpiada());
-			control.setTipo(1);
+			control.rellenar("Olimpiada");
 			newStage.initModality(Modality.APPLICATION_MODAL);
 			newStage.setScene(newScene);
-			newStage.setTitle("Olimpiadas");
+			newStage.setTitle("Gestionar Olimpiadas");
 			newStage.showAndWait();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -676,6 +428,7 @@ public class Principal_controles implements Initializable {
 			ParticipacionDao pd = new ParticipacionDao();
 			listParticipacion = pd.cargarParticipacion();
 			tablaParticipacion.setItems(listParticipacion);
+
 			tablaParticipacion.setVisible(true);
 			tablaEvento.setVisible(false);
 		} else {
@@ -743,35 +496,47 @@ public class Principal_controles implements Initializable {
 		col4Posicion.prefWidthProperty().bind(tablaEvento.widthProperty().multiply(0.14));
 
 		col5Posicion.setCellValueFactory(new PropertyValueFactory<>("OlCiudad"));
-		col5Posicion.prefWidthProperty().bind(tablaEvento.widthProperty().multiply(0.09));
+		col5Posicion.prefWidthProperty().bind(tablaEvento.widthProperty().multiply(0.11));
 
 		col6Posicion.setCellValueFactory(new PropertyValueFactory<>("DepNombre"));
 		col6Posicion.prefWidthProperty().bind(tablaEvento.widthProperty().multiply(0.17));
 
 		// ASIGNAR CAMPOS A LA TABLA Participacion y los tamaños
-		colNomDeportista.setCellValueFactory(new PropertyValueFactory<>("DepNombre"));
-
-		colSexo.setCellValueFactory(new PropertyValueFactory<>("sexo"));
-
-		colPeso.setCellValueFactory(new PropertyValueFactory<>("peso"));
-
-		colAltura.setCellValueFactory(new PropertyValueFactory<>("altura"));
-
+		colNomDeportista.setCellValueFactory(new PropertyValueFactory<>("NomDeportista"));
+		colNomDeportista.prefWidthProperty().bind(tablaEvento.widthProperty().multiply(0.20));
+		
+		colSexo.setCellValueFactory(new PropertyValueFactory<>("SexoDeportista"));
+		colSexo.prefWidthProperty().bind(tablaEvento.widthProperty().multiply(0.08));
+		
+		colPeso.setCellValueFactory(new PropertyValueFactory<>("PesoDeportista"));
+		colPeso.prefWidthProperty().bind(tablaEvento.widthProperty().multiply(0.08));
+		
+		colAltura.setCellValueFactory(new PropertyValueFactory<>("AlturaDeportista"));
+		colAltura.prefWidthProperty().bind(tablaEvento.widthProperty().multiply(0.08));
+		
 		colEdad.setCellValueFactory(new PropertyValueFactory<>("edad"));
-
-		colEquipo.setCellValueFactory(new PropertyValueFactory<>("equipo"));
-
+		colEdad.prefWidthProperty().bind(tablaEvento.widthProperty().multiply(0.08));
+		
+		colEquipo.setCellValueFactory(new PropertyValueFactory<>("NombreEquipo"));
+		colEquipo.prefWidthProperty().bind(tablaEvento.widthProperty().multiply(0.15));
+		
 		colMedalla.setCellValueFactory(new PropertyValueFactory<>("medalla"));
-
-		colEvento.setCellValueFactory(new PropertyValueFactory<>("nomEvento"));
-
+		colMedalla.prefWidthProperty().bind(tablaEvento.widthProperty().multiply(0.15));
+		
+		colEvento.setCellValueFactory(new PropertyValueFactory<>("NomEvento"));
+		colEvento.prefWidthProperty().bind(tablaEvento.widthProperty().multiply(0.20));
+		
 		pd = new ParticipacionDao();
 		// ASIGNAR A LA TABLA UNA LISTA
 		ed = new EventoDao();
 		listEventos = ed.cargarEvento();
+
+//		
 		tablaEvento.setItems(listEventos);
 		
 		dd=new DeportistaDao();
+		//IMAGEN
+		img.setImage(new Image(getClass().getResourceAsStream("/images/portada1.png"),300,100, false, false));
 		
 		//IDIOMAS
 		String idioma = Propiedades.getValor("idioma");
@@ -779,11 +544,27 @@ public class Principal_controles implements Initializable {
 		Locale.setDefault(new Locale(idioma, region));
 		bundle = ResourceBundle.getBundle("idiomas/messages");
 		
-		gp.setVgrow(tablaEvento, Priority.ALWAYS);
-		gp.setHgrow(tablaEvento, Priority.ALWAYS);
-		// gp.setVgrow(gp, Priority.ALWAYS);
 		 
 		 
+	}
+	public void error (String t) {
+
+		Alert alert;
+		String texto=t;
+		alert = new Alert(Alert.AlertType.ERROR);
+		alert.setContentText(texto);
+		alert.setHeaderText(null);
+		alert.setTitle("ERROR");
+		alert.showAndWait();
+	}
+	public void info() {
+
+		Alert alert;
+		alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setContentText("ACCION HECHA CORRECTAMENTE");
+		alert.setHeaderText(null);
+		alert.setTitle("INFO");
+		alert.showAndWait();
 	}
 
 }

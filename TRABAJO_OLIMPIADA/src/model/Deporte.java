@@ -3,21 +3,26 @@ package model;
 import java.util.Objects;
 
 public class Deporte {
-	@Override
-	public String toString() {
-		return deporte;
-	}
 
-	String deporte;
+	private String deporte;
+	private int id;
 	
-	public Deporte(String deporte) {
+	public Deporte(int id,String deporte) {
 		this.deporte = deporte;
+		this.id=id;
+	}
+	
+	public int getId() {
+		return id;
 	}
 
 	public String getDeporte() {
 		return deporte;
 	}
-
+	@Override
+	public String toString() {
+		return deporte;
+	}
 	@Override
 	public int hashCode() {
 		return Objects.hash(deporte);

@@ -3,22 +3,24 @@ package model;
 import java.util.Objects;
 
 public class Olimpiada {
-	@Override
-	public String toString() {
-		return nombre;
-	}
 
-	String nombre,temporada,ciudad;
-	int anio;
+
+	private String nombre,temporada,ciudad;
+	private int anio, id;
+
 	
-	
-	public Olimpiada(String nombre, int anio, String temporada, String ciudad) {
+	public Olimpiada(int id,String nombre, int anio, String temporada, String ciudad) {
 		this.nombre = nombre;
 		this.anio = anio;
 		this.temporada = temporada;
 		this.ciudad = ciudad;
+		this.id=id;
 	}
 	
+	public int getId() {
+		return id;
+	}
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -34,12 +36,15 @@ public class Olimpiada {
 	public String getCiudad() {
 		return ciudad;
 	}
-
+	@Override
+	public String toString() {
+		return nombre;
+	}
 	@Override
 	public int hashCode() {
 		return Objects.hash(nombre);
 	}
-
+	//LO COMPARO SOLO CON EL NOMBRE PORQUE EN EL NOMBRE YA TIENE EL AÑO Y LA TEMPORADA
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

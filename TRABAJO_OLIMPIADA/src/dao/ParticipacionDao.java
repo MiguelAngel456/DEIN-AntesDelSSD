@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import conexionBD.ConexionDB;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.Deporte;
+import model.Deportista;
+import model.Equipos;
 import model.Evento;
 import model.Olimpiada;
 import model.Participacion;
@@ -18,7 +21,9 @@ public class ParticipacionDao {
 	public ObservableList<Participacion> cargarParticipacion()   {
 		ObservableList<Participacion> arrParticipacion=FXCollections.observableArrayList();
 		String sql;
-		 sql = "SELECT * FROM Participacion a, Evento e, Deportista o, Equipo d, Olimpiada ol  WHERE a.id_evento = e.id_evento AND a.id_deportista = o.id_deportista AND a.id_equipo = d.id_equipo AND ol.id_olimpiada = e.id_olimpiada;";
+		 sql = "SELECT * FROM Participacion a, Evento e, Deportista o, Equipo d, Olimpiada ol, Deporte de  "
+		 		+ "WHERE a.id_evento = e.id_evento AND a.id_deportista = o.id_deportista "
+		 		+ "AND a.id_equipo = d.id_equipo AND ol.id_olimpiada = e.id_olimpiada AND de.id_deporte = e.id_deporte;";
          
 
 		try {
@@ -30,24 +35,45 @@ public class ParticipacionDao {
 	         ResultSet rs = ps.executeQuery();
 	         while (rs.next()) {
 	         	//sacar datos del deportista para la tabla
-	         	String nom_Deportista=rs.getString("o.nombre");
+	         	int id_deportista=rs.getInt("o.id_deportista");
+	        	String nom_Deportista=rs.getString("o.nombre");
 	         	String sexo_Deportista=rs.getString("o.sexo");
-	         	String peso_Deportista=rs.getString("o.peso");
-	         	String altura_Deportista=rs.getString("o.altura");
+	         	int peso_Deportista=rs.getInt("o.peso");
+	         	int altura_Deportista=rs.getInt("o.altura");
 	         	
 	         	//sacar datos del equipo para la tabla
+	         	int id_equipo=rs.getInt("d.id_equipo");
 	         	String nom_Equipo=rs.getString("d.nombre");
-
+	         	String iniciales=rs.getString("d.iniciales");
 	         	
 	         	//sacar datos del evento para la tabla
-	         	String nom_evento=rs.getString("e.nombre")+","+rs.getString("ol.nombre");
+	         	String nom_evento=rs.getString("e.nombre")/*+","+rs.getString("ol.nombre")*/;
+	         	int id_evento=rs.getInt("id_evento");
+	         	
+	         	//sacar datos de la olimpiada para el evento
+	         	int id_Olimpiada=rs.getInt("id_olimpiada");
+	         	String nom_Olimpiada=rs.getString("ol.nombre");
+	         	int anio_ol=rs.getInt("ol.anio");
+	         	String temporada=rs.getString("ol.temporada");
+	         	String ciudad=rs.getString("ol.ciudad");
+	         	//sacar datos del deporte para el evento
+	         	int id_deporte=rs.getInt("de.id_deporte");
+	         	String nom_deporte=rs.getString("de.nombre");
 	         	
 	         	//sacar datos de la participacion para la tabla
 	         	int edad_Participacion=rs.getInt("a.edad");
 	         	String medalla_Participacion=rs.getString("a.medalla");
 	         	
+	         	//crear los Objetos
+	         	
+	         	Deporte depo=new Deporte(id_deporte, nom_deporte);
+	         	Olimpiada ol=new Olimpiada(id_Olimpiada, nom_Olimpiada, anio_ol, temporada, ciudad);
+	         	Evento ev=new Evento(id_evento, nom_evento, ol, depo);
+	         
+	         	Deportista dep=new Deportista(id_deportista, nom_Deportista, sexo_Deportista, peso_Deportista, altura_Deportista);
+	         	Equipos eq=new Equipos(id_equipo,nom_Equipo, iniciales);
 	         	//crear el Participacion
-	         	Participacion par=new Participacion(nom_Deportista, sexo_Deportista, peso_Deportista, altura_Deportista, edad_Participacion, medalla_Participacion, nom_Equipo, nom_evento);
+	         	Participacion par=new Participacion(dep, edad_Participacion, medalla_Participacion, eq, ev);
 	         	arrParticipacion.add(par);
 	         }
 	         rs.close();
@@ -68,7 +94,9 @@ public class ParticipacionDao {
 	public ObservableList<Participacion> FiltrarParticipacion(boolean inv, boolean veran)   {
 		ObservableList<Participacion> arrParticipacion=FXCollections.observableArrayList();
 		String sql;
-		 sql = "SELECT * FROM Participacion a, Evento e, Deportista o, Equipo d, Olimpiada f WHERE e.id_olimpiada = f.id_olimpiada AND a.id_evento = e.id_evento AND a.id_deportista = o.id_deportista AND a.id_equipo = d.id_equipo;";
+		 sql = "SELECT * FROM Participacion a, Evento e, Deportista o, Equipo d, Olimpiada f "
+		 		+ "WHERE e.id_olimpiada = f.id_olimpiada AND a.id_evento = e.id_evento AND a.id_deportista = o.id_deportista "
+		 		+ "AND a.id_equipo = d.id_equipo;";
          
 
 		try {
@@ -80,36 +108,46 @@ public class ParticipacionDao {
 	        ResultSet rs = ps.executeQuery();
 	        
 	        while (rs.next()) {
+	        	
+	        	
 	        	String temp_evento=rs.getString("f.temporada");
-	        	System.out.println(temp_evento);
 	         	//sacar datos del deportista para la tabla
+	        	
+	        	int id_deportista=rs.getInt("o.id_deportista");
 	         	String nom_Deportista=rs.getString("o.nombre");
 	         	String sexo_Deportista=rs.getString("o.sexo");
-	         	String peso_Deportista=rs.getString("o.peso");
-	         	String altura_Deportista=rs.getString("o.altura");
+	         	int peso_Deportista=rs.getInt("o.peso");
+	         	int altura_Deportista=rs.getInt("o.altura");
+	         	Deportista dep=new Deportista(id_deportista, nom_Deportista, sexo_Deportista, peso_Deportista, altura_Deportista);
 	         	
 	         	//sacar datos del equipo para la tabla
+	         	int id_equipo=rs.getInt("d.id_equipo");
 	         	String nom_Equipo=rs.getString("d.nombre");
-
+	         	String iniciales=rs.getString("d.iniciales");
+	         	Equipos eq= new Equipos(id_equipo, nom_Equipo, iniciales);
 	         	
 	         	//sacar datos del evento para la tabla
+	         	int id_evento=rs.getInt("e.id_evento");
 	         	String nom_evento=rs.getString("e.nombre");
+	         	Evento ev=new Evento(id_evento, nom_evento);
 	         	
 	         	//sacar datos de la participacion para la tabla
+	         	
 	         	int edad_Participacion=rs.getInt("a.edad");
 	         	String medalla_Participacion=rs.getString("a.medalla");
+	         	
 
 	         	//crear el Participacion
 	         	if((inv==true && temp_evento.equals("Winter")) && veran==false) {
-	         		Participacion par=new Participacion(nom_Deportista, sexo_Deportista, peso_Deportista, altura_Deportista, edad_Participacion, medalla_Participacion, nom_Equipo, nom_evento);
+	         		Participacion par=new Participacion(dep, edad_Participacion, medalla_Participacion, eq, ev);
 	         		arrParticipacion.add(par);
 	         	}else {
 	         		if((veran==true && temp_evento.equals("Summer")) && inv==false) {
-		         		Participacion par=new Participacion(nom_Deportista, sexo_Deportista, peso_Deportista, altura_Deportista, edad_Participacion, medalla_Participacion, nom_Equipo, nom_evento);
-		         		arrParticipacion.add(par);
+	         			Participacion par=new Participacion(dep, edad_Participacion, medalla_Participacion, eq, ev);
+	         			arrParticipacion.add(par);
 		         	}else {
 		         		if(veran==true && inv==true) {
-		         			Participacion par=new Participacion(nom_Deportista, sexo_Deportista, peso_Deportista, altura_Deportista, edad_Participacion, medalla_Participacion, nom_Equipo, nom_evento);
+		         			Participacion par=new Participacion(dep, edad_Participacion, medalla_Participacion, eq, ev);
 		         			arrParticipacion.add(par);
 		         		}
 
@@ -133,16 +171,17 @@ public class ParticipacionDao {
 		return arrParticipacion;
 		
 	}
-	public boolean anadirParticipacion(int edad,String medalla,int id_deportita,int id_evento, int id_equipo) {
+	public boolean anadirParticipacion(Participacion p) {
 		try {
 			conexion = new ConexionDB();
 	        Connection con = conexion.getConexion();
 			PreparedStatement pst = con.prepareStatement("insert into Participacion (id_deportista, id_evento, id_equipo, edad, medalla) values(?,?,?,?,?)");
-			pst.setInt(1, id_deportita);
-			pst.setInt(2, id_evento);
-			pst.setInt(3, id_equipo);
-			pst.setInt(4, edad);
-			pst.setString(5, medalla);
+			
+			pst.setInt(1, p.getDep().getId_deportista());
+			pst.setInt(2, p.getEv().getId_evento());
+			pst.setInt(3, p.getEq().getId_equipo());
+			pst.setInt(4, p.getEdad());
+			pst.setString(5, p.getMedalla());
 			
 			
 			pst.execute();
@@ -155,17 +194,21 @@ public class ParticipacionDao {
 		}
 		return false;
 	}
-	public boolean modificarParticipacion(int edad,String medalla,int id_deportita,int id_evento, int id_equipo, int idEvento_Antiguo, int idDeportista_Antiguo) {
+	public boolean modificarParticipacion(Participacion p, int idEvento_Antiguo, int idDeportista_Antiguo) {
 		try {
 			conexion = new ConexionDB();
 			Connection con = conexion.getConexion();
-			PreparedStatement pst = con.prepareStatement("update Participacion set id_deportista=?, id_evento=?, id_equipo=?, edad=?, medalla=? where id_evento='"+idEvento_Antiguo+"' "
-														+ "AND id_deportista='"+idDeportista_Antiguo+"';");
-			pst.setInt(1, id_deportita);
-	    	pst.setInt(2, id_evento);
-	    	pst.setInt(3, id_equipo);
-	    	pst.setInt(4, edad);
-	    	pst.setString(5, medalla);
+			System.out.println(idEvento_Antiguo);
+			PreparedStatement pst = con.prepareStatement("update Participacion set id_deportista=?, id_evento=?, id_equipo=?, edad=?, medalla=? where id_evento= ? "
+														+ "AND id_deportista= ?;");
+			pst.setInt(1, p.getDep().getId_deportista());
+	    	pst.setInt(2, p.getEv().getId_evento());
+	    	pst.setInt(3, p.getEq().getId_equipo());
+	    	pst.setInt(4, p.getEdad());
+	    	pst.setString(5, p.getMedalla());
+	    	
+	    	pst.setInt(6, idEvento_Antiguo);
+	    	pst.setInt(7, idDeportista_Antiguo);
 	    	pst.execute();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -175,15 +218,14 @@ public class ParticipacionDao {
 		return false;
 		
 	}
-	public boolean eliminarParticipacion(int idEvento_Antiguo, int idDeportista_Antiguo) {
+	public boolean eliminarParticipacion(Participacion p) {
 		try {
 			conexion = new ConexionDB();
 			Connection con = conexion.getConexion();
-			System.out.println(idEvento_Antiguo+"---------"+idDeportista_Antiguo);
 			PreparedStatement pst = con.prepareStatement("DELETE FROM Participacion WHERE (id_evento = ?) AND (id_deportista = ?);");
 
-			pst.setInt(1, idEvento_Antiguo);
-			pst.setInt(2, idDeportista_Antiguo);
+			pst.setInt(1, p.getEv().getId_evento());
+			pst.setInt(2, p.getDep().getId_deportista());
 	    	pst.execute();
 	    	return true;
 		} catch (SQLException e) {
