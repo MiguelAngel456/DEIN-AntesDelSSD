@@ -168,9 +168,10 @@ public class Principal_controles implements Initializable {
 				AñadirParticipacionController control = loader.getController();
 
 				newStage.initModality(Modality.APPLICATION_MODAL);
-
+				String imagePath = getClass().getResource("/images/logo.png").toString();
+				newStage.getIcons().add(new Image(imagePath));
 				newStage.setScene(newScene);
-				newStage.setTitle("Participacion");
+				newStage.setTitle("Añadir Participacion");
 				newStage.showAndWait();
 				listParticipacion = pd.cargarParticipacion();
 				tablaParticipacion.setItems(listParticipacion);
@@ -191,9 +192,10 @@ public class Principal_controles implements Initializable {
 				AñadirController control = loader.getController();
 
 				newStage.initModality(Modality.APPLICATION_MODAL);
-
+				String imagePath = getClass().getResource("/images/logo.png").toString();
+				newStage.getIcons().add(new Image(imagePath));
 				newStage.setScene(newScene);
-				newStage.setTitle("Evento");
+				newStage.setTitle("Añadir Evento");
 				newStage.showAndWait();
 				listEventos = ed.cargarEvento();
 				tablaEvento.setItems(listEventos);
@@ -263,7 +265,7 @@ public class Principal_controles implements Initializable {
 					String imagePath = getClass().getResource("/images/logo.png").toString();
 					newStage.getIcons().add(new Image(imagePath));
 					newStage.setScene(newScene);
-					newStage.setTitle("Participacion");
+					newStage.setTitle("Modificar Participacion");
 					newStage.showAndWait();
 					listParticipacion = pd.cargarParticipacion();
 					tablaParticipacion.setItems(listParticipacion);
@@ -292,7 +294,7 @@ public class Principal_controles implements Initializable {
 					String imagePath = getClass().getResource("/images/logo.png").toString();
 					newStage.getIcons().add(new Image(imagePath));
 					newStage.setScene(newScene);
-					newStage.setTitle("Evento");
+					newStage.setTitle("Modificar Evento");
 					newStage.showAndWait();
 					listEventos = ed.cargarEvento();
 					tablaEvento.setItems(listEventos);
@@ -325,7 +327,10 @@ public class Principal_controles implements Initializable {
 	        newStage.setMaximized(false);
 			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			listaController control = loader.getController();
+			control.rellenar("Deportes");
 			newStage.initModality(Modality.APPLICATION_MODAL);
+			String imagePath = getClass().getResource("/images/logo.png").toString();
+			newStage.getIcons().add(new Image(imagePath));
 			newStage.setScene(newScene);
 			newStage.setTitle("Gestionar Deportes");
 			newStage.showAndWait();
@@ -352,14 +357,16 @@ public class Principal_controles implements Initializable {
 	        newStage.setMaximized(false);
 			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			listaController control = loader.getController();
-			
+			control.rellenar("Deportistas");
 			newStage.initModality(Modality.APPLICATION_MODAL);
+			String imagePath = getClass().getResource("/images/logo.png").toString();
+			newStage.getIcons().add(new Image(imagePath));
 			newStage.setScene(newScene);
 			newStage.setTitle("Gestionar Deportistas");
 			newStage.showAndWait();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			this.error(e.getMessage());
 		}
 		listParticipacion = pd.cargarParticipacion();
 		tablaParticipacion.setItems(listParticipacion);
@@ -381,6 +388,8 @@ public class Principal_controles implements Initializable {
 			newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
 			listaController control = loader.getController();
 			control.rellenar("Equipo");
+			String imagePath = getClass().getResource("/images/logo.png").toString();
+			newStage.getIcons().add(new Image(imagePath));
 			newStage.initModality(Modality.APPLICATION_MODAL);
 			newStage.setScene(newScene);
 			newStage.setTitle("Gestionar Equipos");
@@ -409,6 +418,8 @@ public class Principal_controles implements Initializable {
 			listaController control = loader.getController();
 			control.rellenar("Olimpiada");
 			newStage.initModality(Modality.APPLICATION_MODAL);
+			String imagePath = getClass().getResource("/images/logo.png").toString();
+			newStage.getIcons().add(new Image(imagePath));
 			newStage.setScene(newScene);
 			newStage.setTitle("Gestionar Olimpiadas");
 			newStage.showAndWait();

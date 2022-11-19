@@ -19,143 +19,117 @@ public class DeportistaDao {
 private ConexionDB conexion;
 	
 	//PARA AÑDIR FILAS A LA TABLA DEPORTE
-	public boolean anadirDeporte(Deportista d) {
-		try {
-			conexion = new ConexionDB();
-	        Connection con = conexion.getConexion();
-			PreparedStatement pst = con.prepareStatement("insert into Deportista (nombre,sexo,peso,altura,foto) values(?,?,?,?,?)");
-			
-			pst.setString(1, d.getNombre());
-			pst.setString(2, d.getSexo());
-			pst.setInt(3, d.getPeso());
-			pst.setInt(4, d.getAltura());
-			pst.setString(5, null);
-			
-			pst.execute();
-			con.close();
-			pst.close();
-			return true;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public boolean anadirDeporte(Deportista d) throws SQLException {
+		boolean bien=false;
+		conexion = new ConexionDB();
+        Connection con = conexion.getConexion();
+		PreparedStatement pst = con.prepareStatement("insert into Deportista (nombre,sexo,peso,altura,foto) values(?,?,?,?,?)");
+		
+		pst.setString(1, d.getNombre());
+		pst.setString(2, d.getSexo());
+		pst.setInt(3, d.getPeso());
+		pst.setInt(4, d.getAltura());
+		pst.setString(5, null);
+		
+		pst.execute();
+		con.close();
+		pst.close();
+		bien= true;
+
 		
 		
 		
-		return false;
+		return bien;
 	}
-	public 	ObservableList<Deportista> sacarDeportistas() {
+	public 	ObservableList<Deportista> sacarDeportistas() throws SQLException {
 		ObservableList<Deportista> arr=FXCollections.observableArrayList();
         String sql;
-		
-        try {
-            conexion = new ConexionDB();
-            Connection con = conexion.getConexion();
-            sql="SELECT * FROM olimpiadas.Deportista;";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-            	//sacar datos 
-            	int id=rs.getInt("id_deportista");
-            	String nom=rs.getString("nombre");
-            	String sexo=rs.getString("sexo");
-            	int peso=rs.getInt("peso");
-            	int altura=rs.getInt("altura");
-            	//crear el evento
-            	Deportista dep=new Deportista(id,nom, sexo, peso, altura);
-            	arr.add(dep);
-            	
-            }
-            return arr;
-            
-        }catch (SQLException e) {
-			// TODO: handle exception
-		}
+        conexion = new ConexionDB();
+        Connection con = conexion.getConexion();
+        sql="SELECT * FROM olimpiadas.Deportista;";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+        	//sacar datos 
+        	int id=rs.getInt("id_deportista");
+        	String nom=rs.getString("nombre");
+        	String sexo=rs.getString("sexo");
+        	int peso=rs.getInt("peso");
+        	int altura=rs.getInt("altura");
+        	//crear el evento
+        	Deportista dep=new Deportista(id,nom, sexo, peso, altura);
+        	arr.add(dep);
+        	
+        }
         return arr;
 	}
-	public int bucarId(Deportista d) {
-		try {
-			conexion = new ConexionDB();
-			Connection con = conexion.getConexion();
-			//System.out.println(d.getDeporte());
-			String sql = "SELECT * FROM Deportista WHERE nombre='"+d.getNombre()+"';";
-			 
-			PreparedStatement ps = con.prepareStatement(sql);
-	        ResultSet rs = ps.executeQuery();
-		        int id=0;
-		        while(rs.next()) {
-		        	id=rs.getInt("id_deportista");
-		        }
-		        
-	        //CERRAR IMPORTANTE
-	        rs.close();
-	        ps.close();
-	        con.close();
-	        return id;
-	       
-	        
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 0;
-	}
-	public boolean modificarDeportista(Deportista d, String nomAnt) {
-		try {
-			conexion = new ConexionDB();
-	        Connection con = conexion.getConexion();
-	      
-	    	PreparedStatement pst;
-	    	
-			pst = con.prepareStatement("update Deportista set nombre=?, sexo=?, peso=?, altura=? where nombre='"+nomAnt+"'");
-	    	pst.setString(1, d.getNombre());
-	    	pst.setString(2, d.getSexo());
-	    	pst.setInt(3, d.getPeso());
-	    	pst.setInt(4, d.getAltura());
-	    	pst.execute();
-	    	con.close();
-	    	pst.close();
-	    	return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	
+	public boolean modificarDeportista(Deportista d) throws SQLException {
+		boolean bien=false;
+		conexion = new ConexionDB();
+        Connection con = conexion.getConexion();
+      
+    	PreparedStatement pst;
+    	
+		pst = con.prepareStatement("update Deportista set nombre=?, sexo=?, peso=?, altura=? where id_deportista= ?");
+    	pst.setString(1, d.getNombre());
+    	pst.setString(2, d.getSexo());
+    	pst.setInt(3, d.getPeso());
+    	pst.setInt(4, d.getAltura());
+    	pst.setInt(5, d.getId_deportista());
+    	pst.execute();
+    	con.close();
+    	pst.close();
+    	bien= true;
+
 
 		
-		return false;
+		return bien;
 	}
-	public boolean eliminarDeportista(int idDeportista) {
-		try {
-			conexion = new ConexionDB();
-	        Connection con = conexion.getConexion();
-	    	PreparedStatement pst;
-	    	String sql = "SELECT * FROM Participacion WHERE id_deportista='"+idDeportista+"' ;";
-            pst = con.prepareStatement(sql);
-            ResultSet rs = pst.executeQuery();
-            while(rs.next()) {
-            	
-            	
-            	pst = con.prepareStatement("DELETE FROM Participacion WHERE (id_deportista = '"+idDeportista+"');");
-    			//pst.setInt(1, idEvento);
-    	    	pst.execute();
-            	
-            	
-
-	    	}
-            //*****************************************************************
-    		pst = con.prepareStatement("DELETE FROM  Deportista WHERE (id_deportista = '"+idDeportista+"');");
-			//pst.setInt(1, idEvento);
+	public boolean eliminarDeportista(Deportista d) throws SQLException {
+		boolean bien=false;
+		conexion = new ConexionDB();
+        Connection con = conexion.getConexion();
+    	PreparedStatement pst;
+    	String sql = "SELECT * FROM Participacion WHERE id_deportista= ? ;";
+        pst = con.prepareStatement(sql);
+        pst.setInt(1, d.getId_deportista());
+        ResultSet rs = pst.executeQuery();
+        while(rs.next()) {
+        	pst = con.prepareStatement("DELETE FROM Participacion WHERE (id_deportista = ?);");
+			pst.setInt(1, d.getId_deportista());
 	    	pst.execute();
-	    	//*********************************************
+        }
+        //*****************************************************************
+		pst = con.prepareStatement("DELETE FROM  Deportista WHERE (id_deportista = ?);");
+		pst.setInt(1, d.getId_deportista());
+    	pst.execute();
+    	//*********************************************
 
-            
-	    	con.close();
-	    	pst.close();
-	    	return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+        
+    	con.close();
+    	pst.close();
+    	bien= true;
 
+		return bien;
+	}
+	public int ultimoId() throws SQLException {
+		int id=0;
+	
+		conexion = new ConexionDB();
+		Connection con = conexion.getConexion();
 		
-		return false;
+		String sql = "SELECT max(id_deportista) FROM olimpiadas.Deportista;";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()) {
+        	 id=rs.getInt("max(id_deportista)");
+        }
+       
+        rs.close();
+        ps.close();
+        con.close();
+
+		return id;
 	}
 }

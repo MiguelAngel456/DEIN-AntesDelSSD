@@ -52,6 +52,7 @@ public class Deportista {
 	public int hashCode() {
 		return Objects.hash(nombre);
 	}
+	//COMPARO POR NMBRE PORQUE NO HAY 2 DEPORTISTAS QUE TENGAN EL MISMO NOMBRE
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

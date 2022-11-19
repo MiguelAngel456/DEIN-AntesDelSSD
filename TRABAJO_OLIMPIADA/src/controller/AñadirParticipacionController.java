@@ -16,6 +16,7 @@ import model.Participacion;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import dao.DeportistaDao;
@@ -103,11 +104,11 @@ public class AñadirParticipacionController implements Initializable{
 				int edad=Integer.parseInt(txtEdad.getText());
 				Participacion p=new Participacion(dep, edad, med, equip, ev);
 				pd.anadirParticipacion(p);
-				info(btnAceptar.getScene().getWindow());
+				info();
 				Stage stage = (Stage) btnAceptar.getScene().getWindow();
 				stage.close();
 			}else {
-				error(btnAceptar.getScene().getWindow());
+				error();
 			}
 			
 		}else {
@@ -115,11 +116,11 @@ public class AñadirParticipacionController implements Initializable{
 				int edad=Integer.parseInt(txtEdad.getText());
 				Participacion p=new Participacion(dep, edad, med, equip, ev);
 				pd.modificarParticipacion(p, this.antiguoIdEvento, this.antiguoIdDeportista);
-				info(btnAceptar.getScene().getWindow());
+				info();
 				Stage stage = (Stage) btnAceptar.getScene().getWindow();
 				stage.close();
 			}else{
-				error(btnAceptar.getScene().getWindow());
+				error();
 			}
 				
 			
@@ -145,7 +146,12 @@ public class AñadirParticipacionController implements Initializable{
 		evd=new EventoDao();
 		eqd=new EquipoDao();
 		dd=new DeportistaDao();
-		listDepo=dd.sacarDeportistas();
+		try {
+			listDepo=dd.sacarDeportistas();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			error("Error en el sql");
+		}
 
 		comboDeportista.setItems(listDepo);
 		comboEvento.setItems(evd.cargarEvento());
@@ -200,7 +206,7 @@ public class AñadirParticipacionController implements Initializable{
 		
 		return fallo;
 	}
-	public void error (Window win) {
+	public void error () {
 
 		Alert alert;
 		String texto=comprobar();
@@ -210,7 +216,17 @@ public class AñadirParticipacionController implements Initializable{
 		alert.setTitle("ERROR");
 		alert.showAndWait();
 	}
-	public void info(Window win) {
+	public void error (String t) {
+
+		Alert alert;
+		String texto=t;
+		alert = new Alert(Alert.AlertType.ERROR);
+		alert.setContentText(texto);
+		alert.setHeaderText(null);
+		alert.setTitle("ERROR");
+		alert.showAndWait();
+	}
+	public void info() {
 
 		Alert alert;
 		alert = new Alert(Alert.AlertType.INFORMATION);

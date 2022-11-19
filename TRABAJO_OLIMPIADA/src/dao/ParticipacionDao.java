@@ -47,7 +47,7 @@ public class ParticipacionDao {
 	         	String iniciales=rs.getString("d.iniciales");
 	         	
 	         	//sacar datos del evento para la tabla
-	         	String nom_evento=rs.getString("e.nombre")/*+","+rs.getString("ol.nombre")*/;
+	         	String nom_evento=rs.getString("e.nombre");
 	         	int id_evento=rs.getInt("id_evento");
 	         	
 	         	//sacar datos de la olimpiada para el evento

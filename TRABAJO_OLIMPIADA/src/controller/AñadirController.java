@@ -93,12 +93,12 @@ public class AñadirController implements Initializable {
 					// AÑADIR EVENTO
 					ed.anadirEvento(ev);
 					// PARA QUE SE CIERRE AL DARLE ACEPTAR
-					info(btnAceptar.getScene().getWindow());
+					info();
 					Stage stage = (Stage) btnAceptar.getScene().getWindow();
 					stage.close();
 					
 				}else {
-					error(btnAceptar.getScene().getWindow());
+					error();
 				}
 
 			}
@@ -115,11 +115,11 @@ public class AñadirController implements Initializable {
 					// MODIFICAR EVENTO
 					ed.modificarEvento(ev);
 					// PARA QUE SE CIERRE AL DARLE ACEPTAR
-					info(btnAceptar.getScene().getWindow());
+					info();
 					Stage stage = (Stage) btnAceptar.getScene().getWindow();
 					stage.close();
 				}else {
-					this.error(btnAceptar.getScene().getWindow());
+					this.error();
 				}
 				
 			}
@@ -127,15 +127,7 @@ public class AñadirController implements Initializable {
 		}
 
 	}
-
-	public ComboBox<Deporte> getComboDeporte() {
-		return comboDeporte;
-	}
-
-	public ComboBox<Olimpiada> getComboOlimpiada() {
-		return comboOlimpiada;
-	}
-	public void info(Window win) {
+	public void info() {
 		Alert alert;
 		alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.setContentText("ACCION HECHA CORRECTAMENTE");
@@ -160,7 +152,12 @@ public class AñadirController implements Initializable {
 		dp = new DeporteDao();
 		ed = new EventoDao();
 		od = new OlimpiadaDao();
-		this.comboDeporte.setItems(dp.sacarDeportes());
+		try {
+			this.comboDeporte.setItems(dp.sacarDeportes());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			this.error("Error en el sql");
+		}
 		this.comboOlimpiada.setItems(od.sacarOlimpiada());
 		if(lblTitulo.getText().equals("Añadir Evento Olimpico")){
 			comboDeporte.getSelectionModel().select(0);
@@ -194,9 +191,18 @@ public class AñadirController implements Initializable {
 		
 		return fallo;
 	}
-	public void error (Window win) {
+	public void error () {
 		Alert alert;
 		String texto=comprobar();
+		alert = new Alert(Alert.AlertType.ERROR);
+		alert.setContentText(texto);
+		alert.setHeaderText(null);
+		alert.setTitle("ERROR");
+		alert.showAndWait();
+	}
+	public void error (String t) {
+		Alert alert;
+		String texto=t;
 		alert = new Alert(Alert.AlertType.ERROR);
 		alert.setContentText(texto);
 		alert.setHeaderText(null);

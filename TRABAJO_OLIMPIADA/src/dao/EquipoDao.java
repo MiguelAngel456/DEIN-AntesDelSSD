@@ -16,27 +16,21 @@ public class EquipoDao {
 private ConexionDB conexion;
 	
 	//PARA AÑDIR FILAS A LA TABLA DEPORTE
-	public boolean anadirEquipo(Equipos e) {
-		try {
-			conexion = new ConexionDB();
-	        Connection con = conexion.getConexion();
-			PreparedStatement pst = con.prepareStatement("insert into Equipo (nombre,iniciales) values(?,?)");
+	public boolean anadirEquipo(Equipos e) throws SQLException {
+		boolean bien=false;
+		conexion = new ConexionDB();
+	    Connection con = conexion.getConexion();
+		PreparedStatement pst = con.prepareStatement("insert into Equipo (nombre,iniciales) values(?,?)");
 			
-			pst.setString(1, e.getNombre());
-			pst.setString(2, e.getIniciales());
+		pst.setString(1, e.getNombre());
+		pst.setString(2, e.getIniciales());
 
-			pst.execute();
-			con.close();
-			pst.close();
-			return true;
-		} catch (SQLException f) {
-			// TODO Auto-generated catch block
-			f.printStackTrace();
-		}
-		
-		
-		
-		return false;
+		pst.execute();
+		con.close();
+		pst.close();
+		bien=true;
+
+		return bien;
 	}
 
 	
@@ -69,44 +63,18 @@ private ConexionDB conexion;
 		}
         return arr;
 	}
-	public int bucarId(Equipos d) {
-		try {
-			conexion = new ConexionDB();
-			Connection con = conexion.getConexion();
-			//System.out.println(d.getDeporte());
-			String sql = "SELECT * FROM Equipo WHERE nombre='"+d.getNombre()+"';";
-			 
-			PreparedStatement ps = con.prepareStatement(sql);
-	        ResultSet rs = ps.executeQuery();
-	        int id=0;
-	        while(rs.next()) {
-	        	id=rs.getInt("id_equipo");;
-	        }
-	        
-	        
-	        //CERRAR IMPORTANTE
-	        rs.close();
-	        ps.close();
-	        con.close();
-	        return id;
-	       
-	        
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 0;
-	}
-	public boolean modificarEquipo(Equipos d, String nomAnt) {
+
+	public boolean modificarEquipo(Equipos d) {
 		try {
 			conexion = new ConexionDB();
 	        Connection con = conexion.getConexion();
 	      
 	    	PreparedStatement pst;
 	    	
-			pst = con.prepareStatement("update Equipo set nombre=?, iniciales=? where nombre='"+nomAnt+"'");
+			pst = con.prepareStatement("update Equipo set nombre=?, iniciales=? where id_equipo = ?");
 	    	pst.setString(1, d.getNombre());
 	    	pst.setString(2, d.getIniciales());
+	    	pst.setInt(3, d.getId_equipo());
 	    	pst.execute();
 	    	con.close();
 	    	pst.close();
@@ -118,32 +86,55 @@ private ConexionDB conexion;
 		
 		return false;
 	}
-	public boolean eliminarEquipo(int idEquipo) {
-		try {
+	public boolean eliminarEquipo(Equipos eq) throws SQLException {
+		boolean bien=false;
 			conexion = new ConexionDB();
 	        Connection con = conexion.getConexion();
 	    	PreparedStatement pst;
 
-	    	String sql = "SELECT * FROM Participacion WHERE id_equipo='"+idEquipo+"' ;";
+	    	String sql = "SELECT * FROM Participacion WHERE id_equipo= ? ;";
             pst = con.prepareStatement(sql);
+            pst.setInt(1, eq.getId_equipo());
             ResultSet rs = pst.executeQuery();
             while(rs.next()) {
-            	pst = con.prepareStatement("DELETE FROM Participacion WHERE (id_equipo = '"+idEquipo+"');");
+            	pst = con.prepareStatement("DELETE FROM Participacion WHERE (id_equipo = ?);");
+            	pst.setInt(1, eq.getId_equipo());
     	    	pst.execute();
 	    	}
             //*****************************************************************
-	    	sql = "DELETE FROM Equipo WHERE (id_equipo = '"+idEquipo+"');";
+	    	sql = "DELETE FROM Equipo WHERE (id_equipo = ?);";
             pst = con.prepareStatement(sql);
+            pst.setInt(1, eq.getId_equipo());
             pst.execute();
             
 	    	con.close();
 	    	pst.close();
-	    	return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	    	bien= true;
+		
 
 		
-		return false;
+		return bien;
+	}
+	public int ultimoId() {
+		int id=0;
+		try {
+			conexion = new ConexionDB();
+			Connection con = conexion.getConexion();
+			
+			String sql = "SELECT max(id_equipo) FROM olimpiadas.Equipo;";
+	        PreparedStatement ps = con.prepareStatement(sql);
+	        ResultSet rs = ps.executeQuery();
+	        while(rs.next()) {
+	        	 id=rs.getInt("max(id_equipo)");
+	        }
+	       
+	        rs.close();
+	        ps.close();
+	        con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return id;
 	}
 }

@@ -34,7 +34,7 @@ public class Equipos {
 	public int hashCode() {
 		return Objects.hash(nombre);
 	}
-
+	//COMPARA ATRAVES DEL NOMBRE PORQUE NO HAY DOS EQUIPOS(PAISES) CON EL MISMO NOMBRE
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

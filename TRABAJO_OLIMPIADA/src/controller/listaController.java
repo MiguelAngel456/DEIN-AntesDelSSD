@@ -25,6 +25,7 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -56,6 +57,8 @@ public class listaController implements Initializable{
     //DAOS
     private OlimpiadaDao olD;
     private EquipoDao eqD;
+    private DeportistaDao depD;
+    private DeporteDao dd;
     @FXML
     void Añadir(ActionEvent event) {
     	if(this.lblTitulo.getText().toLowerCase().equals("olimpiadas")) {
@@ -71,16 +74,101 @@ public class listaController implements Initializable{
 				AñadirOlimpiadaController control = loader.getController();
 				Olimpiada ol=(Olimpiada) listObjetos.getSelectionModel().getSelectedItem();
 				newStage.initModality(Modality.APPLICATION_MODAL);
+				String imagePath = getClass().getResource("/images/logo.png").toString();
+				newStage.getIcons().add(new Image(imagePath));
 				newStage.setScene(newScene);
 				newStage.setTitle("Añadir Olimpiadas");
 				newStage.showAndWait();
+				this.listObjetos.setItems(olD.sacarOlimpiada());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				error("Error en el sql");
 			}
 			
     	}else {
-    		
+    		if(this.lblTitulo.getText().toLowerCase().equals("equipos")) {
+        		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirEquipo.fxml"));
+        		Parent root;
+        		try {
+    				root = loader.load();
+    				Scene newScene = new Scene(root);
+    				Stage newStage = new Stage();
+    				newStage.setResizable(false);
+    		        newStage.setMaximized(false);
+    				newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
+    				AñadirEquipoController control = loader.getController();
+    				Equipos eq=(Equipos) listObjetos.getSelectionModel().getSelectedItem();
+    				newStage.initModality(Modality.APPLICATION_MODAL);
+    				String imagePath = getClass().getResource("/images/logo.png").toString();
+    				newStage.getIcons().add(new Image(imagePath));
+    				newStage.setScene(newScene);
+    				newStage.setTitle("Añadir Equipos");
+    				newStage.showAndWait();
+    				this.listObjetos.setItems(eqD.sacarEquipos());
+    			} catch (IOException e) {
+    				// TODO Auto-generated catch block
+    				error("Error en el sql");
+    			}
+    			
+    		}else {
+    			if(this.lblTitulo.getText().toLowerCase().equals("deportistas")) {
+            		FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirDeportista.fxml"));
+            		Parent root;
+            		try {
+        				root = loader.load();
+        				Scene newScene = new Scene(root);
+        				Stage newStage = new Stage();
+        				newStage.setResizable(false);
+        		        newStage.setMaximized(false);
+        				newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
+        				AñadirDeportistaController control = loader.getController();
+        				newStage.initModality(Modality.APPLICATION_MODAL);
+        				String imagePath = getClass().getResource("/images/logo.png").toString();
+        				newStage.getIcons().add(new Image(imagePath));
+        				newStage.setScene(newScene);
+        				newStage.setTitle("Añadir Deportistas");
+        				newStage.showAndWait();
+        				try {
+							this.listObjetos.setItems(depD.sacarDeportistas());
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							error("Error en el sql");
+						}
+        			} catch (IOException e) {
+        				// TODO Auto-generated catch block
+        				error("Error en el sql");
+        			}
+        			
+        		}else {
+        			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirDeporte.fxml"));
+            		Parent root;
+            		try {
+        				root = loader.load();
+        				Scene newScene = new Scene(root);
+        				Stage newStage = new Stage();
+        				newStage.setResizable(false);
+        		        newStage.setMaximized(false);
+        				newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
+        				AñadirDeporteController control = loader.getController();
+        				Deporte d=(Deporte) listObjetos.getSelectionModel().getSelectedItem();
+        				newStage.initModality(Modality.APPLICATION_MODAL);
+        				String imagePath = getClass().getResource("/images/logo.png").toString();
+        				newStage.getIcons().add(new Image(imagePath));
+        				newStage.setScene(newScene);
+        				newStage.setTitle("Añadir Deportes");
+        				newStage.showAndWait();
+        				try {
+							this.listObjetos.setItems(dd.sacarDeportes());
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							error("Error en el sql");
+						}
+        			} catch (IOException e) {
+        				// TODO Auto-generated catch block
+        				error("Error en el sql");
+        			}
+        		}
+    		}
     	}
     }
     @FXML
@@ -99,9 +187,64 @@ public class listaController implements Initializable{
     				this.listObjetos.setItems(olD.sacarOlimpiada());
     			}
     		}catch (SQLException e) {
-				this.error(e.getMessage());
+				this.error("Error en el sql");
 			}
     		
+    	}else {
+    		if(this.lblTitulo.getText().toLowerCase().equals("equipos")) {
+        		try {
+        			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        			alert.setHeaderText(null);;
+        			alert.setTitle("Eliminar Evento");
+        			alert.setContentText("Si eliminas este equipo se eliminara las participaciones relacionadas a ese equipo\n¿Estas seguro?");
+        			Optional<ButtonType> result=alert.showAndWait();
+        			if(result.get()==ButtonType.OK) {
+        	    		Equipos eq=(Equipos) listObjetos.getSelectionModel().getSelectedItem();
+        	    		eqD.eliminarEquipo(eq);
+        				this.info();
+        				this.listObjetos.setItems(eqD.sacarEquipos());
+        			}
+        		}catch (SQLException e) {
+    				this.error("Error en el sql");
+    			}
+    		}else {
+    			if(this.lblTitulo.getText().toLowerCase().equals("deportistas")) {
+            		try {
+            			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            			alert.setHeaderText(null);;
+            			alert.setTitle("Eliminar Evento");
+            			alert.setContentText("Si eliminas este deportista se eliminara las participaciones relacionadas a ese deportista\n¿Estas seguro?");
+            			Optional<ButtonType> result=alert.showAndWait();
+            			if(result.get()==ButtonType.OK) {
+            	    		Deportista dep=(Deportista) listObjetos.getSelectionModel().getSelectedItem();
+            	    		depD.eliminarDeportista(dep);
+            				this.info();
+            				this.listObjetos.setItems(depD.sacarDeportistas());
+            			}
+            		}catch (SQLException e) {
+        				this.error("Error en el sql");
+        			}
+    			}else {
+            		try {
+            			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            			alert.setHeaderText(null);;
+            			alert.setTitle("Eliminar Evento");
+            			alert.setContentText("Si eliminas este deporte se eliminara los eventos relacionadas a ese deporte y por lo tanto tambie las participaciones en ese evento"
+            								+ "\n¿Estas seguro?");
+            			Optional<ButtonType> result=alert.showAndWait();
+            			if(result.get()==ButtonType.OK) {
+            	    		Deporte dep=(Deporte) listObjetos.getSelectionModel().getSelectedItem();
+            	    		dd.eliminarDeporte(dep);
+            				this.info();
+            				this.listObjetos.setItems(dd.sacarDeportes());
+            			}
+            		}catch (SQLException e) {
+        				this.error("Error en el sql");
+        			}
+    				
+    				
+    			}
+    		}
     	}
     }
 
@@ -123,24 +266,105 @@ public class listaController implements Initializable{
     				System.out.println(ol.getTemporada());
     				control.rellenar("Modificar Olimpiada", ol);
     				newStage.initModality(Modality.APPLICATION_MODAL);
+    				String imagePath = getClass().getResource("/images/logo.png").toString();
+    				newStage.getIcons().add(new Image(imagePath));
     				newStage.setScene(newScene);
-    				newStage.setTitle("Gestionar Olimpiadas");
+    				newStage.setTitle("Modificar Olimpiadas");
     				newStage.showAndWait();
     			} catch (IOException e) {
     				// TODO Auto-generated catch block
-    				e.printStackTrace();
+    				this.error(e.getMessage());
     			}
         		this.listObjetos.setItems(olD.sacarOlimpiada());
     		}else {
     			if(this.lblTitulo.getText().toLowerCase().equals("equipos")) {
-    				
+    				FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirEquipo.fxml"));
+            		Parent root;
+            		try {
+        				root = loader.load();
+        				Scene newScene = new Scene(root);
+        				Stage newStage = new Stage();
+        				newStage.setResizable(false);
+        		        newStage.setMaximized(false);
+        				newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
+        				AñadirEquipoController control = loader.getController();
+        				Equipos eq=(Equipos) listObjetos.getSelectionModel().getSelectedItem();
+        				control.rellenar("Modificar Equipo", eq);
+        				newStage.initModality(Modality.APPLICATION_MODAL);
+        				String imagePath = getClass().getResource("/images/logo.png").toString();
+        				newStage.getIcons().add(new Image(imagePath));
+        				newStage.setScene(newScene);
+        				newStage.setTitle("Modificar Equipos");
+        				newStage.showAndWait();
+        			} catch (IOException e) {
+        				// TODO Auto-generated catch block
+        				this.error(e.getMessage());
+        			}
+            		this.listObjetos.setItems(eqD.sacarEquipos());
+    			}else {
+    				if(this.lblTitulo.getText().toLowerCase().equals("deportistas")) {
+    					FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirDeportista.fxml"));
+                		Parent root;
+                		try {
+            				root = loader.load();
+            				Scene newScene = new Scene(root);
+            				Stage newStage = new Stage();
+            				newStage.setResizable(false);
+            		        newStage.setMaximized(false);
+            				newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
+            				AñadirDeportistaController control = loader.getController();
+            				Deportista dep=(Deportista) listObjetos.getSelectionModel().getSelectedItem();
+            				control.rellenar("Modificar Deportista", dep);
+            				newStage.initModality(Modality.APPLICATION_MODAL);
+            				String imagePath = getClass().getResource("/images/logo.png").toString();
+            				newStage.getIcons().add(new Image(imagePath));
+            				newStage.setScene(newScene);
+            				newStage.setTitle("Modificar Deportistas");
+            				newStage.showAndWait();
+            			} catch (IOException e) {
+            				// TODO Auto-generated catch block
+            				this.error("Error en el sql");
+            			}
+                		try {
+							this.listObjetos.setItems(depD.sacarDeportistas());
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							error("Error en el sql");
+						}
+    				}else {
+    					if(this.lblTitulo.getText().toLowerCase().equals("deportes")) {
+        					FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirDeporte.fxml"));
+                    		Parent root;
+                    		try {
+                				root = loader.load();
+                				Scene newScene = new Scene(root);
+                				Stage newStage = new Stage();
+                				newStage.setResizable(false);
+                		        newStage.setMaximized(false);
+                				newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
+                				AñadirDeporteController control = loader.getController();
+                				Deporte dep=(Deporte) listObjetos.getSelectionModel().getSelectedItem();
+                				control.rellenar(dep,"Modificar Deportes");
+                				newStage.initModality(Modality.APPLICATION_MODAL);
+                				String imagePath = getClass().getResource("/images/logo.png").toString();
+                				newStage.getIcons().add(new Image(imagePath));
+                				newStage.setScene(newScene);
+                				newStage.setTitle("Modificar Deportes");
+                				newStage.showAndWait();
+                			} catch (IOException e) {
+                				// TODO Auto-generated catch block
+                				this.error("Error en el sql");
+                			}
+                    		try {
+    							this.listObjetos.setItems(dd.sacarDeportes());
+    						} catch (SQLException e) {
+    							// TODO Auto-generated catch block
+    							error("Error en el sql");
+    						}
+    					}
+    				}
     			}
         	}
-    		
-    		
-    		
-    		
-    		
     		
     		
     		
@@ -170,6 +394,24 @@ public class listaController implements Initializable{
 			if(tipo.toLowerCase().equals("equipo")) {
 				this.listObjetos.setItems(eqD.sacarEquipos());
 				this.lblTitulo.setText("Equipos");
+			}else {
+				if(tipo.toLowerCase().equals("deportistas")) {
+					try {
+						this.listObjetos.setItems(depD.sacarDeportistas());
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						error("Error en el sql");
+					}
+					this.lblTitulo.setText("Deportistas");
+				}else {
+					try {
+						this.listObjetos.setItems(dd.sacarDeportes());
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						error("Error en el sql");
+					}
+					this.lblTitulo.setText("Deportes");
+				}
 			}
 		}
 	}
@@ -195,7 +437,7 @@ public class listaController implements Initializable{
 		// TODO Auto-generated method stub
 		olD=new OlimpiadaDao();
 		eqD=new EquipoDao();
-		
-		//this.dd=new DeporteDao();
+		depD=new DeportistaDao();
+		dd=new DeporteDao();
 	}
 }

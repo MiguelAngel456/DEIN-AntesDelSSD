@@ -14,6 +14,7 @@ import model.Deporte;
 import model.Olimpiada;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import dao.OlimpiadaDao;
@@ -68,7 +69,12 @@ public class AñadirOlimpiadaController implements Initializable{
 			if(comprobar().length()==0) {
 				Olimpiada ol=new Olimpiada(idAnt,nombre, anio, temp, ciudad);
 				System.out.println(ol.getId());
-				od.modificarOlimpiada(ol);
+				try {
+					od.modificarOlimpiada(ol);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					error(e.getMessage());
+				}
 				info();
 				Stage stage = (Stage) btnAceptar.getScene().getWindow();
 				stage.close();
@@ -145,6 +151,15 @@ public class AñadirOlimpiadaController implements Initializable{
 	public void error () {
 		Alert alert;
 		String texto=comprobar();
+		alert = new Alert(Alert.AlertType.ERROR);
+		alert.setContentText(texto);
+		alert.setHeaderText(null);
+		alert.setTitle("ERROR");
+		alert.showAndWait();
+	}
+	public void error (String text) {
+		Alert alert;
+		String texto=text;
 		alert = new Alert(Alert.AlertType.ERROR);
 		alert.setContentText(texto);
 		alert.setHeaderText(null);

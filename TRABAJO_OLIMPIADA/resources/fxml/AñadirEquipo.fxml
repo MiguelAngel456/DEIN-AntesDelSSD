@@ -38,7 +38,7 @@
             <Button fx:id="btnCancelar" mnemonicParsing="false" onAction="#cancelar" text="Cancelar" />
          </children>
       </FlowPane>
-      <TextField fx:id="txtDeporte" prefHeight="24.0" prefWidth="183.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+      <TextField fx:id="txtEquipo" prefHeight="24.0" prefWidth="183.0" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <GridPane.margin>
             <Insets left="20.0" right="50.0" />
          </GridPane.margin>

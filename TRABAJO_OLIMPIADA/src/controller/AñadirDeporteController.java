@@ -1,6 +1,7 @@
 package controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,10 +10,15 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 import model.Deporte;
 import model.Evento;
+
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
+
 import dao.DeporteDao;
 import javafx.event.ActionEvent;
 
-public class AñadirDeporteController {
+public class AñadirDeporteController implements Initializable{
 	@FXML
 	private Button btnAnadir;
 	@FXML
@@ -23,36 +29,50 @@ public class AñadirDeporteController {
     @FXML
     private Label lblTitulo;
     
-    private String nomAnt;
+    private int idAnt;
 
 	private DeporteDao dd;
 	// Event Listener on Button[#btnAnadir].onAction
 	@FXML
 	public void aceptar(ActionEvent event) {
-		dd=new DeporteDao();
-		Deporte dep=new Deporte(txtDeporte.getText());
-		System.out.println(lblTitulo.getText());
-		if(lblTitulo.getText().equals("AÑADIR DEPORTE")) {
+
+		
+		if(lblTitulo.getText().equals("Añadir Deporte")) {
 			if(comprobar().length()==0) {
+				int id;
+				try {
+					id = dd.ultimoId();
+					Deporte dep=new Deporte(id,txtDeporte.getText());
+					dd.anadirDeporte(dep);
+					info();
+					Stage stage = (Stage) btnAnadir.getScene().getWindow();
+					stage.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					error("Error en el sql");
+				}
 				
-				dd.anadirDeporte(dep);
-				System.out.println("aaaaaaaaaa");
-				info(btnAnadir.getScene().getWindow());
-				Stage stage = (Stage) btnAnadir.getScene().getWindow();
-				stage.close();
 			}else {
-				error(btnAnadir.getScene().getWindow());
+				error("ERROR");
 			}
 			
 			
 		}else {
 			if(comprobar().length()==0) {
-				dd.modificarDeporte(dep, nomAnt);
-				info(btnAnadir.getScene().getWindow());
-				Stage stage = (Stage) btnAnadir.getScene().getWindow();
-				stage.close();
+				Deporte dep=new Deporte(idAnt,txtDeporte.getText());
+				try {
+					
+					dd.modificarDeporte(dep);
+					info();
+					Stage stage = (Stage) btnAnadir.getScene().getWindow();
+					stage.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					error("Error en el sql");
+				}
+			
 			}else {
-				error(btnAnadir.getScene().getWindow());
+				error("ERROR");
 			}
 			
 		}
@@ -65,45 +85,53 @@ public class AñadirDeporteController {
 		Stage stage = (Stage) btnCancelar.getScene().getWindow();
 		stage.close();
 	}
-	public TextField getTxtDeporte() {
-		return txtDeporte;
-	}
-	public Label getLblTitulo() {
-		return lblTitulo;
-	}
-	public void setNomAnt(String nomAnt) {
-		this.nomAnt = nomAnt;
-	}
+
 	public String comprobar() {
 		String fallo="";
 		if(txtDeporte.getText().length()==0) {
 			fallo+="\n El campo del nombre Deporte tiene que tener contenido";
 		}
-		Deporte dep=new Deporte(txtDeporte.getText());
-		if(dd.sacarDeportes().contains(dep)) {
-			fallo+="\n Ese deporte ya existe";
+		try {
+			int id=dd.ultimoId();
+			Deporte dep=new Deporte(id,txtDeporte.getText());
+			if(dd.sacarDeportes().contains(dep)) {
+				fallo+="\n Ese deporte ya existe";
+			}
+		}catch (SQLException e) {
+			
 		}
+		
 		
 		
 		return fallo;
 	}
-	public void error (Window win) {
+	public void error (String t) {
 		Alert alert;
-		String texto=comprobar();
+		String texto=t;
 		alert = new Alert(Alert.AlertType.ERROR);
 		alert.setContentText(texto);
 		alert.setHeaderText(null);
-		alert.initOwner(win);
 		alert.setTitle("ERROR");
 		alert.showAndWait();
 	}
-	public void info(Window win) {
+	public void info() {
 		Alert alert;
 		alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.setContentText("ACCION HECHA CORRECTAMENTE");
 		alert.setHeaderText(null);
-		alert.initOwner(win);
 		alert.setTitle("INFO");
 		alert.showAndWait();
+	}
+	public void rellenar(Deporte d,String t) {
+		lblTitulo.setText("Modificar Deporte");
+		
+		txtDeporte.setText(d.getDeporte());
+		
+		idAnt=d.getId();
+	}
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		// TODO Auto-generated method stub
+		dd=new DeporteDao();
 	}
 }

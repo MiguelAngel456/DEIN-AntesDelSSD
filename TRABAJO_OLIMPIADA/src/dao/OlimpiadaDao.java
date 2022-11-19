@@ -42,34 +42,6 @@ public class OlimpiadaDao {
 			return false;
 		}
 	
-	
-	//COMPROBAR SI EXISTE LA OLIMPIA
-	public boolean comprobarOlimpiada(Olimpiada ol) {
-		try {
-			conexion = new ConexionDB();
-			Connection con = conexion.getConexion();
-			//System.out.println(d.getDeporte());
-			String sql = "SELECT * FROM Olimpiada WHERE nombre = ?;";
-			PreparedStatement ps = con.prepareStatement(sql);
-			ps.setInt(1, ol.getId());
-			
-	        ResultSet rs = ps.executeQuery();
-	        boolean existe=rs.next();
-	        rs.close();
-	        ps.close();
-	        con.close();
-	        if(existe) {
-	        	return true;
-	        }else {
-	        	return false;
-	        }
-	        
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return false;
-	}
 		public 	ObservableList<Olimpiada> sacarOlimpiada() {
 			ObservableList<Olimpiada> arr=FXCollections.observableArrayList();
 	        String sql;
@@ -102,31 +74,26 @@ public class OlimpiadaDao {
 			}
 	        return arr;
 		}
-		public boolean modificarOlimpiada(Olimpiada o) {
-			try {
-				conexion = new ConexionDB();
-		        Connection con = conexion.getConexion();
-		      
-		    	PreparedStatement pst;
-		    	//UPDATE `olimpiadas`.`Olimpiada` SET `nombre` = '2022 2', `temporada` = 'Summer' WHERE (`id_olimpiada` = '10');
-
-				pst = con.prepareStatement("update Olimpiada SET nombre = ?, anio = ?, temporada = ?, ciudad = ? WHERE (id_olimpiada = ?);");
-				System.out.println(o.getNombre());
-				pst.setString(1,o.getNombre());
-		    	pst.setInt(2,o.getAnio());
-		    	pst.setString(3,o.getTemporada());
-		    	pst.setString(4,o.getCiudad());
-		    	pst.setInt(5,o.getId());
-		    	pst.execute();
-		    	con.close();
-		    	pst.close();
-		    	return true;
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		public boolean modificarOlimpiada(Olimpiada o) throws SQLException {
+			boolean bien=false;
+			conexion = new ConexionDB();
+	        Connection con = conexion.getConexion();
+	      
+	    	PreparedStatement pst;
+			pst = con.prepareStatement("update Olimpiada SET nombre = ?, anio = ?, temporada = ?, ciudad = ? WHERE (id_olimpiada = ?);");
+			System.out.println(o.getNombre());
+			pst.setString(1,o.getNombre());
+	    	pst.setInt(2,o.getAnio());
+	    	pst.setString(3,o.getTemporada());
+	    	pst.setString(4,o.getCiudad());
+	    	pst.setInt(5,o.getId());
+	    	pst.execute();
+	    	con.close();
+	    	pst.close();
+	    	bien=true;
 
 			
-			return false;
+			return bien;
 		}
 		public boolean eliminarOlimpiada(Olimpiada ol) throws SQLException {
 			boolean bien=false; 
