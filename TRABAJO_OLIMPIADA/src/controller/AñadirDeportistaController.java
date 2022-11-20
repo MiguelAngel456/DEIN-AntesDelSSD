@@ -96,7 +96,7 @@ public class AñadirDeportistaController implements Initializable{
 				int peso=Integer.parseInt(txtPeso.getText());
 				int altu=Integer.parseInt(txtAltura.getText());
 				System.out.println(idAnt);
-				Deportista dep=new Deportista(idAnt,nombre, sexo, peso, altu);
+				Deportista dep=new Deportista(idAnt,nombre, sexo, peso, altu,img);
 				try {
 					dd.modificarDeportista(dep);
 				} catch (SQLException e) {
@@ -273,8 +273,9 @@ public class AñadirDeportistaController implements Initializable{
 		if(dep.getFoto()!=null) {
 			System.out.println("aaaaaaaa");
 			try {
-				InputStream i=dd.sacarFoto(dep);
-				fotoDeportista.setImage(new Image(i));
+				this.img=dd.sacarFoto(dep);
+				fotoDeportista.setImage(new Image(img));
+				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				error("Error en el sql");

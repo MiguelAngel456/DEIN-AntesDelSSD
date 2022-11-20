@@ -74,12 +74,13 @@ private ConexionDB conexion;
       
     	PreparedStatement pst;
     	
-		pst = con.prepareStatement("update Deportista set nombre=?, sexo=?, peso=?, altura=? where id_deportista= ?");
+		pst = con.prepareStatement("update Deportista set nombre=?, sexo=?, peso=?, altura=?, foto=? where id_deportista= ?");
     	pst.setString(1, d.getNombre());
     	pst.setString(2, d.getSexo());
     	pst.setInt(3, d.getPeso());
     	pst.setInt(4, d.getAltura());
-    	pst.setInt(5, d.getId_deportista());
+    	pst.setBlob(5, d.getFoto());
+    	pst.setInt(6, d.getId_deportista());
     	pst.execute();
     	con.close();
     	pst.close();
