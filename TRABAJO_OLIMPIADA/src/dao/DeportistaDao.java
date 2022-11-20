@@ -1,5 +1,7 @@
 package dao;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,7 +31,7 @@ private ConexionDB conexion;
 		pst.setString(2, d.getSexo());
 		pst.setInt(3, d.getPeso());
 		pst.setInt(4, d.getAltura());
-		pst.setString(5, null);
+		pst.setBlob(5, d.getFoto());
 		
 		pst.execute();
 		con.close();
@@ -56,8 +58,9 @@ private ConexionDB conexion;
         	String sexo=rs.getString("sexo");
         	int peso=rs.getInt("peso");
         	int altura=rs.getInt("altura");
+        	InputStream foto = rs.getBinaryStream("foto");
         	//crear el evento
-        	Deportista dep=new Deportista(id,nom, sexo, peso, altura);
+        	Deportista dep=new Deportista(id,nom, sexo, peso, altura,foto);
         	arr.add(dep);
         	
         }
@@ -131,5 +134,24 @@ private ConexionDB conexion;
         con.close();
 
 		return id;
+	}
+	public InputStream sacarFoto(Deportista d) throws SQLException {
+		InputStream i=null;
+		
+		conexion = new ConexionDB();
+		Connection con = conexion.getConexion();
+		
+		String sql = "SELECT foto FROM olimpiadas.Deportista WHERE id_deportista = ?;";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, d.getId_deportista());
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()) {
+        	 i=rs.getBinaryStream("foto");
+        }
+       
+        rs.close();
+        ps.close();
+        con.close();
+        return i;
 	}
 }

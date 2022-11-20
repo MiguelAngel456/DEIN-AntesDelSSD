@@ -6,6 +6,7 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
@@ -75,6 +76,20 @@
                </toggleGroup>
             </RadioButton>
             <RadioButton fx:id="rbFemenino" mnemonicParsing="false" text="Femenino" toggleGroup="$rgSexo" />
+         </children>
+      </FlowPane>
+      <FlowPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="6">
+         <children>
+            <Button fx:id="btnFoto" mnemonicParsing="false" onAction="#eligirFoto" text="Elija una foto">
+               <FlowPane.margin>
+                  <Insets left="20.0" />
+               </FlowPane.margin>
+            </Button>
+            <ImageView fx:id="fotoDeportista" fitHeight="70.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true">
+               <FlowPane.margin>
+                  <Insets left="20.0" />
+               </FlowPane.margin>
+            </ImageView>
          </children>
       </FlowPane>
    </children>

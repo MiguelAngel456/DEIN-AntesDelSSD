@@ -185,6 +185,7 @@ public class AñadirParticipacionController implements Initializable{
 		if(txtEdad.getText().length()==0) {
 			fallo+="\n El campo de la edad tiene que tener contenido";
 		}
+		//EL LIMITE ES 3 PORQUE NO HAY DEPORTISTAS DE MILES DE AÑOS
 		if(txtEdad.getText().length()>=4) {
 			fallo+="\n El campo de la edad no puede contener numeros de mas de 3 digitos";
 		}

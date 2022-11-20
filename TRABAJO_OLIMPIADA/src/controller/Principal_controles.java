@@ -223,9 +223,18 @@ public class Principal_controles implements Initializable {
 		try {
 			if(cbTabla.getSelectionModel().getSelectedItem().toString().equals("Participacion")) {
 				if(tablaParticipacion.getSelectionModel().getSelectedItem()!=null) {
-					Participacion p=tablaParticipacion.getSelectionModel().getSelectedItem();
-					pd.eliminarParticipacion(p);
-					this.info();
+					Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+					alert.setHeaderText(null);;
+					alert.setTitle("Eliminar Evento");
+					alert.setContentText("Si continuas se eliminara esta participacion\n¿Estas seguro?");
+					Optional<ButtonType> result=alert.showAndWait();
+					if(result.get()==ButtonType.OK) {
+						
+						Participacion p=tablaParticipacion.getSelectionModel().getSelectedItem();
+						pd.eliminarParticipacion(p);
+						this.info();
+					}
+				
 				}else {
 					error("Clicke en una fila para poder eliminarla");
 				}
@@ -337,15 +346,6 @@ public class Principal_controles implements Initializable {
 			this.error("Clica en una de las filas de la tabla para modificar");
 		}
 		
-//		try {
-//			listParticipacion = pd.cargarParticipacion();
-//			listEventos = ed.cargarEvento();
-//			tablaParticipacion.setItems(listParticipacion);
-//			tablaEvento.setItems(listEventos);
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			error("Error en el sql");
-//		}
 
 	}
 

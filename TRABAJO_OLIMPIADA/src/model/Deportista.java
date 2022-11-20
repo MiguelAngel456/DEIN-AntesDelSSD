@@ -48,6 +48,10 @@ public class Deportista {
 	public int getAltura() {
 		return altura;
 	}
+	
+	public InputStream getFoto() {
+		return foto;
+	}
 	@Override
 	public int hashCode() {
 		return Objects.hash(nombre);

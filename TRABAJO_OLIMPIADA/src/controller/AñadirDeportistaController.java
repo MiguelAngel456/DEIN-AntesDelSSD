@@ -7,12 +7,21 @@ import javafx.scene.control.Button;
 
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.stage.FileChooser.ExtensionFilter;
 import model.Deportista;
 import model.Olimpiada;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
@@ -23,11 +32,18 @@ import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 
 public class AñadirDeportistaController implements Initializable{
-	@FXML
+
+    @FXML
     private Button btnAceptar;
 
     @FXML
     private Button btnCancelar;
+
+    @FXML
+    private Button btnFoto;
+
+    @FXML
+    private ImageView fotoDeportista;
 
     @FXML
     private Label lblNumero2;
@@ -55,8 +71,12 @@ public class AñadirDeportistaController implements Initializable{
 
     @FXML
     private TextField txtPeso;
+
+
     private int idAnt;
     private DeportistaDao dd;
+    private File archivo;
+    private InputStream img;
 	// Event Listener on Button[#btnAceptar].onAction
 	@FXML
 	public void aceptar(ActionEvent event) {
@@ -96,7 +116,7 @@ public class AñadirDeportistaController implements Initializable{
 				int altu=Integer.parseInt(txtAltura.getText());
 				try {
 					int id=dd.ultimoId()+1;
-					Deportista dep=new Deportista(id,nombre, sexo, peso, altu);
+					Deportista dep=new Deportista(id,nombre, sexo, peso, altu,img);
 					dd.anadirDeporte(dep);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
@@ -138,11 +158,13 @@ public class AñadirDeportistaController implements Initializable{
 		if(txtPeso.getText().length()==0) {
 			fallo+="\n El campo peso tiene que tener contenido";
 		}
-		if(txtAltura.getText().length()>11) {
-			fallo+="\n El campo altura no puede tener mas de 11 caracteres";
+		//NO PUEDE MEDIR MAS DE 3 DIGITOS PORQUE NO ES POSIBLE QUE MIDA MILES DE CM
+		if(txtAltura.getText().length()>3) {
+			fallo+="\n El campo altura no puede tener mas de 3 digitos";
 		}
-		if(txtPeso.getText().length()>11) {
-			fallo+="\n El campo peso no puede tener mas de 11 caracteres";
+		//NO PUEDE PESAR MAS DE 3 DIGITOS PORQUE NO ES POSIBLE QUE PESE MILES DE KILOS
+		if(txtPeso.getText().length()>3) {
+			fallo+="\n El campo peso no puede tener mas de 3 digitos";
 		}
 		//El campo peso y altura son obligatorios porque en algunos deportes e tiene en cuenta para hacer secciones por ejemplo el boxeo se divide por pesos
 		int altu=0,peso=0;
@@ -188,7 +210,29 @@ public class AñadirDeportistaController implements Initializable{
 		
 		return fallo;
 	}
+    @FXML
+    void eligirFoto(ActionEvent event) {
+    	FileChooser FC=new FileChooser();
+		FC.setTitle("Elige la imagen");
+		String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
+		FC.setInitialDirectory(new File(currentPath));
+		FC.getExtensionFilters().add(new ExtensionFilter("Archivo imagen", "*.png", "*.jpg"));
+		FC.setSelectedExtensionFilter(FC.getExtensionFilters().get(0));
+		archivo=FC.showOpenDialog((Stage)btnFoto.getScene().getWindow());
 
+		//ENSEÑAR LA IMAGEN
+		if(archivo!=null) {
+			try {
+				FileInputStream img1=new FileInputStream(archivo);
+				this.img=img1;
+				this.fotoDeportista.setImage(new Image(img1));
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				
+			}
+		}
+		
+    }
 	public void error (String text) {
 		Alert alert;
 		String texto=text;
@@ -225,6 +269,16 @@ public class AñadirDeportistaController implements Initializable{
 			this.rbMasculino.setSelected(true);
 		}else {
 			this.rbFemenino.setSelected(true);
+		}
+		if(dep.getFoto()!=null) {
+			System.out.println("aaaaaaaa");
+			try {
+				InputStream i=dd.sacarFoto(dep);
+				fotoDeportista.setImage(new Image(i));
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				error("Error en el sql");
+			}
 		}
 		
 		idAnt=dep.getId_deportista();
