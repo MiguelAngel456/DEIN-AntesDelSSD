@@ -205,8 +205,8 @@ public class AñadirDeportistaController implements Initializable{
 		alert.setTitle("INFO");
 		alert.showAndWait();
 	}
-	public void rellenar(String text, Deportista dep) {
-		this.lblTitulo.setText(text);
+	public void rellenar(Deportista dep) {
+		this.lblTitulo.setText("Modificar Deportista");
 		
 		this.txtNombre.setText(dep.getNombre());
 		this.txtAltura.setText(String.valueOf(dep.getAltura()));

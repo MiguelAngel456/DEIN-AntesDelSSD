@@ -43,7 +43,12 @@ public class AñadirEquipoController implements Initializable{
 			System.out.println(idAnt);
 			Equipos eq=new Equipos(idAnt,txtEquipo.getText(), txtIniciales.getText());
 			if(comprobar().length()==0) {
-				eqD.modificarEquipo(eq);
+				try {
+					eqD.modificarEquipo(eq);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					error("Error en el sql");
+				}
 				info();
 				Stage stage = (Stage) btnAnadir.getScene().getWindow();
 				stage.close();
@@ -86,13 +91,16 @@ public class AñadirEquipoController implements Initializable{
 		if(txtIniciales.getText().length()==0) {
 			fallo+="\n El campo Iniciales del Equipo tiene que tener contenido";
 		}
-		int id=eqD.ultimoId();
-		Equipos equi=new Equipos(id,txtEquipo.getText(),txtIniciales.getText());
-		if(eqD.sacarEquipos().contains(equi)) {
-			fallo+="\n Ese Equipo ya existe";
+		try {
+			int id=eqD.ultimoId();
+			Equipos equi=new Equipos(id,txtEquipo.getText(),txtIniciales.getText());
+			if(eqD.sacarEquipos().contains(equi)) {
+				fallo+="\n Ese Equipo ya existe";
+			}
+		}catch (SQLException e) {
+			// TODO: handle exception
+			error("Error en el sql");
 		}
-		
-		
 		return fallo;
 	}
 	public void error () {
@@ -121,8 +129,8 @@ public class AñadirEquipoController implements Initializable{
 		alert.setTitle("INFO");
 		alert.showAndWait();
 	}
-	public void rellenar(String titulo,Equipos e) {
-		lblTitulo.setText(titulo);
+	public void rellenar(Equipos e) {
+		lblTitulo.setText("Modificar Equipo");
 		txtEquipo.setText(e.getNombre());
 		txtIniciales.setText(e.getIniciales());
 		

@@ -173,11 +173,16 @@ public class Principal_controles implements Initializable {
 				newStage.setScene(newScene);
 				newStage.setTitle("Añadir Participacion");
 				newStage.showAndWait();
+
 				listParticipacion = pd.cargarParticipacion();
+
 				tablaParticipacion.setItems(listParticipacion);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				error("Error en la lectura del fxml");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				error("Error en el sql");
 			}
 		} else {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirEvento.fxml"));
@@ -201,7 +206,10 @@ public class Principal_controles implements Initializable {
 				tablaEvento.setItems(listEventos);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				error("Erroor en la lectura del fxml");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				error("Error en el sql");
 			}
 		}
 
@@ -211,28 +219,43 @@ public class Principal_controles implements Initializable {
 
 	@FXML
 	void eliminar(ActionEvent event) {
-		if(cbTabla.getSelectionModel().getSelectedItem().toString().equals("Participacion")) {
-
-			Participacion p=tablaParticipacion.getSelectionModel().getSelectedItem();
-			pd.eliminarParticipacion(p);
-			this.info();
-		}else {
-			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-			alert.setHeaderText(null);;
-			alert.setTitle("Eliminar Evento");
-			alert.setContentText("Si eliminas este Evento se eliminara las participaciones relacionadas\n¿Estas seguro?");
-			Optional<ButtonType> result=alert.showAndWait();
-			if(result.get()==ButtonType.OK) {
+		
+		try {
+			if(cbTabla.getSelectionModel().getSelectedItem().toString().equals("Participacion")) {
+				if(tablaParticipacion.getSelectionModel().getSelectedItem()!=null) {
+					Participacion p=tablaParticipacion.getSelectionModel().getSelectedItem();
+					pd.eliminarParticipacion(p);
+					this.info();
+				}else {
+					error("Clicke en una fila para poder eliminarla");
+				}
 				
-				Evento ev=tablaEvento.getSelectionModel().getSelectedItem();
-				ed.eliminarEvento(ev);
-				this.info();
+			}else {
+				if(tablaEvento.getSelectionModel().getSelectedItem()!=null) {
+					Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+					alert.setHeaderText(null);;
+					alert.setTitle("Eliminar Evento");
+					alert.setContentText("Si eliminas este Evento se eliminara las participaciones relacionadas\n¿Estas seguro?");
+					Optional<ButtonType> result=alert.showAndWait();
+					if(result.get()==ButtonType.OK) {
+						
+						Evento ev=tablaEvento.getSelectionModel().getSelectedItem();
+						ed.eliminarEvento(ev);
+						this.info();
+					}
+				}else {
+					error("Clicke en una fila para poder eliminarla");
+				}
+				
 			}
+			listParticipacion = pd.cargarParticipacion();
+			tablaParticipacion.setItems(listParticipacion);
+			listEventos = ed.cargarEvento();
+			tablaEvento.setItems(listEventos);
+		}catch (SQLException e) {
+			error("Error en el sql");
 		}
-		listParticipacion = pd.cargarParticipacion();
-		tablaParticipacion.setItems(listParticipacion);
-		listEventos = ed.cargarEvento();
-		tablaEvento.setItems(listEventos);
+		
 
 	}
 
@@ -271,7 +294,10 @@ public class Principal_controles implements Initializable {
 					tablaParticipacion.setItems(listParticipacion);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					error("Error en la lectura del fxml");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					error("Error en el sql");
 				}
 			} else {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirEvento.fxml"));
@@ -298,14 +324,22 @@ public class Principal_controles implements Initializable {
 					newStage.showAndWait();
 					listEventos = ed.cargarEvento();
 					tablaEvento.setItems(listEventos);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					error("Error en el sql");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					error("Error en la lectura del fxml");
 				}
 			}
-			listParticipacion = pd.cargarParticipacion();
+			try {
+				listParticipacion = pd.cargarParticipacion();
+				listEventos = ed.cargarEvento();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				error("Error en el sql");
+			}
 			tablaParticipacion.setItems(listParticipacion);
-			listEventos = ed.cargarEvento();
 			tablaEvento.setItems(listEventos);
 		}else {
 			this.error("Clica en una de las filas de la tabla para modificar");
@@ -336,11 +370,17 @@ public class Principal_controles implements Initializable {
 			newStage.showAndWait();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			error("Error en la lectura del fxml");
 		}
-		listParticipacion = pd.cargarParticipacion();
+		try {
+			listParticipacion = pd.cargarParticipacion();
+			listEventos = ed.cargarEvento();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			error("Error en el sql");
+		}
 		tablaParticipacion.setItems(listParticipacion);
-		listEventos = ed.cargarEvento();
+		
 		tablaEvento.setItems(listEventos);
 	}
 
@@ -366,11 +406,17 @@ public class Principal_controles implements Initializable {
 			newStage.showAndWait();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			this.error(e.getMessage());
+			error("Error en la lectura del fxml");
 		}
-		listParticipacion = pd.cargarParticipacion();
+		try {
+			listParticipacion = pd.cargarParticipacion();
+			listEventos = ed.cargarEvento();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			error("Error en el sql");
+		}
 		tablaParticipacion.setItems(listParticipacion);
-		listEventos = ed.cargarEvento();
+
 		tablaEvento.setItems(listEventos);
 	}
 
@@ -396,11 +442,17 @@ public class Principal_controles implements Initializable {
 			newStage.showAndWait();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			error("Error en la lectura del fxml");
 		}
-		listParticipacion = pd.cargarParticipacion();
+		try {
+			listParticipacion = pd.cargarParticipacion();
+			listEventos = ed.cargarEvento();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			error("Error en el sql");
+		}
 		tablaParticipacion.setItems(listParticipacion);
-		listEventos = ed.cargarEvento();
+		
 		tablaEvento.setItems(listEventos);
 	}
 
@@ -425,40 +477,61 @@ public class Principal_controles implements Initializable {
 			newStage.showAndWait();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			error("Error en la lectura del fxml");
 		}
-		listParticipacion = pd.cargarParticipacion();
+		try {
+			listParticipacion = pd.cargarParticipacion();
+			listEventos = ed.cargarEvento();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			error("Error en el sql");
+		}
 		tablaParticipacion.setItems(listParticipacion);
-		listEventos = ed.cargarEvento();
+		
 		tablaEvento.setItems(listEventos);
 	}
 
 	@FXML
 	void seleccionar(ActionEvent event) {
-		if (cbTabla.getSelectionModel().getSelectedItem().toString().equals("Participacion")) {
-			ParticipacionDao pd = new ParticipacionDao();
-			listParticipacion = pd.cargarParticipacion();
-			tablaParticipacion.setItems(listParticipacion);
+		try {
+			if (cbTabla.getSelectionModel().getSelectedItem().toString().equals("Participacion")) {
+				ParticipacionDao pd = new ParticipacionDao();
+				listParticipacion = pd.cargarParticipacion();
+				tablaParticipacion.setItems(listParticipacion);
 
-			tablaParticipacion.setVisible(true);
-			tablaEvento.setVisible(false);
-		} else {
-			ed = new EventoDao();
-			listEventos = ed.cargarEvento();
-			tablaEvento.setItems(listEventos);
-			tablaParticipacion.setVisible(false);
-			tablaEvento.setVisible(true);
+				tablaParticipacion.setVisible(true);
+				tablaEvento.setVisible(false);
+			} else {
+				ed = new EventoDao();
+				listEventos = ed.cargarEvento();
+				tablaEvento.setItems(listEventos);
+				tablaParticipacion.setVisible(false);
+				tablaEvento.setVisible(true);
+			}
+		}catch(SQLException e) {
+			error("Error en el sql");
 		}
+		
 	}
 
 	// METODOS DE FILTRAR
 	@FXML
 	void filtrarTemporada(ActionEvent event) {
-		listEventos = ed.cargarEvento();
-
+		
+		try {
+			listEventos = ed.cargarEvento();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			error("Error en el sql");
+		}
 		if (cbTabla.getSelectionModel().getSelectedItem().toString().equals("Participacion")) {
 
-			listParticipacion = pd.FiltrarParticipacion(checkBoxInvierno.isSelected(), checkBoxVerano.isSelected());
+			try {
+				listParticipacion = pd.FiltrarParticipacion(checkBoxInvierno.isSelected(), checkBoxVerano.isSelected());
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				error("Error en el sql");
+			}
 			tablaParticipacion.setItems(listParticipacion);
 
 		} else {
@@ -540,7 +613,12 @@ public class Principal_controles implements Initializable {
 		pd = new ParticipacionDao();
 		// ASIGNAR A LA TABLA UNA LISTA
 		ed = new EventoDao();
-		listEventos = ed.cargarEvento();
+		try {
+			listEventos = ed.cargarEvento();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			error("Error en el sql");
+		}
 
 //		
 		tablaEvento.setItems(listEventos);

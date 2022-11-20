@@ -103,8 +103,14 @@ public class AñadirParticipacionController implements Initializable{
 			if(comprobar().length()==0){
 				int edad=Integer.parseInt(txtEdad.getText());
 				Participacion p=new Participacion(dep, edad, med, equip, ev);
-				pd.anadirParticipacion(p);
 				info();
+				try {
+					pd.anadirParticipacion(p);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 				Stage stage = (Stage) btnAceptar.getScene().getWindow();
 				stage.close();
 			}else {
@@ -115,8 +121,14 @@ public class AñadirParticipacionController implements Initializable{
 			if(comprobar().length()==0){
 				int edad=Integer.parseInt(txtEdad.getText());
 				Participacion p=new Participacion(dep, edad, med, equip, ev);
-				pd.modificarParticipacion(p, this.antiguoIdEvento, this.antiguoIdDeportista);
-				info();
+				try {
+					pd.modificarParticipacion(p, this.antiguoIdEvento, this.antiguoIdDeportista);
+					info();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					error("Error en el sql");
+				}
+				
 				Stage stage = (Stage) btnAceptar.getScene().getWindow();
 				stage.close();
 			}else{
@@ -148,14 +160,15 @@ public class AñadirParticipacionController implements Initializable{
 		dd=new DeportistaDao();
 		try {
 			listDepo=dd.sacarDeportistas();
+			comboEvento.setItems(evd.cargarEvento());
+			comboEquipo.setItems(eqd.sacarEquipos());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			error("Error en el sql");
 		}
 
 		comboDeportista.setItems(listDepo);
-		comboEvento.setItems(evd.cargarEvento());
-		comboEquipo.setItems(eqd.sacarEquipos());
+
 		lblTitulo.setText("Añadir Participacion");
 
 		comboDeportista.getSelectionModel().select(0);
@@ -200,10 +213,10 @@ public class AñadirParticipacionController implements Initializable{
 		} catch (NumberFormatException e) {
 			// TODO: handle exception
 			fallo+="\n El campo de la edad tiene que tener numeros";
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			error("Error en el sql");
 		}
-		
-		
-		
 		return fallo;
 	}
 	public void error () {

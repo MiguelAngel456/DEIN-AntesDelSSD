@@ -53,7 +53,7 @@ public class AñadirDeporteController implements Initializable{
 				}
 				
 			}else {
-				error("ERROR");
+				error();
 			}
 			
 			
@@ -72,7 +72,7 @@ public class AñadirDeporteController implements Initializable{
 				}
 			
 			}else {
-				error("ERROR");
+				error();
 			}
 			
 		}
@@ -98,7 +98,7 @@ public class AñadirDeporteController implements Initializable{
 				fallo+="\n Ese deporte ya existe";
 			}
 		}catch (SQLException e) {
-			
+			error("Error en el sql");
 		}
 		
 		
@@ -114,6 +114,15 @@ public class AñadirDeporteController implements Initializable{
 		alert.setTitle("ERROR");
 		alert.showAndWait();
 	}
+	public void error () {
+		Alert alert;
+		String texto=comprobar();
+		alert = new Alert(Alert.AlertType.ERROR);
+		alert.setContentText(texto);
+		alert.setHeaderText(null);
+		alert.setTitle("ERROR");
+		alert.showAndWait();
+	}
 	public void info() {
 		Alert alert;
 		alert = new Alert(Alert.AlertType.INFORMATION);
@@ -122,7 +131,7 @@ public class AñadirDeporteController implements Initializable{
 		alert.setTitle("INFO");
 		alert.showAndWait();
 	}
-	public void rellenar(Deporte d,String t) {
+	public void rellenar(Deporte d) {
 		lblTitulo.setText("Modificar Deporte");
 		
 		txtDeporte.setText(d.getDeporte());

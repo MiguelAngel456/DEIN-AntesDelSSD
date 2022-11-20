@@ -34,11 +34,9 @@ private ConexionDB conexion;
 	}
 
 	
-	public 	ObservableList<Equipos> sacarEquipos() {
+	public 	ObservableList<Equipos> sacarEquipos() throws SQLException {
 		ObservableList<Equipos> arr=FXCollections.observableArrayList();
         String sql;
-		
-        try {
             conexion = new ConexionDB();
             Connection con = conexion.getConexion();
             sql="SELECT * FROM Equipo;";
@@ -56,16 +54,11 @@ private ConexionDB conexion;
             	arr.add(equip);
             	
             }
-            return arr;
-            
-        }catch (SQLException e) {
-			// TODO: handle exception
-		}
         return arr;
 	}
 
-	public boolean modificarEquipo(Equipos d) {
-		try {
+	public boolean modificarEquipo(Equipos d) throws SQLException {
+		boolean bien=false;
 			conexion = new ConexionDB();
 	        Connection con = conexion.getConexion();
 	      
@@ -78,13 +71,9 @@ private ConexionDB conexion;
 	    	pst.execute();
 	    	con.close();
 	    	pst.close();
-	    	return true;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
+	    	bien= true;
 		
-		return false;
+		return bien;
 	}
 	public boolean eliminarEquipo(Equipos eq) throws SQLException {
 		boolean bien=false;
@@ -115,26 +104,21 @@ private ConexionDB conexion;
 		
 		return bien;
 	}
-	public int ultimoId() {
+	public int ultimoId() throws SQLException {
 		int id=0;
-		try {
-			conexion = new ConexionDB();
-			Connection con = conexion.getConexion();
-			
-			String sql = "SELECT max(id_equipo) FROM olimpiadas.Equipo;";
-	        PreparedStatement ps = con.prepareStatement(sql);
-	        ResultSet rs = ps.executeQuery();
-	        while(rs.next()) {
-	        	 id=rs.getInt("max(id_equipo)");
-	        }
-	       
-	        rs.close();
-	        ps.close();
-	        con.close();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		conexion = new ConexionDB();
+		Connection con = conexion.getConexion();
+		
+		String sql = "SELECT max(id_equipo) FROM olimpiadas.Equipo;";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()) {
+        	 id=rs.getInt("max(id_equipo)");
+        }
+       
+        rs.close();
+        ps.close();
+        con.close();
 		return id;
 	}
 }

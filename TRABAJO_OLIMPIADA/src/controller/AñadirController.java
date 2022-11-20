@@ -80,49 +80,60 @@ public class AñadirController implements Initializable {
 		
 		
 		if (lblTitulo.getText().equals("Añadir Evento Olimpico")) {
-			int id=(ed.ultimoId()+1);
-			System.out.println(ed.ultimoId());
-			Deporte dep = comboDeporte.getSelectionModel().getSelectedItem();
-			Olimpiada ol = comboOlimpiada.getSelectionModel().getSelectedItem();
-			
-			Evento ev = new Evento(id,txtNumero1.getText(), ol,dep);
-			// COMPROBAR SI YA EXISTE
-			if (!ed.cargarEvento().equals(ev)) {
+			try {
+				int id=(ed.ultimoId()+1);
+				Deporte dep = comboDeporte.getSelectionModel().getSelectedItem();
+				Olimpiada ol = comboOlimpiada.getSelectionModel().getSelectedItem();
 				
-				if(comprobar().length()==0) {
-					// AÑADIR EVENTO
-					ed.anadirEvento(ev);
-					// PARA QUE SE CIERRE AL DARLE ACEPTAR
-					info();
-					Stage stage = (Stage) btnAceptar.getScene().getWindow();
-					stage.close();
+				Evento ev = new Evento(id,txtNumero1.getText(), ol,dep);
+				// COMPROBAR SI YA EXISTE
+				if (!ed.cargarEvento().equals(ev)) {
 					
-				}else {
-					error();
-				}
+					if(comprobar().length()==0) {
+						// AÑADIR EVENTO
+						ed.anadirEvento(ev);
+						// PARA QUE SE CIERRE AL DARLE ACEPTAR
+						info();
+						Stage stage = (Stage) btnAceptar.getScene().getWindow();
+						stage.close();
+						
+					}else {
+						error();
+					}
 
+				}
+			}catch (SQLException e) {
+				// TODO: handle exception
+				error("Error en el sql");
 			}
+
 		} else {
-			Deporte dep = comboDeporte.getSelectionModel().getSelectedItem();
-			Olimpiada ol = comboOlimpiada.getSelectionModel().getSelectedItem();
-			
-			Evento ev = new Evento(antiguoIdEvento,txtNumero1.getText(), ol,dep);
-			if (!ed.cargarEvento().equals(ev)) {
-
-			
-				if(comprobar().length()==0) {
-					
-					// MODIFICAR EVENTO
-					ed.modificarEvento(ev);
-					// PARA QUE SE CIERRE AL DARLE ACEPTAR
-					info();
-					Stage stage = (Stage) btnAceptar.getScene().getWindow();
-					stage.close();
-				}else {
-					this.error();
-				}
+			try {
+				Deporte dep = comboDeporte.getSelectionModel().getSelectedItem();
+				Olimpiada ol = comboOlimpiada.getSelectionModel().getSelectedItem();
 				
+				Evento ev = new Evento(antiguoIdEvento,txtNumero1.getText(), ol,dep);
+				if (!ed.cargarEvento().equals(ev)) {
+
+				
+					if(comprobar().length()==0) {
+						
+						// MODIFICAR EVENTO
+						ed.modificarEvento(ev);
+						// PARA QUE SE CIERRE AL DARLE ACEPTAR
+						info();
+						Stage stage = (Stage) btnAceptar.getScene().getWindow();
+						stage.close();
+					}else {
+						this.error();
+					}
+					
+				}
+			}catch (SQLException e) {
+				// TODO: handle exception
+				error("Error en el sql");
 			}
+			
 			
 		}
 
@@ -154,11 +165,12 @@ public class AñadirController implements Initializable {
 		od = new OlimpiadaDao();
 		try {
 			this.comboDeporte.setItems(dp.sacarDeportes());
+			this.comboOlimpiada.setItems(od.sacarOlimpiada());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			this.error("Error en el sql");
 		}
-		this.comboOlimpiada.setItems(od.sacarOlimpiada());
+		
 		if(lblTitulo.getText().equals("Añadir Evento Olimpico")){
 			comboDeporte.getSelectionModel().select(0);
 			comboOlimpiada.getSelectionModel().select(0);
@@ -179,14 +191,21 @@ public class AñadirController implements Initializable {
 		
 		Olimpiada ol=comboOlimpiada.getSelectionModel().getSelectedItem();
 		Deporte dep=comboDeporte.getSelectionModel().getSelectedItem();
-		int id=ed.ultimoId()+1;
 		
-		Evento ev = new Evento(id,txtNumero1.getText(), ol,dep);
-		
-		if(ed.cargarEvento().contains(ev)) {
+		try {
+			int id=ed.ultimoId()+1;
 			
-			fallo+="\n Ese Evento ya existe";
+			Evento ev = new Evento(id,txtNumero1.getText(), ol,dep);
+			
+			if(ed.cargarEvento().contains(ev)) {
+				
+				fallo+="\n Ese Evento ya existe";
+			}
+		} catch (SQLException e) {
+			// TODO: handle exception
+			error("Error en el sql");
 		}
+		
 		
 		
 		return fallo;

@@ -82,6 +82,9 @@ public class listaController implements Initializable{
 				this.listObjetos.setItems(olD.sacarOlimpiada());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
+				error("Error en la lectura del fxml");
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
 				error("Error en el sql");
 			}
 			
@@ -107,8 +110,11 @@ public class listaController implements Initializable{
     				this.listObjetos.setItems(eqD.sacarEquipos());
     			} catch (IOException e) {
     				// TODO Auto-generated catch block
-    				error("Error en el sql");
-    			}
+    				error("Error en la lectura del fxml");
+    			} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					error("Error en el sql");
+				}
     			
     		}else {
     			if(this.lblTitulo.getText().toLowerCase().equals("deportistas")) {
@@ -136,7 +142,7 @@ public class listaController implements Initializable{
 						}
         			} catch (IOException e) {
         				// TODO Auto-generated catch block
-        				error("Error en el sql");
+        				error("Error en la lectura del fxml");
         			}
         			
         		}else {
@@ -165,7 +171,7 @@ public class listaController implements Initializable{
 						}
         			} catch (IOException e) {
         				// TODO Auto-generated catch block
-        				error("Error en el sql");
+        				error("Error en la lectura del fxml");
         			}
         		}
     		}
@@ -173,79 +179,84 @@ public class listaController implements Initializable{
     }
     @FXML
     void eliminar(ActionEvent event) {
-    	if(this.lblTitulo.getText().toLowerCase().equals("olimpiadas")) {
-    		try {
-    			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-    			alert.setHeaderText(null);;
-    			alert.setTitle("Eliminar Evento");
-    			alert.setContentText("Si eliminas esta Olimpiada se eliminara los eventos relacionados y por lo tanto tamibien las participaciones relacionadas a esos eventos\n¿Estas seguro?");
-    			Optional<ButtonType> result=alert.showAndWait();
-    			if(result.get()==ButtonType.OK) {
-    	    		Olimpiada ol=(Olimpiada) listObjetos.getSelectionModel().getSelectedItem();
-    	    		olD.eliminarOlimpiada(ol);
-    				this.info();
-    				this.listObjetos.setItems(olD.sacarOlimpiada());
-    			}
-    		}catch (SQLException e) {
-				this.error("Error en el sql");
-			}
-    		
-    	}else {
-    		if(this.lblTitulo.getText().toLowerCase().equals("equipos")) {
+    	if(listObjetos.getSelectionModel().getSelectedItem()!=null) {
+    		if(this.lblTitulo.getText().toLowerCase().equals("olimpiadas")) {
         		try {
         			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         			alert.setHeaderText(null);;
         			alert.setTitle("Eliminar Evento");
-        			alert.setContentText("Si eliminas este equipo se eliminara las participaciones relacionadas a ese equipo\n¿Estas seguro?");
+        			alert.setContentText("Si eliminas esta Olimpiada se eliminara los eventos relacionados y por lo tanto tamibien las participaciones relacionadas a esos eventos\n¿Estas seguro?");
         			Optional<ButtonType> result=alert.showAndWait();
         			if(result.get()==ButtonType.OK) {
-        	    		Equipos eq=(Equipos) listObjetos.getSelectionModel().getSelectedItem();
-        	    		eqD.eliminarEquipo(eq);
+        	    		Olimpiada ol=(Olimpiada) listObjetos.getSelectionModel().getSelectedItem();
+        	    		olD.eliminarOlimpiada(ol);
         				this.info();
-        				this.listObjetos.setItems(eqD.sacarEquipos());
+        				this.listObjetos.setItems(olD.sacarOlimpiada());
         			}
         		}catch (SQLException e) {
     				this.error("Error en el sql");
     			}
-    		}else {
-    			if(this.lblTitulo.getText().toLowerCase().equals("deportistas")) {
+        		
+        	}else {
+        		if(this.lblTitulo.getText().toLowerCase().equals("equipos")) {
             		try {
             			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             			alert.setHeaderText(null);;
             			alert.setTitle("Eliminar Evento");
-            			alert.setContentText("Si eliminas este deportista se eliminara las participaciones relacionadas a ese deportista\n¿Estas seguro?");
+            			alert.setContentText("Si eliminas este equipo se eliminara las participaciones relacionadas a ese equipo\n¿Estas seguro?");
             			Optional<ButtonType> result=alert.showAndWait();
             			if(result.get()==ButtonType.OK) {
-            	    		Deportista dep=(Deportista) listObjetos.getSelectionModel().getSelectedItem();
-            	    		depD.eliminarDeportista(dep);
+            	    		Equipos eq=(Equipos) listObjetos.getSelectionModel().getSelectedItem();
+            	    		eqD.eliminarEquipo(eq);
             				this.info();
-            				this.listObjetos.setItems(depD.sacarDeportistas());
+            				this.listObjetos.setItems(eqD.sacarEquipos());
             			}
             		}catch (SQLException e) {
         				this.error("Error en el sql");
         			}
-    			}else {
-            		try {
-            			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            			alert.setHeaderText(null);;
-            			alert.setTitle("Eliminar Evento");
-            			alert.setContentText("Si eliminas este deporte se eliminara los eventos relacionadas a ese deporte y por lo tanto tambie las participaciones en ese evento"
-            								+ "\n¿Estas seguro?");
-            			Optional<ButtonType> result=alert.showAndWait();
-            			if(result.get()==ButtonType.OK) {
-            	    		Deporte dep=(Deporte) listObjetos.getSelectionModel().getSelectedItem();
-            	    		dd.eliminarDeporte(dep);
-            				this.info();
-            				this.listObjetos.setItems(dd.sacarDeportes());
+        		}else {
+        			if(this.lblTitulo.getText().toLowerCase().equals("deportistas")) {
+                		try {
+                			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                			alert.setHeaderText(null);;
+                			alert.setTitle("Eliminar Evento");
+                			alert.setContentText("Si eliminas este deportista se eliminara las participaciones relacionadas a ese deportista\n¿Estas seguro?");
+                			Optional<ButtonType> result=alert.showAndWait();
+                			if(result.get()==ButtonType.OK) {
+                	    		Deportista dep=(Deportista) listObjetos.getSelectionModel().getSelectedItem();
+                	    		depD.eliminarDeportista(dep);
+                				this.info();
+                				this.listObjetos.setItems(depD.sacarDeportistas());
+                			}
+                		}catch (SQLException e) {
+            				this.error("Error en el sql");
             			}
-            		}catch (SQLException e) {
-        				this.error("Error en el sql");
+        			}else {
+                		try {
+                			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                			alert.setHeaderText(null);;
+                			alert.setTitle("Eliminar Evento");
+                			alert.setContentText("Si eliminas este deporte se eliminara los eventos relacionadas a ese deporte y por lo tanto tambie las participaciones en ese evento"
+                								+ "\n¿Estas seguro?");
+                			Optional<ButtonType> result=alert.showAndWait();
+                			if(result.get()==ButtonType.OK) {
+                	    		Deporte dep=(Deporte) listObjetos.getSelectionModel().getSelectedItem();
+                	    		dd.eliminarDeporte(dep);
+                				this.info();
+                				this.listObjetos.setItems(dd.sacarDeportes());
+                			}
+                		}catch (SQLException e) {
+            				this.error("Error en el sql");
+            			}
+        				
+        				
         			}
-    				
-    				
-    			}
-    		}
+        		}
+        	}
+    	}else {
+    		error("Clicle en una fila de la lista");
     	}
+    	
     }
 
     @FXML
@@ -264,7 +275,7 @@ public class listaController implements Initializable{
     				AñadirOlimpiadaController control = loader.getController();
     				Olimpiada ol=(Olimpiada) listObjetos.getSelectionModel().getSelectedItem();
     				System.out.println(ol.getTemporada());
-    				control.rellenar("Modificar Olimpiada", ol);
+    				control.rellenar(ol);
     				newStage.initModality(Modality.APPLICATION_MODAL);
     				String imagePath = getClass().getResource("/images/logo.png").toString();
     				newStage.getIcons().add(new Image(imagePath));
@@ -273,9 +284,14 @@ public class listaController implements Initializable{
     				newStage.showAndWait();
     			} catch (IOException e) {
     				// TODO Auto-generated catch block
-    				this.error(e.getMessage());
+    				this.error("Error en la lectura del fxml");
     			}
-        		this.listObjetos.setItems(olD.sacarOlimpiada());
+        		try {
+					this.listObjetos.setItems(olD.sacarOlimpiada());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					error("Error en el sql");
+				}
     		}else {
     			if(this.lblTitulo.getText().toLowerCase().equals("equipos")) {
     				FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirEquipo.fxml"));
@@ -289,7 +305,7 @@ public class listaController implements Initializable{
         				newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
         				AñadirEquipoController control = loader.getController();
         				Equipos eq=(Equipos) listObjetos.getSelectionModel().getSelectedItem();
-        				control.rellenar("Modificar Equipo", eq);
+        				control.rellenar(eq);
         				newStage.initModality(Modality.APPLICATION_MODAL);
         				String imagePath = getClass().getResource("/images/logo.png").toString();
         				newStage.getIcons().add(new Image(imagePath));
@@ -298,9 +314,14 @@ public class listaController implements Initializable{
         				newStage.showAndWait();
         			} catch (IOException e) {
         				// TODO Auto-generated catch block
-        				this.error(e.getMessage());
+        				this.error("Error en la lectura del fxml");
         			}
-            		this.listObjetos.setItems(eqD.sacarEquipos());
+            		try {
+						this.listObjetos.setItems(eqD.sacarEquipos());
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						error("Error en el sql");
+					}
     			}else {
     				if(this.lblTitulo.getText().toLowerCase().equals("deportistas")) {
     					FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AñadirDeportista.fxml"));
@@ -314,7 +335,7 @@ public class listaController implements Initializable{
             				newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
             				AñadirDeportistaController control = loader.getController();
             				Deportista dep=(Deportista) listObjetos.getSelectionModel().getSelectedItem();
-            				control.rellenar("Modificar Deportista", dep);
+            				control.rellenar(dep);
             				newStage.initModality(Modality.APPLICATION_MODAL);
             				String imagePath = getClass().getResource("/images/logo.png").toString();
             				newStage.getIcons().add(new Image(imagePath));
@@ -323,7 +344,7 @@ public class listaController implements Initializable{
             				newStage.showAndWait();
             			} catch (IOException e) {
             				// TODO Auto-generated catch block
-            				this.error("Error en el sql");
+            				this.error("Error en la lectura del fxml");
             			}
                 		try {
 							this.listObjetos.setItems(depD.sacarDeportistas());
@@ -344,7 +365,7 @@ public class listaController implements Initializable{
                 				newScene.getStylesheets().add(getClass().getResource("/css/application.css").toExternalForm());
                 				AñadirDeporteController control = loader.getController();
                 				Deporte dep=(Deporte) listObjetos.getSelectionModel().getSelectedItem();
-                				control.rellenar(dep,"Modificar Deportes");
+                				control.rellenar(dep);
                 				newStage.initModality(Modality.APPLICATION_MODAL);
                 				String imagePath = getClass().getResource("/images/logo.png").toString();
                 				newStage.getIcons().add(new Image(imagePath));
@@ -353,7 +374,7 @@ public class listaController implements Initializable{
                 				newStage.showAndWait();
                 			} catch (IOException e) {
                 				// TODO Auto-generated catch block
-                				this.error("Error en el sql");
+                				this.error("Error en la lectura del fxml");
                 			}
                     		try {
     							this.listObjetos.setItems(dd.sacarDeportes());
@@ -365,13 +386,6 @@ public class listaController implements Initializable{
     				}
     			}
         	}
-    		
-    		
-    		
-    		
-    		
-    		
-    		
     	}else {
     		this.error("Selecciona una fila de la lista para modificar");
     	}
@@ -387,33 +401,29 @@ public class listaController implements Initializable{
 		stage.close();
 	}
 	public void rellenar(String tipo) {
-		if(tipo.toLowerCase().equals("olimpiada")) {
-			this.listObjetos.setItems(olD.sacarOlimpiada());
-			this.lblTitulo.setText("Olimpiadas");
-		}else {
-			if(tipo.toLowerCase().equals("equipo")) {
-				this.listObjetos.setItems(eqD.sacarEquipos());
-				this.lblTitulo.setText("Equipos");
+		try {
+			if(tipo.toLowerCase().equals("olimpiada")) {
+				this.listObjetos.setItems(olD.sacarOlimpiada());
+				this.lblTitulo.setText("Olimpiadas");
 			}else {
-				if(tipo.toLowerCase().equals("deportistas")) {
-					try {
-						this.listObjetos.setItems(depD.sacarDeportistas());
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						error("Error en el sql");
-					}
-					this.lblTitulo.setText("Deportistas");
+				if(tipo.toLowerCase().equals("equipo")) {
+					this.listObjetos.setItems(eqD.sacarEquipos());
+					this.lblTitulo.setText("Equipos");
 				}else {
-					try {
+					if(tipo.toLowerCase().equals("deportistas")) {
+						this.listObjetos.setItems(depD.sacarDeportistas());
+						this.lblTitulo.setText("Deportistas");
+					}else {
 						this.listObjetos.setItems(dd.sacarDeportes());
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						error("Error en el sql");
+						this.lblTitulo.setText("Deportes");
 					}
-					this.lblTitulo.setText("Deportes");
 				}
 			}
+		}catch (SQLException e) {
+			// TODO: handle exception
+			error("Error en el sql");
 		}
+		
 	}
 	public void error (String t) {
 		Alert alert;

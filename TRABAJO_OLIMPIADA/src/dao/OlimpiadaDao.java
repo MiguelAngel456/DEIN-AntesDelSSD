@@ -15,63 +15,51 @@ public class OlimpiadaDao {
 	private ConexionDB conexion;
 	
 	//PARA AÑDIR FILAS A LA TABLA OLIMPIADA
-		public boolean anadirOlimpiada(Olimpiada ol) {
-			try {
-				conexion = new ConexionDB();
-		        Connection con = conexion.getConexion();
-	            
-				PreparedStatement pst = con.prepareStatement("insert into Olimpiada (nombre, anio, temporada, ciudad) values(?,?,?,?)");
-				
-				pst.setString(1, ol.getNombre());
-				pst.setInt(2, ol.getAnio());
-				pst.setString(3, ol.getTemporada());
-				pst.setString(4, ol.getCiudad());
-				
-				
-				pst.execute();
-				con.close();
-				pst.close();
-				return true;
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		public boolean anadirOlimpiada(Olimpiada ol) throws SQLException {
+			boolean bien=false;
+			conexion = new ConexionDB();
+	        Connection con = conexion.getConexion();
+            
+			PreparedStatement pst = con.prepareStatement("insert into Olimpiada (nombre, anio, temporada, ciudad) values(?,?,?,?)");
+			
+			pst.setString(1, ol.getNombre());
+			pst.setInt(2, ol.getAnio());
+			pst.setString(3, ol.getTemporada());
+			pst.setString(4, ol.getCiudad());
 			
 			
+			pst.execute();
+			con.close();
+			pst.close();
+			bien=true;
 			
-			return false;
+			return bien;
 		}
 	
-		public 	ObservableList<Olimpiada> sacarOlimpiada() {
+		public 	ObservableList<Olimpiada> sacarOlimpiada() throws SQLException {
 			ObservableList<Olimpiada> arr=FXCollections.observableArrayList();
 	        String sql;
-			
-	        try {
-	            conexion = new ConexionDB();
-	            Connection con = conexion.getConexion();
-	            sql="SELECT * FROM Olimpiada;";
-	            PreparedStatement ps = con.prepareStatement(sql);
-	            ResultSet rs = ps.executeQuery();
-	            while (rs.next()) {
-	            	//sacar datos 
-	            	
-	            	int id=rs.getInt("id_olimpiada");
-	            	String nom=rs.getString("nombre");
-	            	int anio=rs.getInt("anio");
-	            	String temp=rs.getString("temporada");
-	            	String ciudad=rs.getString("ciudad");
-	            	//crear
-	            	Olimpiada ol=new Olimpiada(id,nom, anio, temp, ciudad);
-	            	arr.add(ol);
-	            	
-	            }
-	            ps.close();
-	            rs.close();
-	            return arr;
-	            
-	        }catch (SQLException e) {
-				// TODO: handle exception
-			}
+            conexion = new ConexionDB();
+            Connection con = conexion.getConexion();
+            sql="SELECT * FROM Olimpiada;";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+            	//sacar datos 
+            	
+            	int id=rs.getInt("id_olimpiada");
+            	String nom=rs.getString("nombre");
+            	int anio=rs.getInt("anio");
+            	String temp=rs.getString("temporada");
+            	String ciudad=rs.getString("ciudad");
+            	//crear
+            	Olimpiada ol=new Olimpiada(id,nom, anio, temp, ciudad);
+            	arr.add(ol);
+            	
+            }
+            ps.close();
+            rs.close();
+
 	        return arr;
 		}
 		public boolean modificarOlimpiada(Olimpiada o) throws SQLException {
@@ -132,9 +120,8 @@ public class OlimpiadaDao {
 
 			return bien ;
 		}
-		public int ultimoId() {
+		public int ultimoId() throws SQLException {
 			int id=0;
-			try {
 				conexion = new ConexionDB();
 				Connection con = conexion.getConexion();
 				
@@ -148,10 +135,6 @@ public class OlimpiadaDao {
 		        rs.close();
 		        ps.close();
 		        con.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			return id;
 		}
 }

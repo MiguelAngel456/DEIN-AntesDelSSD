@@ -73,7 +73,7 @@ public class AñadirOlimpiadaController implements Initializable{
 					od.modificarOlimpiada(ol);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					error(e.getMessage());
+					error("Error en el sql");
 				}
 				info();
 				Stage stage = (Stage) btnAceptar.getScene().getWindow();
@@ -85,15 +85,20 @@ public class AñadirOlimpiadaController implements Initializable{
 
 		}else {
 			if(comprobar().length()==0) {
-				int id=(od.ultimoId()+1);
-				Olimpiada ol=new Olimpiada(id,nombre, anio, temp, ciudad);
-				System.out.println(ol.getTemporada());
-				if(this.comprobar().length()==0) {
-					od.anadirOlimpiada(ol);
-					info();
-					Stage stage = (Stage) btnAceptar.getScene().getWindow();
-					stage.close();
+				try {
+					int id=(od.ultimoId()+1);
+					Olimpiada ol=new Olimpiada(id,nombre, anio, temp, ciudad);
+					System.out.println(ol.getTemporada());
+					if(this.comprobar().length()==0) {
+						od.anadirOlimpiada(ol);
+						info();
+						Stage stage = (Stage) btnAceptar.getScene().getWindow();
+						stage.close();
+					}
+				}catch (SQLException e) {
+					error("Error en el sql");
 				}
+				
 				
 			}else {
 				error();
@@ -138,12 +143,18 @@ public class AñadirOlimpiadaController implements Initializable{
 			temp=rbSummer.getText();
 		}
 		String ciudad=txtCiudad.getText();
-		int id=od.ultimoId();
-		
-		Olimpiada ol=new Olimpiada(id,nombre, anio, temp, ciudad);
-		if(od.sacarOlimpiada().contains(ol)) {
-			fallo+="\n Esa Olimpiada ya existe";
+		try {
+			int id=od.ultimoId();
+			
+			Olimpiada ol=new Olimpiada(id,nombre, anio, temp, ciudad);
+			if(od.sacarOlimpiada().contains(ol)) {
+				fallo+="\n Esa Olimpiada ya existe";
+			}
+		}catch (SQLException e) {
+			// TODO: handle exception
+			error("Error en el sql");
 		}
+		
 		
 		
 		return fallo;
@@ -174,8 +185,8 @@ public class AñadirOlimpiadaController implements Initializable{
 		alert.setTitle("INFO");
 		alert.showAndWait();
 	}
-	public void rellenar(String titulo, Olimpiada ol) {
-		this.lblTitulo.setText(titulo);
+	public void rellenar(Olimpiada ol) {
+		this.lblTitulo.setText("Modificar Olimpiada");
 		//rellenar los campos
 		txtNombre.setText(ol.getNombre());
 		txtAnio.setText(String.valueOf(ol.getAnio()));
