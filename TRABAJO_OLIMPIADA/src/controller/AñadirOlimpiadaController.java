@@ -147,7 +147,7 @@ public class AñadirOlimpiadaController implements Initializable{
 			fallo+="\n El campo del año de la Olimpiada tiene que tener contenido";
 		}
 		if(txtAnio.getText().length()>5) {
-			fallo+="\n El campo del año de la Olimpiada no puede tene mas de 6 caracteres";
+			fallo+="\n El campo del año de la Olimpiada no puede tene mas de 5 caracteres";
 		}
 		int anio=0;
 		try {
