@@ -85,7 +85,7 @@
                   <Insets left="20.0" />
                </FlowPane.margin>
             </Button>
-            <ImageView fx:id="fotoDeportista" fitHeight="70.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="fotoDeportista" fitHeight="70.0" fitWidth="122.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <FlowPane.margin>
                   <Insets left="20.0" />
                </FlowPane.margin>
