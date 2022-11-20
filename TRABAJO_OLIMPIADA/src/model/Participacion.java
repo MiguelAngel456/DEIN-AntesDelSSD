@@ -77,6 +77,7 @@ public class Participacion {
 	public int hashCode() {
 		return Objects.hash(dep, ev);
 	}
+	//LO COMPARA POR DEPORTISTA Y POR EVENTO PORQUE SON LAS CLAVES PRIMARIAS
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

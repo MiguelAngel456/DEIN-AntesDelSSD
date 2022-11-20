@@ -333,6 +333,7 @@ public class Principal_controles implements Initializable {
 					newStage.showAndWait();
 					listEventos = ed.cargarEvento();
 					tablaEvento.setItems(listEventos);
+					tablaEvento.refresh();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					error("Error en el sql");

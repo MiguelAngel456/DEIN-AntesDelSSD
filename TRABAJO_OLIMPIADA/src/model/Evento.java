@@ -67,7 +67,7 @@ public class Evento{
 	public int hashCode() {
 		return Objects.hash(nom_Evento, ol);
 	}
-
+	//LO COMPARO POR EL NOMBRE Y LA OLIMPIADA Y NO TAMBIEN POR EL DEPORTE PORQUE EN EL NOMBRE YA VIENE EL DEPORTE 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

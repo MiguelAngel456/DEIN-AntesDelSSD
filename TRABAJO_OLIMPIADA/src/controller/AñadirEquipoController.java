@@ -97,15 +97,18 @@ public class AñadirEquipoController implements Initializable{
 		if(txtIniciales.getText().length()>3) {
 			fallo+="\n El campo Iniciales del Equipo no puede tener mas de 3 caracteres";
 		}
-		try {
-			int id=eqD.ultimoId();
-			Equipos equi=new Equipos(id,txtEquipo.getText(),txtIniciales.getText());
-			if(eqD.sacarEquipos().contains(equi)) {
-				fallo+="\n Ese Equipo ya existe";
+		if(!lblTitulo.getText().equals("Modificar Equipo")) {
+			try {
+				int id=eqD.ultimoId();
+				Equipos equi=new Equipos(id,txtEquipo.getText(),txtIniciales.getText());
+				if(eqD.sacarEquipos().contains(equi)) {
+					fallo+="\n Ese Equipo ya existe";
+				}
+			}catch (SQLException e) {
+				// TODO: handle exception
+				error("Error en el sql");
 			}
-		}catch (SQLException e) {
-			// TODO: handle exception
-			error("Error en el sql");
+			
 		}
 		return fallo;
 	}
@@ -140,6 +143,7 @@ public class AñadirEquipoController implements Initializable{
 		txtEquipo.setText(e.getNombre());
 		txtIniciales.setText(e.getIniciales());
 		
+		txtEquipo.setDisable(true);
 		idAnt=e.getId_equipo();
 	}
 	@Override

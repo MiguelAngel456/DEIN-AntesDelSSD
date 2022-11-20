@@ -16,7 +16,7 @@ public class Deportista {
 		this.peso = peso;
 		this.altura = altura;
 	}
-	//CONSTRUCTOR CON FOTO(SERA EL DEFINITIVO
+	//CONSTRUCTOR CON FOTO
 	public Deportista(int id_deportista, String nombre, String sexo, int peso, int altura, InputStream foto) {
 		this.id_deportista=id_deportista;
 		this.nombre = nombre;

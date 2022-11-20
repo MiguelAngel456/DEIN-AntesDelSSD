@@ -189,38 +189,43 @@ public class AñadirParticipacionController implements Initializable{
 		if(txtEdad.getText().length()>=4) {
 			fallo+="\n El campo de la edad no puede contener numeros de mas de 3 digitos";
 		}
+		int edad=0;
 		try {
-			int edad=Integer.parseInt(txtEdad.getText());
-			if(lblTitulo.getText().equals("Añadir Participacion")) {
-				Deportista d=(Deportista) this.comboDeportista.getSelectionModel().getSelectedItem();
-				Evento ev=(Evento) this.comboEvento.getSelectionModel().getSelectedItem();
-				Equipos eq=(Equipos) this.comboEquipo.getSelectionModel().getSelectedItem();
-				String medalla;
-				if(rbOro.isSelected()) {
-					medalla="oro";
-				}else {
-					if(rbPlata.isSelected()) {
-						medalla="Plata";
-					}else {
-						if(rbBronze.isSelected()) {
-							medalla="Bronze";
-						}else {
-							medalla="nada";
-						}
-					}
-				}
-				Participacion p=new Participacion(d, edad, medalla, eq, ev);
-				if(pd.cargarParticipacion().contains(p)) {
-					fallo+="\n Ya existe esta Participacion";
-				}
-			}
+			edad=Integer.parseInt(txtEdad.getText());
 		} catch (NumberFormatException e) {
 			// TODO: handle exception
 			fallo+="\n El campo de la edad tiene que tener numeros";
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			error("Error en el sql");
+		} 
+		Deportista d=(Deportista) this.comboDeportista.getSelectionModel().getSelectedItem();
+		Evento ev=(Evento) this.comboEvento.getSelectionModel().getSelectedItem();
+		Equipos eq=(Equipos) this.comboEquipo.getSelectionModel().getSelectedItem();
+		String medalla;
+		if(rbOro.isSelected()) {
+			medalla="oro";
+		}else {
+			if(rbPlata.isSelected()) {
+				medalla="Plata";
+			}else {
+				if(rbBronze.isSelected()) {
+					medalla="Bronze";
+				}else {
+					medalla="nada";
+				}
+			}
 		}
+		if(lblTitulo.getText().equals("Añadir Participacion")) {
+			Participacion p=new Participacion(d, edad, medalla, eq, ev);
+			try {
+				if(pd.cargarParticipacion().contains(p)) {
+					fallo+="\n Ya existe esta Participacion";
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				error("Error en el sql");
+			}
+		}
+			
+		
 		return fallo;
 	}
 	public void error () {

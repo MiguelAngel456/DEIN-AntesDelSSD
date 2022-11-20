@@ -191,23 +191,21 @@ public class AñadirController implements Initializable {
 		
 		Olimpiada ol=comboOlimpiada.getSelectionModel().getSelectedItem();
 		Deporte dep=comboDeporte.getSelectionModel().getSelectedItem();
-		
-		try {
-			int id=ed.ultimoId()+1;
-			
-			Evento ev = new Evento(id,txtNumero1.getText(), ol,dep);
-			
-			if(ed.cargarEvento().contains(ev)) {
+		if (lblTitulo.getText().equals("Añadir Evento Olimpico")) {
+			try {
+				int id=ed.ultimoId()+1;
 				
-				fallo+="\n Ese Evento ya existe";
+				Evento ev = new Evento(id,txtNumero1.getText(), ol,dep);
+				
+				if(ed.cargarEvento().contains(ev)) {
+					
+					fallo+="\n Ese Evento ya existe";
+				}
+			} catch (SQLException e) {
+				// TODO: handle exception
+				error("Error en el sql");
 			}
-		} catch (SQLException e) {
-			// TODO: handle exception
-			error("Error en el sql");
 		}
-		
-		
-		
 		return fallo;
 	}
 	public void error () {
@@ -236,7 +234,7 @@ public class AñadirController implements Initializable {
 		comboDeporte.getSelectionModel().select(ev.getDep());
 		comboOlimpiada.getSelectionModel().select(ev.getOl());
 		
-		comboDeporte.setDisable(true);
+		txtNumero1.setDisable(true);
 		comboOlimpiada.setDisable(true);
 		
 		

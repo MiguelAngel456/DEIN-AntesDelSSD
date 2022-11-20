@@ -96,6 +96,7 @@ public class AñadirDeportistaController implements Initializable{
 				int peso=Integer.parseInt(txtPeso.getText());
 				int altu=Integer.parseInt(txtAltura.getText());
 				System.out.println(idAnt);
+				System.out.println(img);
 				Deportista dep=new Deportista(idAnt,nombre, sexo, peso, altu,img);
 				try {
 					dd.modificarDeportista(dep);
@@ -195,16 +196,19 @@ public class AñadirDeportistaController implements Initializable{
 		}
 		
 		int id;
-		try {
-			id = dd.ultimoId();
-			Deportista dep=new Deportista(id,nombre, sexo, peso, altu);
-			if(dd.sacarDeportistas().contains(dep)) {
-				fallo+="\n Esa Olimpiada ya existe";
+		if(!lblTitulo.getText().equals("Modificar Deportista")) {
+			try {
+				id = dd.ultimoId();
+				Deportista dep=new Deportista(id,nombre, sexo, peso, altu);
+				if(dd.sacarDeportistas().contains(dep)) {
+					fallo+="\n Ese Deportist ya existe";
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				error("Error en el sql");
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			error("Error en el sql");
 		}
+		
 		
 		
 		
@@ -214,8 +218,7 @@ public class AñadirDeportistaController implements Initializable{
     void eligirFoto(ActionEvent event) {
     	FileChooser FC=new FileChooser();
 		FC.setTitle("Elige la imagen");
-		String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
-		FC.setInitialDirectory(new File(currentPath));
+		FC.setInitialDirectory(new File("./resources/images"));
 		FC.getExtensionFilters().add(new ExtensionFilter("Archivo imagen", "*.png", "*.jpg"));
 		FC.setSelectedExtensionFilter(FC.getExtensionFilters().get(0));
 		archivo=FC.showOpenDialog((Stage)btnFoto.getScene().getWindow());
@@ -271,7 +274,6 @@ public class AñadirDeportistaController implements Initializable{
 			this.rbFemenino.setSelected(true);
 		}
 		if(dep.getFoto()!=null) {
-			System.out.println("aaaaaaaa");
 			try {
 				this.img=dd.sacarFoto(dep);
 				fotoDeportista.setImage(new Image(img));
@@ -281,7 +283,7 @@ public class AñadirDeportistaController implements Initializable{
 				error("Error en el sql");
 			}
 		}
-		
+		txtNombre.setDisable(true);
 		idAnt=dep.getId_deportista();
 	}
 	@Override

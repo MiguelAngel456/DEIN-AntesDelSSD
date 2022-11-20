@@ -94,15 +94,17 @@ public class AñadirDeporteController implements Initializable{
 		if(txtDeporte.getText().length()>100) {
 			fallo+="\n El campo del nombre Deporte tiene no puede tener mas de 100";
 		}
-		try {
-			int id=dd.ultimoId();
-			Deporte dep=new Deporte(id,txtDeporte.getText());
-			if(dd.sacarDeportes().contains(dep)) {
-				fallo+="\n Ese deporte ya existe";
+			try {
+				int id=dd.ultimoId();
+				Deporte dep=new Deporte(id,txtDeporte.getText());
+				if(dd.sacarDeportes().contains(dep)) {
+					fallo+="\n Ese deporte ya existe";
+				}
+			}catch (SQLException e) {
+				error("Error en el sql");
 			}
-		}catch (SQLException e) {
-			error("Error en el sql");
-		}
+		
+		
 		
 		
 		

@@ -166,17 +166,20 @@ public class AñadirOlimpiadaController implements Initializable{
 			temp=rbSummer.getText();
 		}
 		String ciudad=txtCiudad.getText();
-		try {
-			int id=od.ultimoId();
-			
-			Olimpiada ol=new Olimpiada(id,nombre, anio, temp, ciudad);
-			if(od.sacarOlimpiada().contains(ol)) {
-				fallo+="\n Esa Olimpiada ya existe";
+		if(!lblTitulo.getText().equals("Modificar Olimpiada")) {
+			try {
+				int id=od.ultimoId();
+				
+				Olimpiada ol=new Olimpiada(id,nombre, anio, temp, ciudad);
+				if(od.sacarOlimpiada().contains(ol)) {
+					fallo+="\n Esa Olimpiada ya existe";
+				}
+			}catch (SQLException e) {
+				// TODO: handle exception
+				error("Error en el sql");
 			}
-		}catch (SQLException e) {
-			// TODO: handle exception
-			error("Error en el sql");
 		}
+		
 		
 		
 		
@@ -221,6 +224,7 @@ public class AñadirOlimpiadaController implements Initializable{
 			}
 		}
 		txtCiudad.setText(ol.getCiudad());
+		txtNombre.setDisable(true);
 		//
 		idAnt=ol.getId();
 	}

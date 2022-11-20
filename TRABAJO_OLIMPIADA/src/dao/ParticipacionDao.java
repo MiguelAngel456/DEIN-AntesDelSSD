@@ -1,5 +1,6 @@
 package dao;
 
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,6 +39,7 @@ public class ParticipacionDao {
          	String sexo_Deportista=rs.getString("o.sexo");
          	int peso_Deportista=rs.getInt("o.peso");
          	int altura_Deportista=rs.getInt("o.altura");
+         	InputStream foto = rs.getBinaryStream("o.foto");
          	
          	//sacar datos del equipo para la tabla
          	int id_equipo=rs.getInt("d.id_equipo");
@@ -68,7 +70,7 @@ public class ParticipacionDao {
          	Olimpiada ol=new Olimpiada(id_Olimpiada, nom_Olimpiada, anio_ol, temporada, ciudad);
          	Evento ev=new Evento(id_evento, nom_evento, ol, depo);
          
-         	Deportista dep=new Deportista(id_deportista, nom_Deportista, sexo_Deportista, peso_Deportista, altura_Deportista);
+         	Deportista dep=new Deportista(id_deportista, nom_Deportista, sexo_Deportista, peso_Deportista, altura_Deportista,foto);
          	Equipos eq=new Equipos(id_equipo,nom_Equipo, iniciales);
          	//crear el Participacion
          	Participacion par=new Participacion(dep, edad_Participacion, medalla_Participacion, eq, ev);
