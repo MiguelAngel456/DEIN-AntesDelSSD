@@ -290,8 +290,8 @@ public class Principal_controles implements Initializable {
 					newStage.setScene(newScene);
 					newStage.setTitle("Modificar Participacion");
 					newStage.showAndWait();
-					listParticipacion = pd.cargarParticipacion();
-					tablaParticipacion.setItems(listParticipacion);
+					this.tablaParticipacion.setItems(pd.cargarParticipacion());
+					this.tablaParticipacion.refresh();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					error("Error en la lectura del fxml");
@@ -332,19 +332,20 @@ public class Principal_controles implements Initializable {
 					error("Error en la lectura del fxml");
 				}
 			}
-			try {
-				listParticipacion = pd.cargarParticipacion();
-				listEventos = ed.cargarEvento();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				error("Error en el sql");
-			}
-			tablaParticipacion.setItems(listParticipacion);
-			tablaEvento.setItems(listEventos);
+
 		}else {
 			this.error("Clica en una de las filas de la tabla para modificar");
 		}
 		
+//		try {
+//			listParticipacion = pd.cargarParticipacion();
+//			listEventos = ed.cargarEvento();
+//			tablaParticipacion.setItems(listParticipacion);
+//			tablaEvento.setItems(listEventos);
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			error("Error en el sql");
+//		}
 
 	}
 
@@ -604,7 +605,7 @@ public class Principal_controles implements Initializable {
 		colEquipo.setCellValueFactory(new PropertyValueFactory<>("NombreEquipo"));
 		colEquipo.prefWidthProperty().bind(tablaEvento.widthProperty().multiply(0.15));
 		
-		colMedalla.setCellValueFactory(new PropertyValueFactory<>("medalla"));
+		colMedalla.setCellValueFactory(new PropertyValueFactory<>("Medalla"));
 		colMedalla.prefWidthProperty().bind(tablaEvento.widthProperty().multiply(0.15));
 		
 		colEvento.setCellValueFactory(new PropertyValueFactory<>("NomEvento"));

@@ -91,6 +91,9 @@ public class AñadirDeporteController implements Initializable{
 		if(txtDeporte.getText().length()==0) {
 			fallo+="\n El campo del nombre Deporte tiene que tener contenido";
 		}
+		if(txtDeporte.getText().length()>100) {
+			fallo+="\n El campo del nombre Deporte tiene no puede tener mas de 100";
+		}
 		try {
 			int id=dd.ultimoId();
 			Deporte dep=new Deporte(id,txtDeporte.getText());

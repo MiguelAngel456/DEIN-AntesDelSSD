@@ -128,27 +128,37 @@ public class AñadirDeportistaController implements Initializable{
 		if(txtNombre.getText().length()==0) {
 			fallo+="\n El campo del nombre  tiene que tener contenido";
 		}
+		if(txtNombre.getText().length()>150) {
+			fallo+="\n El campo del nombre  no puede tener mas de 150 caracteres";
+		}
+		
 		if(txtAltura.getText().length()==0) {
 			fallo+="\n El campo altura tiene que tener contenido";
 		}
 		if(txtPeso.getText().length()==0) {
 			fallo+="\n El campo peso tiene que tener contenido";
 		}
+		if(txtAltura.getText().length()>11) {
+			fallo+="\n El campo altura no puede tener mas de 11 caracteres";
+		}
+		if(txtPeso.getText().length()>11) {
+			fallo+="\n El campo peso no puede tener mas de 11 caracteres";
+		}
 		//El campo peso y altura son obligatorios porque en algunos deportes e tiene en cuenta para hacer secciones por ejemplo el boxeo se divide por pesos
 		int altu=0,peso=0;
 		
 		try {
-			int i=Integer.parseInt(txtPeso.getText());
-			peso=Integer.parseInt(txtPeso.getText());
+			int i=Integer.parseInt(txtPeso.getText().toString());
+			peso=Integer.parseInt(txtPeso.getText().toString());
 		} catch (NumberFormatException e) {
 			// TODO: handle exception
 			fallo+="\n El campo peso tiene que ser numeros";
 		}
 		
 		try {
-			int i=Integer.parseInt(txtAltura.getText());
+			int i=Integer.parseInt(txtAltura.getText().toString());
 			
-			altu=Integer.parseInt(txtAltura.getText());
+			altu=Integer.parseInt(txtAltura.getText().toString());
 		} catch (NumberFormatException e) {
 			// TODO: handle exception
 			fallo+="\n El campo altura tiene que ser numeros";

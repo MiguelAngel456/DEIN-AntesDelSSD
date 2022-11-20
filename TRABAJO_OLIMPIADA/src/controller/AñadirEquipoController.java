@@ -91,6 +91,12 @@ public class AñadirEquipoController implements Initializable{
 		if(txtIniciales.getText().length()==0) {
 			fallo+="\n El campo Iniciales del Equipo tiene que tener contenido";
 		}
+		if(txtEquipo.getText().length()>50) {
+			fallo+="\n El campo del nombre del Equipo no puede tener mas de 50 caracteres";
+		}
+		if(txtIniciales.getText().length()>3) {
+			fallo+="\n El campo Iniciales del Equipo no puede tener mas de 3 caracteres";
+		}
 		try {
 			int id=eqD.ultimoId();
 			Equipos equi=new Equipos(id,txtEquipo.getText(),txtIniciales.getText());

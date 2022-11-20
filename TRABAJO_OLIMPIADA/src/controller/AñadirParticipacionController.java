@@ -108,7 +108,7 @@ public class AñadirParticipacionController implements Initializable{
 					pd.anadirParticipacion(p);
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					error("Error en el sql");
 				}
 				
 				Stage stage = (Stage) btnAceptar.getScene().getWindow();
@@ -184,6 +184,9 @@ public class AñadirParticipacionController implements Initializable{
 		String fallo="";
 		if(txtEdad.getText().length()==0) {
 			fallo+="\n El campo de la edad tiene que tener contenido";
+		}
+		if(txtEdad.getText().length()>=4) {
+			fallo+="\n El campo de la edad no puede contener numeros de mas de 3 digitos";
 		}
 		try {
 			int edad=Integer.parseInt(txtEdad.getText());
